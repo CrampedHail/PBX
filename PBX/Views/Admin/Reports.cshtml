@@ -1,0 +1,58 @@
+﻿@model IEnumerable<PBX.Models.Zgloszenie>
+
+@{
+    ViewBag.Title = "Zgłoszenia";
+}
+
+<h2>Zgłoszenia</h2>
+@{
+    if (Model.Count() > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.tresc)
+                </th>
+                <th>
+                    Ogłoszenie
+                </th>
+                <th>
+                    Zgłoszono
+                </th>
+                <th>
+                    Zgłosił/a
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.tresc)
+            </td>
+            <td>
+                @Html.ActionLink(item.Ogloszenie.nazwa, "AdDetails", new { id = item.Ogloszenie_id })
+            </td>
+            <td>
+                @Html.ActionLink(item.Uzytkownik1.imie, "UserDetails", new { id = item.zgloszony_id })
+            </td>
+            <td>
+                @Html.ActionLink(item.Uzytkownik.imie, "UserDetails", new { id = item.zglaszajacy_id })
+            </td>
+            <td>
+                @Html.ActionLink("Usuń zgłoszenie", "DeleteReport", new { id = item.id })
+            </td>
+        </tr>
+            }
+
+        </table>
+
+    }
+    else
+    {
+        <h4>
+            Nie ma żadnych zgłoszeń.
+        </h4>
+    }
+}

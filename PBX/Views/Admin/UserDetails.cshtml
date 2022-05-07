@@ -1,0 +1,56 @@
+﻿@model PBX.Models.Uzytkownik
+
+@{
+    ViewBag.Title = "Szczegóły użytkownika";
+}
+
+<h2>Szczegóły użytkownika</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.imie)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.imie)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nr_tel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nr_tel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.haslo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.haslo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dolaczono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dolaczono)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Usuń użytkownika", "DeleteUser", new { id = Model.id })
+</p>

@@ -1,0 +1,145 @@
+﻿@using PBX.Models
+@model PBX.Models.Ogloszenie
+
+@{
+    ViewBag.Title = "Szczegóły Ogłoszenia";
+}
+
+<h2>Szczegóły Ogłoszenia</h2>
+
+<div>
+    @if (Model.wystawil_id != (ViewBag.user as Uzytkownik).id)
+    {
+        <p class="d-flex" style="justify-content:space-between;">
+            @if (ViewBag.fav > 0)
+            {
+            <a href="@Url.Action("RemoveFavorite", "Advertisement", new {id=Model.id})">
+                <img src="~/Images/heart_full.png" width="20" height="20" />
+                Usuń z ulubionych
+            </a>
+            }
+            else
+            {
+            <a href="@Url.Action("AddFavorite", "Advertisement", new {id=Model.id})">
+                <img src="~/Images/favorite.png" width="20" height="20" />
+                Dodaj do ulubionych
+            </a>
+            }
+            @if (!ViewBag.reported)
+            {
+        
+            @Html.ActionLink("Zgłoś ogłoszenie", "Create", "Report", new { id = Model.id }, "")
+       
+            }
+            else
+            {
+            <span>Ogłoszenie zostało już zgłoszone. @Html.ActionLink("Anuluj zgłoszenie", "Cancel", "Report", new { id = Model.id }, "")</span>
+            }
+        </p>
+    }
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nazwa)
+        </dd>
+
+        <dt>
+            Kategoria
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kategoria.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.opis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.opis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.typ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.typ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cena)
+        </dt>
+        @if (Model.cena <= 0)
+        {
+            <dd>Za darmo</dd>
+        }
+        else
+        {
+            <dd>
+                @Html.DisplayFor(model => model.cena)
+
+                @if (Model.negocjacja)
+                {
+                    <span>
+                        do negocjacji
+                    </span>
+                }
+            </dd>
+        }
+
+        @if (Model.pokaz_tel)
+        {
+            <dt>
+                Numer Telefonu
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Uzytkownik.nr_tel)
+            </dd>
+        }
+
+        @if (Model.pokaz_email)
+        {
+            <dt>
+                Adres Email
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Uzytkownik.email)
+            </dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dodano)
+        </dt>
+
+        <dd>
+            @Model.dodano.ToShortDateString() o godzinie @Model.dodano.ToShortTimeString()
+        </dd>
+
+        <dt>
+            Wystawione przez
+        </dt>
+
+        <dd>
+            @Html.ActionLink(Model.Uzytkownik.imie, "Details", "Account", new { id = Model.Uzytkownik.id }, new { @title = "Naciśnij aby wyświetlić profil" })
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @if ((ViewBag.user as Uzytkownik).id == Model.wystawil_id)
+    {
+        @Html.ActionLink("Edytuj", "Edit", new { id = Model.id })
+    }
+    else
+    {
+        @Html.ActionLink("Napisz wiadomość", "Create", "Chat", new { id = Model.id}, "")
+    }
+</p>

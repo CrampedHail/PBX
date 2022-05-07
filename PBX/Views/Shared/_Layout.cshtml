@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="~/Content/Styles/styles.css" />
+    <title>@ViewBag.Title - PBX</title>
+    <script type="text/javascript">
+        if (typeof jQuery == 'undefined') {
+        var jql = document.createElement('script');
+        jql.src = '@Url.Content("~/Scripts/jquery-3.6.0.js")';
+        jql.type = 'text/javascript';
+        document.getElementsByTagName("head")[0].appendChild(jql);
+        }
+    </script>
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="d-flex flex-column align-items-center">
+    @{
+        bool isLoggedIn = false;
+        int Id = -1;
+        string Name = "";
+        if ((ViewBag.user as PBX.Models.Uzytkownik) != null && (ViewBag.user as PBX.Models.Uzytkownik).id >= 0)
+        {
+            Id = (ViewBag.user as PBX.Models.Uzytkownik).id;
+            Name = (ViewBag.user as PBX.Models.Uzytkownik).imie;
+            isLoggedIn = true;
+        }
+        if ((ViewBag.Admin as PBX.Models.Admin) == null)
+        {
+            <div class="navbar navbar-inverse navbar-fixed-top sticky" id="navbar-div" style="border-color:lightgray;">
+                <nav class="navbar navbar-expand-lg navbar-light w-100" style="margin-bottom:0px;">
+                    <a class="navbar-item" href="@Url.Action("Index", "Home")">
+                        <img src="~/Images/shopping_bag.png" width="40" height="40" alt="">
+                    </a>
+                    <a class="" id="brand" href="@Url.Action("Index", "Home")">
+                        PBX
+                    </a>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto w-100 justify-items-between align-items-center">
+                            <li class="nav-item">
+                                @{
+                                    if (isLoggedIn)
+                                    {
+                                        <a class="nav-link text-light" href="@Url.Action("Create", "Advertisement")">
+                                            <img src="~/Images/add_white.png" width="30" height="30" />
+                                            Dodaj Ogłoszenie
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link text-light" href="@Url.Action("Login", "Account")">
+                                            <img src="~/Images/add_white.png" width="30" height="30" />
+                                            Dodaj Ogłoszenie
+                                        </a>
+                                    }
+                                }
+                            </li>
+                            <li class="nav-item">
+                                @{
+                                    if (isLoggedIn)
+                                    {
+                                        <a class="nav-link text-light" href="@Url.Action("Messages", "Home")">
+                                            <img src="~/Images/chat_white.png" width="30" height="30" />
+                                            Wiadomości
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link text-light" href="@Url.Action("Login", "Account")">
+                                            <img src="~/Images/chat_white.png" width="30" height="30" />
+                                            Wiadomości
+                                        </a>
+                                    }
+                                }
+                            </li>
+                            <li class="nav-item">
+                                @{
+                                    if (isLoggedIn)
+                                    {
+                                        <a class="nav-link text-light" href="@Url.Action("MyFavorites", "Advertisement")">
+                                            <img src="~/Images/heart_full_white.png" width="30" height="30" />
+                                            Ulubione
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link text-light" href="@Url.Action("Login", "Account")">
+                                            <img src="~/Images/heart_full_white.png" width="30" height="30" />
+                                            Ulubione
+                                        </a>
+                                    }
+                                }
+                            </li>
+                            @{
+                                if (isLoggedIn)
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="~/Images/account_white.png" width="30" height="30" />
+                                            Mój PBX
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            @Html.ActionLink("Twoje ogłoszenia", "MyAds", "Advertisement", new { user = Session["user"] }, new { @class = "dropdown-item" })
+                                            <div class="dropdown-divider"></div>
+                                            @Html.ActionLink("Informacje o Tobie", "Details", "Account", new { user = Session["user"] }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Zmień hasło", "ChangePassword", "Account", "Account", new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Wyloguj", "Logout", "Account", "Account", new { @class = "dropdown-item" })
+                                        </div>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" href="@Url.Action("Login", "Account")">
+                                            <img src="~/Images/account_white.png" width="30" height="30" />
+                                            Zaloguj
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            @using (Html.BeginForm("Search", "Advertisement", FormMethod.Post, new { @class = "form-inline" }))
+                            {
+                                <li class="nav-item ml-3">
+                                    <div class="form-inline">
+                                        @{
+                                            if (ViewBag.searched != null)
+                                            {
+                                                <input class="form-control" name="query" id="query" type="search" placeholder="Wpisz tutaj czego szukasz..." aria-label="Search" style="min-width:250px" value=@ViewBag.searched>
+
+                                            }
+                                            else
+                                            {
+                                                <input class="form-control" name="query" id="query" type="search" placeholder="Wpisz tutaj czego szukasz..." aria-label="Search" style="min-width:250px">
+
+                                            }
+                                        }
+
+                                        <button type="submit" name="search" id="search">Szukaj</button>
+                                    </div>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        }
+    }
+
+
+    <div class="container body-content mt-5 mx-5 justify-content-center">
+        @RenderBody()
+        <footer class="text-center navbar-fixed-bottom background-secondary border-top" style="margin-top:10px;">
+            <p class="py-4 mb-0" style="color:var(--main-color);">&copy; Aplikacje Internetowe II Projekt - Paweł Brandt 19329</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

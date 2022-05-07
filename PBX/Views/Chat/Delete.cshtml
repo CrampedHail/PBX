@@ -1,0 +1,48 @@
+﻿@model PBX.Models.Chat
+
+@{
+    ViewBag.Title = "Usuwanie Chatu";
+}
+
+<h2>Usuwanie Chatu</h2>
+
+<h3>Na pewno chcesz usunąć chat z użytkownikiem @Model.Uzytkownik.imie?</h3>
+<div>
+    <h4>Chat</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nazwa Ogłoszenia
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ogloszenie.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ogloszenie.cena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ogloszenie.cena)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Uzytkownik.imie)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Uzytkownik.imie)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń chat" class="btn btn-danger" /> 
+            <p class="my-2">@Html.ActionLink("Anuluj", "Messages", "Home")</p>
+        </div>
+    }
+</div>

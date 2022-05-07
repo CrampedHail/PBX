@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PBXDBModelStoreContainer" CdmEntityContainer="PBXDBEntities">
+    <EntitySetMapping Name="Admin">
+      <EntityTypeMapping TypeName="PBXDBModel.Admin">
+        <MappingFragment StoreEntitySet="Admin">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="login" ColumnName="login" />
+          <ScalarProperty Name="haslo" ColumnName="haslo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Chat">
+      <EntityTypeMapping TypeName="PBXDBModel.Chat">
+        <MappingFragment StoreEntitySet="Chat">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
+          <ScalarProperty Name="zainteresowany_id" ColumnName="zainteresowany_id" />
+          <ScalarProperty Name="oglaszajacy_id" ColumnName="oglaszajacy_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Kategoria">
+      <EntityTypeMapping TypeName="PBXDBModel.Kategoria">
+        <MappingFragment StoreEntitySet="Kategoria">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nadkategoria_id" ColumnName="nadkategoria_id" />
+          <ScalarProperty Name="nazwa" ColumnName="nazwa" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ocena">
+      <EntityTypeMapping TypeName="PBXDBModel.Ocena">
+        <MappingFragment StoreEntitySet="Ocena">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="ocena_od_id" ColumnName="ocena_od_id" />
+          <ScalarProperty Name="ocena_dla_id" ColumnName="ocena_dla_id" />
+          <ScalarProperty Name="ocena1" ColumnName="ocena" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ogloszenie">
+      <EntityTypeMapping TypeName="PBXDBModel.Ogloszenie">
+        <MappingFragment StoreEntitySet="Ogloszenie">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="wystawil_id" ColumnName="wystawil_id" />
+          <ScalarProperty Name="kategoria_id" ColumnName="kategoria_id" />
+          <ScalarProperty Name="nazwa" ColumnName="nazwa" />
+          <ScalarProperty Name="opis" ColumnName="opis" />
+          <ScalarProperty Name="aktywne" ColumnName="aktywne" />
+          <ScalarProperty Name="dodano" ColumnName="dodano" />
+          <ScalarProperty Name="typ" ColumnName="typ" />
+          <ScalarProperty Name="cena" ColumnName="cena" />
+          <ScalarProperty Name="negocjacja" ColumnName="negocjacja" />
+          <ScalarProperty Name="pokaz_tel" ColumnName="pokaz_tel" />
+          <ScalarProperty Name="pokaz_email" ColumnName="pokaz_email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ulubiona">
+      <EntityTypeMapping TypeName="PBXDBModel.Ulubiona">
+        <MappingFragment StoreEntitySet="Ulubiona">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="uzytkownik_id" ColumnName="uzytkownik_id" />
+          <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usunieci">
+      <EntityTypeMapping TypeName="PBXDBModel.Usunieci">
+        <MappingFragment StoreEntitySet="Usunieci">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="imie" ColumnName="imie" />
+          <ScalarProperty Name="nr_tel" ColumnName="nr_tel" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="haslo" ColumnName="haslo" />
+          <ScalarProperty Name="dolaczono" ColumnName="dolaczono" />
+          <ScalarProperty Name="usunieto" ColumnName="usunieto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Uzytkownik">
+      <EntityTypeMapping TypeName="PBXDBModel.Uzytkownik">
+        <MappingFragment StoreEntitySet="Uzytkownik">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="imie" ColumnName="imie" />
+          <ScalarProperty Name="nr_tel" ColumnName="nr_tel" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="haslo" ColumnName="haslo" />
+          <ScalarProperty Name="dolaczono" ColumnName="dolaczono" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Wiadomosc">
+      <EntityTypeMapping TypeName="PBXDBModel.Wiadomosc">
+        <MappingFragment StoreEntitySet="Wiadomosc">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="chat_id" ColumnName="chat_id" />
+          <ScalarProperty Name="nadawca_id" ColumnName="nadawca_id" />
+          <ScalarProperty Name="wiadomosc1" ColumnName="wiadomosc" />
+          <ScalarProperty Name="wyslano" ColumnName="wyslano" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Zgloszenie">
+      <EntityTypeMapping TypeName="PBXDBModel.Zgloszenie">
+        <MappingFragment StoreEntitySet="Zgloszenie">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Ogloszenie_id" ColumnName="Ogloszenie_id" />
+          <ScalarProperty Name="zglaszajacy_id" ColumnName="zglaszajacy_id" />
+          <ScalarProperty Name="zgloszony_id" ColumnName="zgloszony_id" />
+          <ScalarProperty Name="tresc" ColumnName="tresc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

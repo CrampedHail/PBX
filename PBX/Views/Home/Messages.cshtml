@@ -1,0 +1,62 @@
+﻿@using PBX.Models
+@model IEnumerable<PBX.Models.Chat>
+
+@{
+    ViewBag.Title = "Wiadomości";
+}
+
+<h2>Wiadomości</h2>
+@{if (Model.Count() > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Uzytkownik.imie)
+                </th>
+                <th>
+                    Ogłoszenie
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ogloszenie.cena)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+        <tr>
+            @if ((ViewBag.user as Uzytkownik).id != item.Uzytkownik.id)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uzytkownik.imie)
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uzytkownik1.imie)
+                </td>
+            }
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Ogloszenie.nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ogloszenie.cena)
+            </td>
+            <td>
+                @Html.ActionLink("Podgląd", "Index", "Chat", new { id = item.id }, "")
+                @Html.ActionLink("Usuń", "Delete", "Chat", new { id = item.id }, "")
+            </td>
+        </tr>
+            }
+
+        </table>
+    }
+    else
+    {
+        <h4>Nie masz jeszcze żadnych rozpoczętych rozmów.</h4>
+    }
+}
+
+

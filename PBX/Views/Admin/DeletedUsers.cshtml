@@ -1,0 +1,52 @@
+﻿@model IEnumerable<PBX.Models.Usunieci>
+
+@{
+    ViewBag.Title = "Usunięci użytkownicy";
+}
+
+<h2>Usunięci użytkownicy</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.imie)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nr_tel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dolaczono)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.usunieto)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.imie)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nr_tel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dolaczono)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.usunieto)
+        </td>
+        <td>
+            @Html.ActionLink("Przywróć", "RestoreUser", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

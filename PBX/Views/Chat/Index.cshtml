@@ -1,0 +1,51 @@
+﻿@using PBX.Models
+@model PBX.Models.Chat
+
+@{
+    ViewBag.Title = "Wiadomości";
+}
+
+<script>
+    function loadPartialView()  {
+            $.ajax({
+                url: '@Url.Action("GetChatView", "Chat", new {id=ViewBag.chat_id})',
+                type: 'post',
+                cache: false,
+                async: true,
+                success: function(result){
+                    $('#scroll-pane').html(result);
+                }
+            });
+    }
+
+    $( document ).ready(function () {
+        function RefreshPartial() {
+            //this will wait 3 seconds and then fire the load partial function
+            setTimeout(function () {
+                loadPartialView();
+                //recall this function so that it will continue to loop
+                RefreshPartial();
+            }, 3000);
+        }
+        //initialize the loop
+        loadPartialView();
+        RefreshPartial();
+    });
+</script>
+<h2>Wiadomości z użytkownikiem @ViewBag.rozmowca</h2>
+<h6>Przejdź do <a href="@Url.Action("Details", "Advertisement", new {id=ViewBag.ogloszenie_id})"> ogłoszenia @ViewBag.ogloszenie_nazwa</a>   Przejdź do <a href="@Url.Action("Details", "Account", new {id=ViewBag.rozmowca_id})"> profilu @ViewBag.rozmowca</a></h6>
+<hr />
+<div class="d-flex flex-column align-items-center" style="height:100%">
+    <div id="scroll-pane" class="d-flex flex-column" style="overflow:auto; max-height:53vh; height:100%;width:100%;">
+        
+    </div>
+    @using (Html.BeginForm("MakeMessage", "Chat", new { chat = ViewBag.chat_id }, FormMethod.Post, ""))
+    {
+        <div class="form-group d-flex align-items-center">
+            <textarea class="form-control" id="wiadomosc" name="wiadomosc" placeholder="Napisz wiadomość..." maxlength="500" cols="200" rows="2" style="height:3.9em; border-top-right-radius:0; border-bottom-right-radius:0;"></textarea>
+            <button type="submit" class="btn btn-primary" style="height:3.9em; border-top-left-radius:0; border-bottom-left-radius:0;">
+                <img src="~/Images/send_white.png" width="30" height="30" title="Wyślij" />
+            </button>
+        </div>
+    }
+</div>

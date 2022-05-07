@@ -1,0 +1,111 @@
+﻿@model PBX.Models.Ogloszenie
+
+@{
+    ViewBag.Title = "Usuwanie Ogłoszenia";
+}
+
+<h2>Usuwanie Ogłoszenia</h2>
+
+<h3>Czy na pewno usunąć to ogłoszenie?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.opis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.opis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.aktywne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.aktywne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dodano)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dodano)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.typ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.typ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cena)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.negocjacja)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.negocjacja)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pokaz_tel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pokaz_tel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pokaz_email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pokaz_email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Kategoria.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kategoria.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Uzytkownik.imie)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Uzytkownik.imie)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-outline-danger" /> |
+            @Html.ActionLink("Powrót", "Index", "Home")
+        </div>
+    }
+</div>

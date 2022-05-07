@@ -1,0 +1,68 @@
+﻿@using PBX.Models
+@model IEnumerable<PBX.Models.Wiadomosc>
+
+@if (Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        if ((ViewBag.user as Uzytkownik).id == item.nadawca_id)
+        {
+
+            if (Model.ElementAt(Model.Count() - 1).Equals(item))
+            {
+                <div id="last" class="align-self-end bg-light p-3" title="@item.wyslano" style="border-radius:10px;">
+                    <p class="m-0">
+                        @Html.DisplayFor(modelItem => item.wiadomosc1)
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="align-self-end bg-light p-3" title="@item.wyslano" style="border-radius:10px;">
+                    <p class="m-0">
+                        @Html.DisplayFor(modelItem => item.wiadomosc1)
+                    </p>
+                </div>
+            }
+
+        }
+        else
+        {
+            if (Model.ElementAt(Model.Count() - 1).Equals(item))
+            {
+                <div id="last" class="recieved-message p-3" title="@item.wyslano" style="background-color: var(--accent-color); color: var(--main-color); width: fit-content; border-radius: 10px; ">
+                    <h6 class="m-0">
+                        @Html.DisplayFor(modelItem => item.Uzytkownik.imie) napisał/a:
+                    </h6>
+                    <p class="mb-0 mt-2">
+                        @Html.DisplayFor(modelItem => item.wiadomosc1)
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="recieved-message p-3" title="@item.wyslano" style="background-color: var(--accent-color); color: var(--main-color); width: fit-content; border-radius: 10px; ">
+                    <h6 class="m-0">
+                        @Html.DisplayFor(modelItem => item.Uzytkownik.imie) napisał/a:
+                    </h6>
+                    <p class="mb-0 mt-2">
+                        @Html.DisplayFor(modelItem => item.wiadomosc1)
+                    </p>
+                </div>
+            }
+
+        }
+    }
+}
+else
+{
+    <h6 class="text-center">Wyślij wiadomość aby rozpocząć rozmowę</h6>
+}
+<script>
+    function bottom() {
+        document.getElementById('last').scrollIntoView();
+        window.setTimeout(function () { top(); }, 2000);
+    };
+
+    bottom();
+</script>

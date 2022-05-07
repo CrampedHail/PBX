@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PBXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="login" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="haslo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Chat">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ogloszenie_id" Type="Int32" Nullable="false" />
+    <Property Name="zainteresowany_id" Type="Int32" Nullable="false" />
+    <Property Name="oglaszajacy_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Chat__oglaszajac__4CA06362" FromRole="Chat" ToRole="Uzytkownik" />
+    <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Chat__ogloszenie__4BAC3F29" FromRole="Chat" ToRole="Ogloszenie" />
+    <NavigationProperty Name="Uzytkownik1" Relationship="Self.FK__Chat__zaintereso__4D94879B" FromRole="Chat" ToRole="Uzytkownik" />
+    <NavigationProperty Name="Wiadomosc" Relationship="Self.FK__Wiadomosc__chat___5165187F" FromRole="Chat" ToRole="Wiadomosc" />
+  </EntityType>
+  <EntityType Name="Kategoria">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nadkategoria_id" Type="Int32" Nullable="false" />
+    <Property Name="nazwa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Kategoria1" Relationship="Self.FK__Kategoria__nadka__3A81B327" FromRole="Kategoria" ToRole="Kategoria1" />
+    <NavigationProperty Name="Kategoria2" Relationship="Self.FK__Kategoria__nadka__3A81B327" FromRole="Kategoria1" ToRole="Kategoria" />
+    <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Ogloszeni__kateg__4316F928" FromRole="Kategoria" ToRole="Ogloszenie" />
+  </EntityType>
+  <EntityType Name="Ocena">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ocena_od_id" Type="Int32" Nullable="false" />
+    <Property Name="ocena_dla_id" Type="Int32" Nullable="false" />
+    <Property Name="ocena1" Type="Double" />
+    <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Ocena__ocena_dla__3F466844" FromRole="Ocena" ToRole="Uzytkownik" />
+    <NavigationProperty Name="Uzytkownik1" Relationship="Self.FK__Ocena__ocena_od___403A8C7D" FromRole="Ocena" ToRole="Uzytkownik" />
+  </EntityType>
+  <EntityType Name="Ogloszenie">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="wystawil_id" Type="Int32" Nullable="false" />
+    <Property Name="kategoria_id" Type="Int32" Nullable="false" />
+    <Property Name="nazwa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="opis" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="aktywne" Type="Boolean" />
+    <Property Name="dodano" Type="DateTime" Precision="3" />
+    <Property Name="typ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cena" Type="Double" />
+    <Property Name="negocjacja" Type="Boolean" />
+    <Property Name="pokaz_tel" Type="Boolean" />
+    <Property Name="pokaz_email" Type="Boolean" />
+    <NavigationProperty Name="Chat" Relationship="Self.FK__Chat__ogloszenie__4BAC3F29" FromRole="Ogloszenie" ToRole="Chat" />
+    <NavigationProperty Name="Kategoria" Relationship="Self.FK__Ogloszeni__kateg__4316F928" FromRole="Ogloszenie" ToRole="Kategoria" />
+    <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Ogloszeni__wysta__440B1D61" FromRole="Ogloszenie" ToRole="Uzytkownik" />
+    <NavigationProperty Name="Ulubiona" Relationship="Self.FK__Ulubiona__oglosz__5535A963" FromRole="Ogloszenie" ToRole="Ulubiona" />
+    <NavigationProperty Name="Zgloszenie" Relationship="Self.FK__Zgloszeni__Oglos__48CFD27E" FromRole="Ogloszenie" ToRole="Zgloszenie" />
+  </EntityType>
+  <EntityType Name="Ulubiona">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="uzytkownik_id" Type="Int32" Nullable="false" />
+    <Property Name="ogloszenie_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Ulubiona__oglosz__5535A963" FromRole="Ulubiona" ToRole="Ogloszenie" />
+    <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Ulubiona__uzytko__5441852A" FromRole="Ulubiona" ToRole="Uzytkownik" />
+  </EntityType>
+  <EntityType Name="Usunieci">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="imie" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="nr_tel" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="haslo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="dolaczono" Type="DateTime" Precision="0" />
+    <Property Name="usunieto" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="Uzytkownik">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="imie" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="nr_tel" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="haslo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="dolaczono" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Chat" Relationship="Self.FK__Chat__oglaszajac__4CA06362" FromRole="Uzytkownik" ToRole="Chat" />
+    <NavigationProperty Name="Chat1" Relationship="Self.FK__Chat__zaintereso__4D94879B" FromRole="Uzytkownik" ToRole="Chat" />
+    <NavigationProperty Name="Ocena" Relationship="Self.FK__Ocena__ocena_dla__3F466844" FromRole="Uzytkownik" ToRole="Ocena" />
+    <NavigationProperty Name="Ocena1" Relationship="Self.FK__Ocena__ocena_od___403A8C7D" FromRole="Uzytkownik" ToRole="Ocena" />
+    <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Ogloszeni__wysta__440B1D61" FromRole="Uzytkownik" ToRole="Ogloszenie" />
+    <NavigationProperty Name="Ulubiona" Relationship="Self.FK__Ulubiona__uzytko__5441852A" FromRole="Uzytkownik" ToRole="Ulubiona" />
+    <NavigationProperty Name="Wiadomosc" Relationship="Self.FK__Wiadomosc__nadaw__5070F446" FromRole="Uzytkownik" ToRole="Wiadomosc" />
+    <NavigationProperty Name="Zgloszenie" Relationship="Self.FK__Zgloszeni__zglas__46E78A0C" FromRole="Uzytkownik" ToRole="Zgloszenie" />
+    <NavigationProperty Name="Zgloszenie1" Relationship="Self.FK__Zgloszeni__zglos__47DBAE45" FromRole="Uzytkownik" ToRole="Zgloszenie" />
+  </EntityType>
+  <EntityType Name="Wiadomosc">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="chat_id" Type="Int32" Nullable="false" />
+    <Property Name="nadawca_id" Type="Int32" Nullable="false" />
+    <Property Name="wiadomosc1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="wyslano" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Chat" Relationship="Self.FK__Wiadomosc__chat___5165187F" FromRole="Wiadomosc" ToRole="Chat" />
+    <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Wiadomosc__nadaw__5070F446" FromRole="Wiadomosc" ToRole="Uzytkownik" />
+  </EntityType>
+  <EntityType Name="Zgloszenie">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ogloszenie_id" Type="Int32" Nullable="false" />
+    <Property Name="zglaszajacy_id" Type="Int32" Nullable="false" />
+    <Property Name="zgloszony_id" Type="Int32" Nullable="false" />
+    <Property Name="tresc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Zgloszeni__Oglos__48CFD27E" FromRole="Zgloszenie" ToRole="Ogloszenie" />
+    <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Zgloszeni__zglas__46E78A0C" FromRole="Zgloszenie" ToRole="Uzytkownik" />
+    <NavigationProperty Name="Uzytkownik1" Relationship="Self.FK__Zgloszeni__zglos__47DBAE45" FromRole="Zgloszenie" ToRole="Uzytkownik" />
+  </EntityType>
+  <Association Name="FK__Chat__oglaszajac__4CA06362">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Chat">
+        <PropertyRef Name="oglaszajacy_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Chat__ogloszenie__4BAC3F29">
+    <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
+    <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ogloszenie">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Chat">
+        <PropertyRef Name="ogloszenie_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Chat__zaintereso__4D94879B">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Chat">
+        <PropertyRef Name="zainteresowany_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Wiadomosc__chat___5165187F">
+    <End Role="Chat" Type="Self.Chat" Multiplicity="1" />
+    <End Role="Wiadomosc" Type="Self.Wiadomosc" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Chat">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Wiadomosc">
+        <PropertyRef Name="chat_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Kategoria__nadka__3A81B327">
+    <End Role="Kategoria" Type="Self.Kategoria" Multiplicity="1" />
+    <End Role="Kategoria1" Type="Self.Kategoria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kategoria">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Kategoria1">
+        <PropertyRef Name="nadkategoria_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ogloszeni__kateg__4316F928">
+    <End Role="Kategoria" Type="Self.Kategoria" Multiplicity="1" />
+    <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kategoria">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Ogloszenie">
+        <PropertyRef Name="kategoria_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ocena__ocena_dla__3F466844">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Ocena" Type="Self.Ocena" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Ocena">
+        <PropertyRef Name="ocena_dla_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ocena__ocena_od___403A8C7D">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Ocena" Type="Self.Ocena" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Ocena">
+        <PropertyRef Name="ocena_od_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ogloszeni__wysta__440B1D61">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Ogloszenie">
+        <PropertyRef Name="wystawil_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ulubiona__oglosz__5535A963">
+    <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
+    <End Role="Ulubiona" Type="Self.Ulubiona" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ogloszenie">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Ulubiona">
+        <PropertyRef Name="ogloszenie_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Zgloszeni__Oglos__48CFD27E">
+    <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
+    <End Role="Zgloszenie" Type="Self.Zgloszenie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ogloszenie">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Zgloszenie">
+        <PropertyRef Name="Ogloszenie_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ulubiona__uzytko__5441852A">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Ulubiona" Type="Self.Ulubiona" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Ulubiona">
+        <PropertyRef Name="uzytkownik_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Wiadomosc__nadaw__5070F446">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Wiadomosc" Type="Self.Wiadomosc" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Wiadomosc">
+        <PropertyRef Name="nadawca_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Zgloszeni__zglas__46E78A0C">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Zgloszenie" Type="Self.Zgloszenie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Zgloszenie">
+        <PropertyRef Name="zglaszajacy_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Zgloszeni__zglos__47DBAE45">
+    <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+    <End Role="Zgloszenie" Type="Self.Zgloszenie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Uzytkownik">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Zgloszenie">
+        <PropertyRef Name="zgloszony_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PBXDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admin" EntityType="Self.Admin" />
+    <EntitySet Name="Chat" EntityType="Self.Chat" />
+    <EntitySet Name="Kategoria" EntityType="Self.Kategoria" />
+    <EntitySet Name="Ocena" EntityType="Self.Ocena" />
+    <EntitySet Name="Ogloszenie" EntityType="Self.Ogloszenie" />
+    <EntitySet Name="Ulubiona" EntityType="Self.Ulubiona" />
+    <EntitySet Name="Usunieci" EntityType="Self.Usunieci" />
+    <EntitySet Name="Uzytkownik" EntityType="Self.Uzytkownik" />
+    <EntitySet Name="Wiadomosc" EntityType="Self.Wiadomosc" />
+    <EntitySet Name="Zgloszenie" EntityType="Self.Zgloszenie" />
+    <AssociationSet Name="FK__Chat__oglaszajac__4CA06362" Association="Self.FK__Chat__oglaszajac__4CA06362">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Chat" EntitySet="Chat" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Chat__ogloszenie__4BAC3F29" Association="Self.FK__Chat__ogloszenie__4BAC3F29">
+      <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+      <End Role="Chat" EntitySet="Chat" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Chat__zaintereso__4D94879B" Association="Self.FK__Chat__zaintereso__4D94879B">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Chat" EntitySet="Chat" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Wiadomosc__chat___5165187F" Association="Self.FK__Wiadomosc__chat___5165187F">
+      <End Role="Chat" EntitySet="Chat" />
+      <End Role="Wiadomosc" EntitySet="Wiadomosc" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Kategoria__nadka__3A81B327" Association="Self.FK__Kategoria__nadka__3A81B327">
+      <End Role="Kategoria" EntitySet="Kategoria" />
+      <End Role="Kategoria1" EntitySet="Kategoria" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ogloszeni__kateg__4316F928" Association="Self.FK__Ogloszeni__kateg__4316F928">
+      <End Role="Kategoria" EntitySet="Kategoria" />
+      <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ocena__ocena_dla__3F466844" Association="Self.FK__Ocena__ocena_dla__3F466844">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Ocena" EntitySet="Ocena" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ocena__ocena_od___403A8C7D" Association="Self.FK__Ocena__ocena_od___403A8C7D">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Ocena" EntitySet="Ocena" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ogloszeni__wysta__440B1D61" Association="Self.FK__Ogloszeni__wysta__440B1D61">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ulubiona__oglosz__5535A963" Association="Self.FK__Ulubiona__oglosz__5535A963">
+      <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+      <End Role="Ulubiona" EntitySet="Ulubiona" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Zgloszeni__Oglos__48CFD27E" Association="Self.FK__Zgloszeni__Oglos__48CFD27E">
+      <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+      <End Role="Zgloszenie" EntitySet="Zgloszenie" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ulubiona__uzytko__5441852A" Association="Self.FK__Ulubiona__uzytko__5441852A">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Ulubiona" EntitySet="Ulubiona" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Wiadomosc__nadaw__5070F446" Association="Self.FK__Wiadomosc__nadaw__5070F446">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Wiadomosc" EntitySet="Wiadomosc" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Zgloszeni__zglas__46E78A0C" Association="Self.FK__Zgloszeni__zglas__46E78A0C">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Zgloszenie" EntitySet="Zgloszenie" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Zgloszeni__zglos__47DBAE45" Association="Self.FK__Zgloszeni__zglos__47DBAE45">
+      <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+      <End Role="Zgloszenie" EntitySet="Zgloszenie" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

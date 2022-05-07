@@ -1,0 +1,19 @@
+﻿@model IEnumerable<PBX.Models.Kategoria>
+
+@{
+    ViewBag.Title = "Strona Główna";
+}
+
+@{ if ((ViewBag.user as PBX.Models.Uzytkownik)!=null && (ViewBag.user as PBX.Models.Uzytkownik).id >= 0)
+    {
+        <h2 class="text-center">@((ViewBag.user as PBX.Models.Uzytkownik).imie), witamy na Stronie Głównej</h2>
+    }
+    else
+    {
+        <h2 class="text-center">Witamy na Stronie Głównej</h2>
+    }
+    <h4 class="text-center">Kategorie, które mogą Cię zainteresować:</h4>
+    
+}
+
+

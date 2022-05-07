@@ -1,0 +1,158 @@
+﻿:root {
+    --main-color: #FFFFFF;
+    --secondary-color: #343438 /*#2D3142*/;
+    --selected-color: #262628;
+    --third-color: #3DA5D9;
+    --fourth-color: #2D82B7;
+    --accent-color: #F93943; /*#7353BA;*/ /*#8C62BD;*/ /*#4FB286;*/
+    /*color-scheme: light;*/
+}
+/*@media(prefers-color-scheme : dark){
+    :root {
+        color-scheme: dark light;
+    }
+    body{
+        background-color:#202020!important;
+        color:white;
+    }
+}*/
+
+    html {
+        font-family: 'Bahnschrift', 'Arial', sans-serif;
+    }
+
+    body {
+        padding-top: 85px;
+        padding-bottom: 70px;
+    }
+
+    /* Set padding to keep content from hitting the edges */
+    .body-content {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Override the default bootstrap behavior where horizontal description lists 
+       will truncate terms that are too long to fit in the left column 
+    */
+    .dl-horizontal dt {
+        white-space: normal;
+    }
+    /* Set width on the form input elements since they're 100% wide by default */
+    input,
+    select,
+    textarea,
+    input.form-control,
+    select.form-control,
+    textarea.form-control {
+        max-width: 280px;
+    }
+        select.form-control:not([size]):not([multiple]){
+            min-height:34px!important;
+        }
+        .checkbox input[type="checkbox"]:hover,
+        input.form-control:hover,
+        select.form-control:hover,
+        textarea.form-control:hover,
+        button.form-control:hover,
+        button.dropdown-toggle:hover {
+            box-shadow: 0px 0px 2px var(--accent-color) !important;
+            border-color: var(--accent-color)/ !important;
+        }
+        .checkbox input[type="checkbox"]:checked,
+        input.form-control:focus,
+        select.form-control:focus,
+        textarea.form-control:focus,
+        button.form-control:focus,
+        button.dropdown-toggle:focus {
+            box-shadow: 0px 0px 5px var(--accent-color) !important;
+            border-color: var(--accent-color)/!important;
+        }
+
+
+    a {
+        color: var(--accent-color) !important;
+    }
+
+    a:hover {
+        color: var(--secondary-color);
+    }
+
+    footer {
+        background-color: var(--secondary-color);
+    }
+
+    #brand {
+        color:white !important;
+        font-size: 20px;
+        font-weight:500;
+    }
+
+    .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+        background-color: var(--selected-color)!important;
+        border-radius: 10px;
+    }
+
+    #query {
+        border: none;
+        border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+    #search {
+        border: none;
+        border-bottom-right-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
+        height: 34px;
+        background-color: var(--accent-color);
+        color: var(--main-color);
+        font-weight: 700;
+        padding: 5px 15px;
+    }
+    #navbar-div{
+        padding:0;
+    }
+
+    nav, .navbar {
+        background-color: var(--secondary-color);
+    }
+
+    img {
+        color: var(--accent-color);
+    }
+
+    .navbar-fixed-bottom {
+        background-color: var(--secondary-color);
+    }
+
+    textarea.form-control#wiadomosc {
+        min-width: 400px;
+        min-height: 35px;
+        max-height: 100px;
+        resize: none;
+    }
+
+    div.recieved-message {
+        background-color: var(--accent-color);
+        color: var(--main-color);
+    }
+
+    .btn-primary, .btn-outline-primary{
+        background-color: var(--accent-color) !important;
+        border:none!important;
+    }
+    .checkbox input[type="checkbox"]{
+        accent-color:var(--accent-color);
+    }
+    select.form-control {
+        accent-color: var(--accent-color);
+        background: var(--main-color);
+    }
+    select.form-control:focus {
+        accent-color: var(--accent-color);
+        background: var(--main-color);
+    }

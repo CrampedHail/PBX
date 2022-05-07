@@ -1,0 +1,66 @@
+﻿@model IEnumerable<PBX.Models.Ogloszenie>
+
+@{
+    ViewBag.Title = "Lista Ogłoszeń";
+}
+
+<h2>Lista Ogłoszeń</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dodano)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.typ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cena)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kategoria.nazwa)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.nazwa)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.dodano)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.typ)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.cena)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Kategoria.nazwa)
+    </td>
+    @{
+        if ((Session["user"] as PBX.Models.Uzytkownik).id == item.wystawil_id)
+        {
+            <td>
+                @Html.ActionLink("Edytuj", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Wyświetl Szczegóły", "Details", new { id = item.id }) |
+                @Html.ActionLink("Usuń", "Delete", new { id = item.id })
+            </td>
+        }
+        else
+        {
+            <td>
+                @Html.ActionLink("Wyświetl Szczegóły", "Details", new { id = item.id }) 
+            </td>
+        }
+    }
+
+</tr>
+}
+
+</table>
