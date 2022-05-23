@@ -33,16 +33,19 @@
     });
 </script>
 <h2>Wiadomości z użytkownikiem @ViewBag.rozmowca</h2>
-<h6>Przejdź do <a href="@Url.Action("Details", "Advertisement", new {id=ViewBag.ogloszenie_id})"> ogłoszenia @ViewBag.ogloszenie_nazwa</a>   Przejdź do <a href="@Url.Action("Details", "Account", new {id=ViewBag.rozmowca_id})"> profilu @ViewBag.rozmowca</a></h6>
-<hr />
+<div style="display:flex; justify-content:space-evenly">
+    <h6>Przejdź do <a href="@Url.Action("Details", "Advertisement", new {id=ViewBag.ogloszenie_id})"> ogłoszenia @ViewBag.ogloszenie_nazwa</a></h6>
+    <h6>Przejdź do <a href="@Url.Action("Details", "Account", new {id=ViewBag.rozmowca_id})"> profilu @ViewBag.rozmowca</a></h6>
+</div>
+
 <div class="d-flex flex-column align-items-center" style="height:100%">
-    <div id="scroll-pane" class="d-flex flex-column" style="overflow:auto; max-height:53vh; height:100%;width:100%;">
+    <div id="scroll-pane" class="d-flex flex-column chat-pane" style="overflow:auto; max-height:53vh; height:100%;width:70%;">
         
     </div>
-    @using (Html.BeginForm("MakeMessage", "Chat", new { chat = ViewBag.chat_id }, FormMethod.Post, ""))
+    @using (Html.BeginForm("MakeMessage", "Chat", new { chat = ViewBag.chat_id }, FormMethod.Post, new { @class="", @style="width:70%;"}))
     {
-        <div class="form-group d-flex align-items-center">
-            <textarea class="form-control" id="wiadomosc" name="wiadomosc" placeholder="Napisz wiadomość..." maxlength="500" cols="200" rows="2" style="height:3.9em; border-top-right-radius:0; border-bottom-right-radius:0;"></textarea>
+        <div class="form-group d-flex align-items-center" style="width:100%;">
+            <textarea class="form-control" id="wiadomosc" name="wiadomosc" placeholder="Napisz wiadomość..." maxlength="500" cols="200" rows="2" style="max-width:100%;height:3.9em; border-top-right-radius:0; border-bottom-right-radius:0;"></textarea>
             <button type="submit" class="btn btn-primary" style="height:3.9em; border-top-left-radius:0; border-bottom-left-radius:0;">
                 <img src="~/Images/send_white.png" width="30" height="30" title="Wyślij" />
             </button>

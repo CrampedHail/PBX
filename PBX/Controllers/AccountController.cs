@@ -356,7 +356,10 @@ namespace PBX.Controllers
                 string email = collection["email"];
                 password = GeneratePassword();
                 ViewBag.Error = password;
-                Uzytkownik userFound = _db.Uzytkownik.Where(u => u.imie.Equals(name) && u.nr_tel.Equals(phone) && u.email.Equals(email)).First();
+                List<Uzytkownik> found = _db.Uzytkownik.Where(u => u.nr_tel.Equals(phone)).ToList();
+                /*found = found.Where(u => u.imie.Equals(name)).ToList();*/
+                found = found.Where(u => u.email.Equals(email)).ToList();
+                Uzytkownik userFound = found.First();
                 _db.Uzytkownik.Find(userFound.id).haslo = BC.HashPassword(password);
                 _db.SaveChanges();
 

@@ -15,16 +15,16 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            @Html.LabelFor(model => model.nazwa, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.nazwa, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.nazwa, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.nazwa, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Kategoria, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Kategoria, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-5">
                 @*@Html.EditorFor(model => model.kategoria_id, new { htmlAttributes = new { @class = "form-control", @type = "text", @list = "category-list", @name = "category", @value="" } })
                 @Html.ValidationMessageFor(model => model.Kategoria.nazwa, "", new { @class = "text-danger" })*@
                 <input class = "form-control" type = "text" list = "category-list" name = "category" />
@@ -44,32 +44,32 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.opis, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.opis, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-5">
                 @Html.TextAreaFor(model => model.opis, new { @class = "form-control", @rows = "5", @cols = "50", @style = "resize:none;" })
                 @Html.ValidationMessageFor(model => model.opis, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.typ, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.typ, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-5">
                 @Html.DropDownList("typ", new SelectList(ViewBag.typy), htmlAttributes: new { @class = "form-control", @style = "min-height:34px;" })
                 @Html.ValidationMessageFor(model => model.typ, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.cena, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.cena, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.cena, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
                 @Html.ValidationMessageFor(model => model.cena, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.negocjacja, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.negocjacja, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-5">
                 <div class="checkbox">
                     @Html.CheckBoxFor(model => model.negocjacja)
                     @Html.ValidationMessageFor(model => model.negocjacja, "", new { @class = "text-danger" })
@@ -78,8 +78,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.pokaz_tel, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.pokaz_tel, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-5">
                 <div class="checkbox">
                     @Html.CheckBoxFor(model => model.pokaz_tel)
                     @Html.ValidationMessageFor(model => model.pokaz_tel, "", new { @class = "text-danger" })
@@ -88,8 +88,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.pokaz_email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.pokaz_email, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-5">
                 <div class="checkbox">
                     @Html.CheckBoxFor(model => model.pokaz_email)
                     @Html.ValidationMessageFor(model => model.pokaz_email, "", new { @class = "text-danger" })
@@ -98,7 +98,7 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-5 col-md-2">
                 <input type="submit" value="Dodaj" class="btn btn-primary" />
             </div>
         </div>

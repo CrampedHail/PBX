@@ -3,19 +3,30 @@
     --secondary-color: #343438 /*#2D3142*/;
     --selected-color: #262628;
     --third-color: #3DA5D9;
-    --fourth-color: #2D82B7;
+    --fourth-color: #F0F0F0;
     --accent-color: #F93943; /*#7353BA;*/ /*#8C62BD;*/ /*#4FB286;*/
-    /*color-scheme: light;*/
+    --background-color: white;
+    --your-message: white;
+    color-scheme:light;
 }
-/*@media(prefers-color-scheme : dark){
+@media(prefers-color-scheme: dark) {
     :root {
+        --background-color: #3D3D3F;
+        --your-message: #F0F0F0;
+        --fourth-color: #4D4D4F;
         color-scheme: dark light;
     }
-    body{
-        background-color:#202020!important;
-        color:white;
+    div#filter.dropdown-menu{
+        background-color:var(--background-color);
     }
-}*/
+    h1, h2, h3, h4, h5, h6, label, th, td, dt, dd, legend, p, #text {
+        color: white !important;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-align:center;
+}
 
     html {
         font-family: 'Bahnschrift', 'Arial', sans-serif;
@@ -24,13 +35,19 @@
     body {
         padding-top: 85px;
         padding-bottom: 70px;
+        background-color: var(--background-color)!important;
     }
 
     /* Set padding to keep content from hitting the edges */
-    .body-content {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+}
 
     /* Override the default bootstrap behavior where horizontal description lists 
        will truncate terms that are too long to fit in the left column 
@@ -41,7 +58,6 @@
     /* Set width on the form input elements since they're 100% wide by default */
     input,
     select,
-    textarea,
     input.form-control,
     select.form-control,
     textarea.form-control {
@@ -49,6 +65,10 @@
     }
         select.form-control:not([size]):not([multiple]){
             min-height:34px!important;
+        }
+        input[type="checkbox"]:hover,
+        select:hover{
+            cursor:pointer;
         }
         .checkbox input[type="checkbox"]:hover,
         input.form-control:hover,
@@ -69,7 +89,13 @@
             border-color: var(--accent-color)/!important;
         }
 
-
+        dt{
+            width:45%!important;
+            margin-right:2rem;
+        }
+        dd{
+            margin-left: 0!important;
+        }
     a {
         color: var(--accent-color) !important;
     }
@@ -156,3 +182,52 @@
         accent-color: var(--accent-color);
         background: var(--main-color);
     }
+
+ul.pagination > li.active > a {
+    background-color: var(--main-color);
+    border: 1px solid var(--accent-color);
+}
+    ul.pagination > li.active > a:hover {
+        background-color: var(--main-color);
+        color: var(--accent-color);
+        border: 1px solid var(--accent-color);
+    }
+ul.pagination > li > a:hover {
+    background-color: var(--main-color);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+div.d-grid-4 {
+    width:75%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:1rem;
+}
+    div.d-grid-4 > * {
+        border-radius: 10px;
+        background-color: var(--fourth-color);
+        padding: 3rem 2rem;
+        text-align: center;
+        font-size: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-height: 9rem;
+    }
+
+p.your-message {
+    color: #343434 !important;
+}
+div.your-message {
+    background-color: var(--your-message) !important;
+}
+div.chat-pane{
+    background-color: var(--fourth-color);
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+ ul.pagination{
+     margin:0;
+
+ }
+

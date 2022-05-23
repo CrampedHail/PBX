@@ -17,7 +17,7 @@ namespace PBX.Controllers
             {
                 ViewBag.user = user;
             }
-            return View();
+            return View(_db.Kategoria.Take(8));
         }
 
         public ActionResult Messages()

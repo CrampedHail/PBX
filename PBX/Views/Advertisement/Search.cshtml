@@ -1,5 +1,5 @@
-﻿@using PBX.Models
-@model IEnumerable<PBX.Models.Ogloszenie>
+﻿@model PagedList.IPagedList<PBX.Models.Ogloszenie>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Wyszukiwanie";
@@ -8,7 +8,7 @@
     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Filtrowanie i Sortowanie
     </button>
-    <div class="dropdown-menu px-4 py-3" aria-labelledby="dropdownMenuButton">
+    <div id="filter" class="dropdown-menu px-4 py-3" aria-labelledby="dropdownMenuButton">
         @using (Html.BeginForm("Search", "Advertisement", "", FormMethod.Post, new { @class = "form-inline d-flex flex-column align-items-end" }))
         {
             <input type="text" name="query" id="query" value=@ViewBag.searched hidden />
@@ -27,17 +27,17 @@
                         }
                     }
                     @*<option value="new" selected>od najnowszych</option>
-                    <option value="old">od najstarszych</option>
-                    <option value="low">od najtańszych</option>
-                    <option value="high">od najdroższych</option>
-                    <option value="name">nazwą alfabetycznie</option>*@
+                        <option value="old">od najstarszych</option>
+                        <option value="low">od najtańszych</option>
+                        <option value="high">od najdroższych</option>
+                        <option value="name">nazwą alfabetycznie</option>*@
                 </select>
             </div>
 
             <div class="d-flex my-2">
-                <label class="control-label mr-3" for="type">Typ Ogłoszenie: </label>
+                <label class="control-label mr-3" for="type">Typ Ogłoszenia: </label>
                 <select class="form-control" id="type" name="ad-type">
-                    <option selected disabled value="Wybierz typ">Wybierz typ</option>
+                    <option selected value="Dowolny">Dowolny</option>
                     @foreach (string typ in ViewBag.typy as List<string>)
                     {
                         if (ViewBag.type != null && (ViewBag.type as string).Contains(typ))
@@ -56,7 +56,7 @@
                 <label class="control-label mr-3" for="category">Kategoria: </label>
                 <input class="form-control" type="text" list="category-list" id="category" value="@ViewBag.category" name="category" />
                 <datalist id="category-list" placeholder="Wybierz kategorię...">
-                    @foreach (Kategoria kat in ViewBag.kategorie as List<Kategoria>)
+                    @foreach (PBX.Models.Kategoria kat in ViewBag.kategorie as List<PBX.Models.Kategoria>)
                     {
                         <option value="@kat.nazwa.Trim()"></option>
                     }
@@ -85,22 +85,22 @@
         {
             <legend>Wszystkie Ogłoszenia</legend>
         }
-        <p>Znaleziono @Model.Count() wyników</p>
+        <p>Znaleziono @ViewBag.found wyników</p>
 
 
         <table class="table">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.nazwa)
+                    Nazwa Ogłszenia
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.dodano)
+                    Dodano
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.typ)
+                    Typ
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.cena)
+                    Cena
                 </th>
                 <th>
                     Kategoria
@@ -110,47 +110,47 @@
 
             @foreach (var item in Model)
             {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.nazwa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.dodano)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.typ)
-            </td>
-            <td>
-                @if (item.cena == 0)
-                {
-                    <span>Za darmo</span>
-                }
-                else
-                {
-                    <span>@Html.DisplayFor(modelItem => item.cena)</span>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Kategoria.nazwa)
-            </td>
-            @{
-                if (Session["user"] as PBX.Models.Uzytkownik != null && (Session["user"] as PBX.Models.Uzytkownik).id == item.wystawil_id)
-                {
+                <tr>
                     <td>
-                        @Html.ActionLink("Edytuj", "Edit", new { id = item.id }) |
-                        @Html.ActionLink("Wyświetl Szczegóły", "Details", new { id = item.id }) |
-                        @Html.ActionLink("Usuń", "Delete", new { id = item.id })
+                        @Html.DisplayFor(modelItem => item.nazwa)
                     </td>
-                }
-                else
-                {
                     <td>
-                        @Html.ActionLink("Wyświetl Szczegóły", "Details", new { id = item.id })
+                        @Html.DisplayFor(modelItem => item.dodano)
                     </td>
-                }
-            }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.typ)
+                    </td>
+                    <td>
+                        @if (item.cena == 0)
+                        {
+                            <span>Za darmo</span>
+                        }
+                        else
+                        {
+                            <span>@Html.DisplayFor(modelItem => item.cena)</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Kategoria.nazwa)
+                    </td>
+                    @{
+                        if (Session["user"] as PBX.Models.Uzytkownik != null && (Session["user"] as PBX.Models.Uzytkownik).id == item.wystawil_id)
+                        {
+                            <td>
+                                @Html.ActionLink("Edytuj", "Edit", new { id = item.id }) |
+                                @Html.ActionLink("Wyświetl Szczegóły", "Details", new { id = item.id }) |
+                                @Html.ActionLink("Usuń", "Delete", new { id = item.id })
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.ActionLink("Wyświetl Szczegóły", "Details", new { id = item.id })
+                            </td>
+                        }
+                    }
 
-        </tr>
+                </tr>
             }
 
         </table>
@@ -159,5 +159,13 @@
     {
         <h2>Nie naleziono żadnych ogłoszeń.</h2>
     }
+<p>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+</p>
+    
 
+    @Html.PagedListPager(Model, page => Url.Action("Search",
+        new { page, sortOrder = ViewBag.sort, query = ViewBag.searched, 
+            typ = ViewBag.type, kategoria = ViewBag.category, 
+            price_od = ViewBag.price_from, price_do = ViewBag.price_to}))
 </fieldset>

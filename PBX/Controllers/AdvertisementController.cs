@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using PBX.Models;
 
 namespace PBX.Controllers
@@ -26,7 +27,7 @@ namespace PBX.Controllers
         }
         
         // GET: Advertisement/Search
-        public ActionResult Search(FormCollection collection)
+        public ActionResult Search(FormCollection collection, int? page, string sortOrder, string query, string typ, string kategoria, int? price_od, int? price_do)
         {
             string searchQuery = collection["query"];
             ViewBag.searched = searchQuery==null || searchQuery==""? null : searchQuery;
@@ -46,7 +47,7 @@ namespace PBX.Controllers
                     o.typ.Contains(searchQuery))
                 .OrderBy(o => o.dodano).ToList();
             results.Reverse();
-            string sort = collection["sort-type"];
+            string sort = sortOrder==null || sortOrder=="" ? collection["sort-type"]: sortOrder;
             ViewBag.sort = sort;    
             switch(sort)
             {
@@ -74,39 +75,70 @@ namespace PBX.Controllers
             }
             string category = _db.Kategoria.Select(k => k.nazwa).ToList().Contains(collection["category"])
                 ? collection["category"] : "";
+            category = kategoria == null || kategoria == "" ? category : kategoria;
             ViewBag.category = category;
             if (category!=null && category.Length > 0)
             {
-                results = results.Where(o => o.Kategoria.nazwa.Equals(collection["category"])).ToList();
+                results = results.Where(o => o.Kategoria.nazwa.Equals(category)).ToList();
             }
-            string type = collection["ad-type"] != null && collection["ad-type"].Equals("Oferta sprzedaży")
-                ? "Oferta sprzedazy"
-                : collection["ad-type"];
+            string type = collection["ad-type"];
+            type = typ != null ? typ : type;
+            /*string type = collection["ad-type"] != null && collection["ad-type"]!=""
+                ? collection["ad-type"]
+                : null;
+            type = type != null && type.Contains("ż") ? type : null; 
+            type = typ == null || typ == "" ? type : typ;*/
+            type = type != null && type.Equals("Oferta sprzedazy") ? "Oferta sprzedaży" : type;
+            type = type != null && type.Equals("Dowolny") ? null : type;
             ViewBag.type = type;    
             if (type != null && !type.Equals("Wybierz typ"))
             {
+                type = type.Equals("Oferta sprzedaży")
+                    ? "Oferta sprzedazy"
+                    : collection["ad-type"];
                 results = results.Where(o => o.typ.Equals(type)).ToList();
             }
+            int price_from;
             try
             {
-                int price_from = Int32.Parse(collection["price-from"]) >= 0
+                price_from = Int32.Parse(collection["price-from"]) >= 0
                     ? Int32.Parse(collection["price-from"])
                     : 0;
+                price_from = price_od.HasValue ? price_od.Value : price_from;
                 ViewBag.price_from = price_from;
-                results = results.Where(o => o.cena > price_from).ToList();
+                results = results.Where(o => o.cena >= price_from).ToList();
             }
             catch { }
+            if(price_od.HasValue)
+            {
+                price_from = price_od.Value;
+                ViewBag.price_from = price_from;
+                results = results.Where(o => o.cena >= price_from).ToList();
+            }
+
+            int price_to;
             try
             {
-                int price_to = Int32.Parse(collection["price-to"]) >= 0
+                price_to = Int32.Parse(collection["price-to"]) >= 0
                     ? Int32.Parse(collection["price-to"])
                     : -1;
                 ViewBag.price_to = price_to > 0 ? price_to.ToString() : " ";
                 results = results.Where(o => o.cena <= price_to).ToList();
             }
             catch { }
+            if (price_do.HasValue)
+            {
+                price_to = price_do.Value;
+                ViewBag.price_to = price_to;
+                results = results.Where(o => o.cena <= price_to).ToList();
+            }
 
-            return View(results);
+            ViewBag.found = results.Count();
+
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            int pageSize = 10;
+            var res = from r in results select r;
+            return View(res.ToPagedList(pageNumber, pageSize));
         }
 
         /*public PartialViewResult SearchResults(FormCollection collection)

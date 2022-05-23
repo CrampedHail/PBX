@@ -4,7 +4,7 @@
     ViewBag.Title = "Strona Główna";
 }
 
-@{ if ((ViewBag.user as PBX.Models.Uzytkownik)!=null && (ViewBag.user as PBX.Models.Uzytkownik).id >= 0)
+@{ if ((ViewBag.user as PBX.Models.Uzytkownik) != null && (ViewBag.user as PBX.Models.Uzytkownik).id >= 0)
     {
         <h2 class="text-center">@((ViewBag.user as PBX.Models.Uzytkownik).imie), witamy na Stronie Głównej</h2>
     }
@@ -13,7 +13,14 @@
         <h2 class="text-center">Witamy na Stronie Głównej</h2>
     }
     <h4 class="text-center">Kategorie, które mogą Cię zainteresować:</h4>
-    
+    <div style="width:100%;display:flex;justify-content:center;">
+        <div class="d-grid-4">
+            @foreach (var item in Model)
+            {
+                @Html.ActionLink(item.nazwa, "Search", "Advertisement", new { kategoria = item.nazwa }, new { @class = "home-category" })
+            }
+        </div>
+    </div>
 }
 
 

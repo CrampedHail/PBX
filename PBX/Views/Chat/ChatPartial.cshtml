@@ -10,16 +10,16 @@
 
             if (Model.ElementAt(Model.Count() - 1).Equals(item))
             {
-                <div id="last" class="align-self-end bg-light p-3" title="@item.wyslano" style="border-radius:10px;">
-                    <p class="m-0">
+                <div id="last" class="align-self-end p-3 your-message" title="@item.wyslano" style="border-radius:10px; background-color:gray;">
+                    <p class="m-0 your-message">
                         @Html.DisplayFor(modelItem => item.wiadomosc1)
                     </p>
                 </div>
             }
             else
             {
-                <div class="align-self-end bg-light p-3" title="@item.wyslano" style="border-radius:10px;">
-                    <p class="m-0">
+                <div class="align-self-end p-33 your-message" title="@item.wyslano" style="border-radius: 10px; background-color: gray;">
+                    <p class="m-0 your-message">
                         @Html.DisplayFor(modelItem => item.wiadomosc1)
                     </p>
                 </div>
