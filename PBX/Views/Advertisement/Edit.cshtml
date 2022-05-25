@@ -19,19 +19,12 @@
     @Html.HiddenFor(model => model.dodano)
 
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.nazwa, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.nazwa, new { htmlAttributes = new { @class = "form-control" } })
+    <div class="form-group d-flex justify-content-center">
+            @Html.EditorFor(model => model.nazwa, new { htmlAttributes = new { @class = "form-control", @placeholder="Tytuł" } })
             @Html.ValidationMessageFor(model => model.nazwa, "", new { @class = "text-danger" })
-        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Kategoria, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @*@Html.EditorFor(model => model.kategoria_id, new { htmlAttributes = new { @class = "form-control", @type = "text", @list = "category-list", @name = "category", @value="" } })
-                @Html.ValidationMessageFor(model => model.Kategoria.nazwa, "", new { @class = "text-danger" })*@
+    <div class="form-group d-flex justify-content-center">
             <input class="form-control" type="text" list="category-list" name="category" value="@ViewBag.currKat" />
             <datalist id="category-list" placeholder="Wybierz kategorię...">
                 @foreach (Kategoria kat in ViewBag.kategorie as List<Kategoria>)
@@ -39,26 +32,14 @@
                     <option value="@kat.nazwa.Trim()"></option>
                 }
             </datalist>
-            @*<select class="form-control" name="category" id="category-list" placeholder="Wybierz kategorię..." style="min-height:34px;">
-                    @foreach (Kategoria kat in ViewBag.kategorie as List<Kategoria>)
-                    {
-                        <option value="@kat.id">@kat.nazwa.Trim()</option>
-                    }
-                </select>*@
-        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.opis, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.opis, new { htmlAttributes = new { @class = "form-control" } })
+    <div class="form-group d-flex justify-content-center">
+            @Html.EditorFor(model => model.opis, new { htmlAttributes = new { @class = "form-control", @placeholder = "Opis" } })
             @Html.ValidationMessageFor(model => model.opis, "", new { @class = "text-danger" })
-        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.typ, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+    <div class="form-group d-flex justify-content-center">
             <select class="form-control" name="type" id="type-list" placeholder="Wybierz kategorię...">
                 @foreach (string typ in ViewBag.typy as string[])
                 {
@@ -72,51 +53,33 @@
                     }
                 }
             </select>
-        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.cena, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.cena, new { htmlAttributes = new { @class = "form-control" } })
+    <div class="form-group d-flex justify-content-center">
+            @Html.EditorFor(model => model.cena, new { htmlAttributes = new { @class = "form-control", @placeholder = "Cena" } })
             @Html.ValidationMessageFor(model => model.cena, "", new { @class = "text-danger" })
-        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.negocjacja, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                @Html.EditorFor(model => model.negocjacja)
-                @Html.ValidationMessageFor(model => model.negocjacja, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <div class="form-group d-flex justify-content-center">
+        @Html.EditorFor(model => model.negocjacja)
+        @Html.LabelFor(model => model.negocjacja, htmlAttributes: new { @class = "pl-3" })
+        @Html.ValidationMessageFor(model => model.negocjacja, "", new { @class = "text-danger" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.pokaz_tel, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                @Html.EditorFor(model => model.pokaz_tel)
-                @Html.ValidationMessageFor(model => model.pokaz_tel, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <div class="form-group d-flex justify-content-center">
+        @Html.EditorFor(model => model.pokaz_tel)
+        @Html.LabelFor(model => model.pokaz_tel, htmlAttributes: new { @class = "pl-3" })
+        @Html.ValidationMessageFor(model => model.pokaz_tel, "", new { @class = "text-danger" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.pokaz_email, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                @Html.EditorFor(model => model.pokaz_email)
-                @Html.ValidationMessageFor(model => model.pokaz_email, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <div class="form-group d-flex justify-content-center">
+        @Html.EditorFor(model => model.pokaz_email)
+        @Html.LabelFor(model => model.pokaz_email, htmlAttributes: new { @class = "pl-3" })
+        @Html.ValidationMessageFor(model => model.pokaz_email, "", new { @class = "text-danger" })
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Zapisz zmiany" class="btn btn-outline-success" />
-        </div>
+    <div class="form-group d-flex justify-content-center">
+            <input type="submit" value="Zapisz zmiany" class="btn btn-danger" />
     </div>
 </div>
 }

@@ -9,103 +9,91 @@
 <h3>Czy na pewno usunąć to ogłoszenie?</h3>
 <div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.nazwa)
-        </dt>
+    <div class=" d-flex flex-column justify-content-center align-items-center">
+        <table class="info">
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.nazwa)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.nazwa)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.opis)</strong>
+                </td>
+                <td style="max-width:250px">
+                    @Html.DisplayFor(model => model.opis)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.dodano)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.dodano)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.typ)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.typ)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.cena)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.cena)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.negocjacja)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.negocjacja)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.pokaz_tel)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.pokaz_tel)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.pokaz_email)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.pokaz_email)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>Kategoria</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Kategoria.nazwa)
+                </td>
+            </tr>
+        </table>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.nazwa)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.opis)
-        </dt>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-        <dd>
-            @Html.DisplayFor(model => model.opis)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.aktywne)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.aktywne)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dodano)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dodano)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.typ)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.typ)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.cena)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.cena)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.negocjacja)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.negocjacja)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.pokaz_tel)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.pokaz_tel)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.pokaz_email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.pokaz_email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Kategoria.nazwa)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Kategoria.nazwa)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Uzytkownik.imie)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Uzytkownik.imie)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Usuń" class="btn btn-outline-danger" /> |
-            @Html.ActionLink("Powrót", "Index", "Home")
-        </div>
-    }
+            <div class="form-actions no-color">
+                <input type="submit" value="Usuń" class="btn btn-outline-danger" /> |
+                @Html.ActionLink("Powrót", "Index", "Home")
+            </div>
+        }
 </div>

@@ -9,6 +9,7 @@
         @Html.ActionLink("Przeglądaj ogłoszenia: " + ViewBag.ads as string, "Ads", "", new { @class = "btn my-2 p-3", @style = "color:white!important; background-color:var(--accent-color); width:fit-content;" })
         @Html.ActionLink("Przeglądaj użytkowników: " + ViewBag.users as string, "Users", "", new { @class = "btn my-2 p-3", @style = "color:white!important; background-color:var(--accent-color); width:fit-content;" })
         @Html.ActionLink("Przeglądaj usuniętych użytkowników: " + ViewBag.deleted as string, "DeletedUsers", "", new { @class = "btn my-2 p-3", @style = "color:white!important; background-color:var(--accent-color); width:fit-content;" })
+        @Html.ActionLink("Przeglądaj Kategorie: "+ViewBag.categories as string, "Index", "Category", "", new { @class = "btn my-2 p-3", @style = "color:white!important; background-color:var(--accent-color); width:fit-content;" })
     </div>
 
     @Html.ActionLink("Wyloguj", "Logout", "Account", "", new { @class = "", @style = "" })

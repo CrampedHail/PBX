@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="~/Images/shopping_bag.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="~/Content/Styles/styles.css" />
@@ -108,7 +109,7 @@
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             @Html.ActionLink("Twoje ogłoszenia", "MyAds", "Advertisement", new { user = Session["user"] }, new { @class = "dropdown-item" })
                                             <div class="dropdown-divider"></div>
-                                            @Html.ActionLink("Informacje o Tobie", "Details", "Account", new { user = Session["user"] }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Informacje o Tobie", "Details", "Account", new { id = (Session["user"] as PBX.Models.Uzytkownik).id }, new { @class = "dropdown-item" })
                                             @Html.ActionLink("Zmień hasło", "ChangePassword", "Account", "Account", new { @class = "dropdown-item" })
                                             @Html.ActionLink("Wyloguj", "Logout", "Account", "Account", new { @class = "dropdown-item" })
                                         </div>

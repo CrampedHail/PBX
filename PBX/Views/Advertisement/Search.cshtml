@@ -138,14 +138,14 @@
                         {
                             <td>
                                 @Html.ActionLink("Edytuj", "Edit", new { id = item.id }) |
-                                @Html.ActionLink("Wyświetl Szczegóły", "Details", new { id = item.id }) |
+                                @Html.ActionLink("Szczegóły", "Details", new { id = item.id }) |
                                 @Html.ActionLink("Usuń", "Delete", new { id = item.id })
                             </td>
                         }
                         else
                         {
                             <td>
-                                @Html.ActionLink("Wyświetl Szczegóły", "Details", new { id = item.id })
+                                @Html.ActionLink("Szczegóły", "Details", new { id = item.id })
                             </td>
                         }
                     }
@@ -160,7 +160,7 @@
         <h2>Nie naleziono żadnych ogłoszeń.</h2>
     }
 <p>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
 </p>
     
 

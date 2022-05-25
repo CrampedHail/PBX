@@ -18,7 +18,7 @@
             }
             else
             {
-                <div class="align-self-end p-33 your-message" title="@item.wyslano" style="border-radius: 10px; background-color: gray;">
+                <div class="align-self-end p-3 your-message" title="@item.wyslano" style="border-radius: 10px; background-color: gray;">
                     <p class="m-0 your-message">
                         @Html.DisplayFor(modelItem => item.wiadomosc1)
                     </p>
@@ -30,7 +30,7 @@
         {
             if (Model.ElementAt(Model.Count() - 1).Equals(item))
             {
-                <div id="last" class="recieved-message p-3" title="@item.wyslano" style="background-color: var(--accent-color); color: var(--main-color); width: fit-content; border-radius: 10px; ">
+                <div id="last" class="recieved-message p-3" title="@item.wyslano">
                     <h6 class="m-0">
                         @Html.DisplayFor(modelItem => item.Uzytkownik.imie) napisał/a:
                     </h6>

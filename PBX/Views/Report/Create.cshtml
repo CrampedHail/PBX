@@ -19,7 +19,7 @@
         @Html.HiddenFor(model => model.zgloszony_id)
         @Html.HiddenFor(model => model.Ogloszenie_id)
 
-        <div class="form-group d-flex align-items-center">
+        <div class="form-group d-flex justify-content-center">
             @Html.TextAreaFor(model => model.tresc, new { @class = "form-control", style = "min-width: 400px; min-height: 35px; max-height: 100px; resize: none;", @placeholder = "Wpisz tutaj treść zgłoszenia..." })
             @*<textarea class="form-control" id="tresc" name="tresc" placeholder="Napisz treść zgłoszenia..." maxlength="500" cols="200" rows="2" style="min-width: 400px; min-height: 35px; max-height: 100px; resize: none;"></textarea>
             *@
@@ -32,10 +32,8 @@
                 </div>
             </div>*@
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+        <div class="form-group d-flex justify-content-center">
                 <input type="submit" value="Zgłoś" class="btn btn-default" />
-            </div>
         </div>
     </div>
 }

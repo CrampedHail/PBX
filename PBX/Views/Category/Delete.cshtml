@@ -1,0 +1,40 @@
+﻿@model PBX.Models.Kategoria
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Kategoria</h4>
+    <hr />
+    <div class=" d-flex flex-column justify-content-center align-items-center">
+        <table class="info">
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.nazwa)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.nazwa)
+                </td>
+            </tr>
+            @if (Model.Kategoria2 != null)
+            {
+                <tr>
+                    <td class="table-cell-text-right">
+                        <strong>Nadkategoria:</strong>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Kategoria2.nazwa)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń kategorię" class="btn btn-default" /> |
+            @Html.ActionLink("Powrót do listy", "Index")
+        </div>
+    }
+</div>

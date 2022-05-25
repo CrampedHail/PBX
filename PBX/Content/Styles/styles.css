@@ -1,6 +1,6 @@
 ﻿:root {
     --main-color: #FFFFFF;
-    --secondary-color: #343438 /*#2D3142*/;
+    --secondary-color: #343444/*#343438*/ /*#2D3142*/;
     --selected-color: #262628;
     --third-color: #3DA5D9;
     --fourth-color: #F0F0F0;
@@ -70,7 +70,7 @@ h1, h2, h3, h4, h5, h6 {
         select:hover{
             cursor:pointer;
         }
-        .checkbox input[type="checkbox"]:hover,
+        input[type="checkbox"]:hover,
         input.form-control:hover,
         select.form-control:hover,
         textarea.form-control:hover,
@@ -79,7 +79,7 @@ h1, h2, h3, h4, h5, h6 {
             box-shadow: 0px 0px 2px var(--accent-color) !important;
             border-color: var(--accent-color)/ !important;
         }
-        .checkbox input[type="checkbox"]:checked,
+        input[type="checkbox"]:checked,
         input.form-control:focus,
         select.form-control:focus,
         textarea.form-control:focus,
@@ -162,16 +162,22 @@ h1, h2, h3, h4, h5, h6 {
         resize: none;
     }
 
-    div.recieved-message {
-        background-color: var(--accent-color);
-        color: var(--main-color);
+div.recieved-message {
+    background-color: var(--accent-color);
+    color: var(--main-color);
+    width: fit-content;
+    border-radius: 10px;
+    margin-bottom: .5rem;
+}
+    div.recieved-message > h6 {
+        text-align: start;
     }
 
     .btn-primary, .btn-outline-primary{
         background-color: var(--accent-color) !important;
         border:none!important;
     }
-    .checkbox input[type="checkbox"]{
+    input[type="checkbox"]{
         accent-color:var(--accent-color);
     }
     select.form-control {
@@ -220,6 +226,7 @@ p.your-message {
 }
 div.your-message {
     background-color: var(--your-message) !important;
+    margin-bottom: .5rem;
 }
 div.chat-pane{
     background-color: var(--fourth-color);
@@ -228,6 +235,45 @@ div.chat-pane{
 }
  ul.pagination{
      margin:0;
-
  }
+td.table-cell-text-right{
+    text-align:end;
+    padding: .25rem 1rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:start;
+}
+table.info > tr{
+    border-bottom:1rem;
+}
+table.info > tbody{
+    row-gap:1rem;
+}
+img.fav-img {
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    padding: .35rem;
+}
+fieldset.desc-fs{
+    border:none;
+    background-color:var(--fourth-color);
+    border-radius:10px;
+    width:fit-content;
+    height:fit-content;
+}
+fieldset.desc-fs > legend{
+    border: none;
+    margin-left:3rem;
+    margin-bottom:.5rem;
+}
 
+fieldset.desc-fs > p{
+    border: none;
+    margin:0px 3rem;
+    margin-bottom:1.5rem;
+}
+
+.btn-danger {
+    background-color: var(--accent-color);
+    font-weight:bold;
+}

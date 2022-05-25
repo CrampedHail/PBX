@@ -6,42 +6,48 @@
 
 <h2>Usuwanie Chatu</h2>
 
-<h3>Na pewno chcesz usunąć chat z użytkownikiem @Model.Uzytkownik.imie?</h3>
+<h3>Na pewno chcesz usunąć chat z użytkownikiem @Model.Uzytkownik1.imie?</h3>
 <div>
-    <h4>Chat</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Nazwa Ogłoszenia
-        </dt>
+    <h4>Chat Ogłoszenia:</h4>
+    <h4>@Html.DisplayFor(model => model.Ogloszenie.nazwa) - @Html.DisplayFor(model => model.Ogloszenie.cena)</h4>
+    @*<div class=" d-flex flex-column justify-content-center align-items-center">
+        
+        <table class="info">
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>Nazwa Ogłoszenia</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Ogloszenie.nazwa)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.Ogloszenie.cena)</strong>
+                </td>
+                <td style="max-width:250px">
+                    @Html.DisplayFor(model => model.Ogloszenie.cena)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>Użytkownik</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Uzytkownik1.imie)
+                </td>
+            </tr>
+        </table>
+    </div>*@
+    
 
-        <dd>
-            @Html.DisplayFor(model => model.Ogloszenie.nazwa)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Ogloszenie.cena)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Ogloszenie.cena)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Uzytkownik.imie)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Uzytkownik.imie)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Usuń chat" class="btn btn-danger" /> 
+        <div class="form-actions no-color d-flex flex-column justify-content-center align-items-center mt-4">
+            <input type="submit" value="Usuń chat" class="btn btn-danger my-4" />
             <p class="my-2">@Html.ActionLink("Anuluj", "Messages", "Home")</p>
         </div>
     }

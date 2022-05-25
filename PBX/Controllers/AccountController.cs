@@ -171,7 +171,7 @@ namespace PBX.Controllers
                     bool admin = adminAccount != null ? BC.Verify(password, adminAccount.haslo) : false;
                     if (admin)
                     {
-                        SharedSession.Timeout = 20;
+                        SharedSession.Timeout = 60;
                         SharedSession["admin"] = adminAccount;
                         return RedirectToAction("Index", "Admin");
                     }

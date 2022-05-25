@@ -1,0 +1,34 @@
+﻿@model PBX.Models.Kategoria
+
+<div>
+    <h4>Kategoria</h4>
+    <hr />
+    <div class=" d-flex flex-column justify-content-center align-items-center">
+        <table class="info">
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.nazwa)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.nazwa)
+                </td>
+            </tr>
+            @if (Model.Kategoria2!=null)
+            {
+                <tr>
+                    <td class="table-cell-text-right">
+                        <strong>Nadkategoria:</strong>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Kategoria2.nazwa)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+    <p>
+        @Html.ActionLink("Edytuj", "Edit", new { id = Model.id }) |
+        @Html.ActionLink("Powrót do listy", "Index")
+    </p>

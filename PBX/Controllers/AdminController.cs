@@ -21,6 +21,7 @@ namespace PBX.Controllers
                 ViewBag.ads = _db.Ogloszenie.Count();
                 ViewBag.users = _db.Uzytkownik.Count();
                 ViewBag.deleted = _db.Usunieci.Count();
+                ViewBag.categories = _db.Kategoria.Count();
                 return View();
             }
             else return RedirectToAction("Login", "Account");

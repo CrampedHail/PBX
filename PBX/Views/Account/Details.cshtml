@@ -23,6 +23,7 @@
         position: relative;
         touch-action: manipulation;
         -webkit-appearance: none;
+        background-color: var(--background-color);
     }
 
     [dir="rtl"] .rating {
@@ -106,7 +107,69 @@ else
 <div>
     <h4>Szczegóły konta</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <div class=" d-flex flex-column justify-content-center align-items-center">
+        <table class="info">
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.imie)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.imie)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>Oceny</strong>
+                </td>
+                <td>
+                    @if (ViewBag.iloscOcen > 0)
+                    {
+                        <div>
+                            <input class="rating" title="@ViewBag.sredniaOcen/5"
+                                   max="5"
+                                   readonly
+                                   step="0.01"
+                                   style="--fill:var(--accent-color);--value:@(ViewBag.cal + "." + ViewBag.resz)"
+                                   type="range"
+                                   value="@ViewBag.sredniaOcen">
+                        </div>
+                    }
+                    else
+                    {
+                        <span>
+                            Brak
+                        </span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.nr_tel)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.nr_tel)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.email)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.email)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell-text-right">
+                    <strong>@Html.DisplayNameFor(model => model.dolaczono)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.dolaczono)
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    @*<dl class="dl-horizontal">
 
         <dt>
             @Html.DisplayNameFor(model => model.imie)
@@ -195,7 +258,7 @@ else
             @Html.DisplayFor(model => model.dolaczono)
         </dd>
 
-    </dl>
+    </dl>*@
 </div>
 
 @if ((ViewBag.user as Uzytkownik).id == Model.id)
