@@ -1,0 +1,76 @@
+﻿@model PBX.Models.Uzytkownik
+
+<h2>Rejestracja</h2>
+<h3>Podaj kod weryfikacyjny.</h3>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    <h4>Został on wysłany na podanegy adres e-mail.</h4>
+    <h4 class="text-danger"> @ViewBag.Error </h4>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    @Html.HiddenFor(model => model.imie)
+
+    @Html.HiddenFor(model => model.nr_tel)
+
+    @Html.HiddenFor(model => model.email)
+
+    @Html.HiddenFor(model => model.haslo)
+
+    @Html.HiddenFor(model => model.dolaczono)
+
+    <h4 class="text-danger">@ViewBag.error</h4>
+    <div class="mb-5 d-flex justify-content-center">
+        <div id="otp" class="d-flex justify-content-center">
+            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="first" name="first" maxlength="1" />
+            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="second" name="second" maxlength="1" />
+            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="third" name="third" maxlength="1" />
+            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="fourth" name="fourth" maxlength="1" />
+            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="fifth" name="fifth" maxlength="1" />
+            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="sixth" name="sixth" maxlength="1" />
+        </div>
+    </div>
+
+    <div class="form-group d-flex justify-content-center">
+        <input type="submit" value="Zarejestruj się" class="btn btn-default" />
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Powrót", "Login")
+</div>
+
+<script>
+    function OTPInput() {
+        const inputs = document.querySelectorAll('#otp > *[id]');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('keydown', function (event) {
+                if (event.key === "Backspace") {
+                    inputs[i].value = '';
+                    if (i !== 0)
+                        inputs[i - 1].focus();
+                } else {
+                    if (i === inputs.length - 1 && inputs[i].value !== '') {
+                        return true;
+                    } else if (event.keyCode > 47 && event.keyCode < 58) {
+                        inputs[i].value = event.key;
+                        if (i !== inputs.length - 1)
+                            inputs[i + 1].focus();
+                        event.preventDefault();
+                    } else if (event.keyCode > 64 && event.keyCode < 91) {
+                        inputs[i].value = String.fromCharCode(event.keyCode);
+                        if (i !== inputs.length - 1)
+                            inputs[i + 1].focus();
+                        event.preventDefault();
+                    }
+                }
+            });
+        }
+    }
+    OTPInput();
+</script>

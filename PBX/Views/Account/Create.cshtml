@@ -6,7 +6,7 @@
 
 <h2>Rejestracja</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("ConfirmEmail", "Account", new {u=Model}, FormMethod.Get, "")) 
 {
     @Html.AntiForgeryToken()
 

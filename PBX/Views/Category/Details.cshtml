@@ -1,5 +1,11 @@
 ﻿@model PBX.Models.Kategoria
+@{
+    ViewBag.Title = "Szczegóły Kategorii";
+}
 
+<h2>
+    @ViewBag.Title
+</h2>
 <div>
     <h4>Kategoria</h4>
     <hr />
@@ -13,7 +19,7 @@
                     @Html.DisplayFor(model => model.nazwa)
                 </td>
             </tr>
-            @if (Model.Kategoria2!=null)
+            @if (Model.Kategoria2 != null)
             {
                 <tr>
                     <td class="table-cell-text-right">
@@ -28,7 +34,8 @@
         </table>
     </div>
 </div>
-    <p>
-        @Html.ActionLink("Edytuj", "Edit", new { id = Model.id }) |
-        @Html.ActionLink("Powrót do listy", "Index")
-    </p>
+<p>
+    @Html.ActionLink("Edytuj", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Dodaj Podkategorię", "Create", new { parentCategory = Model.nazwa }) |
+    @Html.ActionLink("Powrót do listy", "Index")
+</p>

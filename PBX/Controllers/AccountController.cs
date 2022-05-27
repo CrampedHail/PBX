@@ -118,6 +118,8 @@ namespace PBX.Controllers
                     _db.SaveChanges();
                     SharedSession["user"] = newUser;
                     SharedSession.Timeout = 20;
+                    SendEmail(newUser.email, "Witamy w serwisie PBX!", "Dzień dobry, " + newUser.imie + "\n\nDziękujemy za rejestrację i życzymy miłego użytkowania z serwisu! \n\nPozdrawiamy, Zespół PBX :)");
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -132,6 +134,47 @@ namespace PBX.Controllers
             {
                 return View();
             }
+        }
+
+        // GET: Account/ConfirmEmail
+        public ActionResult ConfirmEmail(Uzytkownik u)
+        {
+            string chars = "ABCDEFGHIJKLMNOPRSTUQVWXYZ1234567890";
+            string verificationCode = "";
+            Random random = new Random();
+            for (int i = 0; i < 6; i++)
+            {
+                verificationCode += chars.ElementAt(random.Next(chars.Length - 1));
+            }
+            SharedSession.Timeout = 60;
+            SharedSession["code"] = verificationCode;
+            SendEmail(u.email, "Kod weryfikacyjny do serwisu PBX!", "Dzień dobry, " + u.imie + " \n\nKonto zostanie zarejestrowne zaraz po tym gdy wpiszesz poniższy kod na naszej stronie:  " + verificationCode + " \n\nPozdrawiamy, Zespół PBX :)");
+            
+            return View(u);
+        }
+
+        // Post: Account/ConfirmEmail
+        [HttpPost]
+        public ActionResult ConfirmEmail(FormCollection collection, Uzytkownik u)
+        {
+            string sessionCode = SharedSession["code"] as string;
+            string code = collection["first"] + collection["second"] + collection["third"] +
+                collection["fourth"] + collection["fifth"] + collection["sixth"];
+            if (sessionCode==null || sessionCode == String.Empty)
+            {
+                ViewBag.error = "Sesja wygasła. Spróbuj ponownie.";
+                return View();
+            }
+            else if(code.Equals(sessionCode))
+            {
+                return Create(u);
+            }
+            else if (!code.Equals(sessionCode))
+            {
+                ViewBag.error = "Podano niepoprawny kod weryfikacyjny.";
+                return View();
+            }
+            return View();
         }
 
         // GET: Account/Logout
@@ -332,6 +375,31 @@ namespace PBX.Controllers
             return View();
         }
 
+        private void SendEmail(string email, string subject, string body)
+        {
+            var fromAddress = new MailAddress("pbx.serwis.ogloszeniowy@gmail.com", "Serwis Ogłoszeniowy PBX");
+            var toAddress = new MailAddress(email);
+            const string fromPassword = "Haslo123!";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+        }
+
         private string GeneratePassword()
         {
             string chars = "ABCDEFGHIJKLMNOPRSTUWYQXZ1234567890";
@@ -363,29 +431,8 @@ namespace PBX.Controllers
                 _db.Uzytkownik.Find(userFound.id).haslo = BC.HashPassword(password);
                 _db.SaveChanges();
 
-                var fromAddress = new MailAddress("pbx.serwis.ogloszeniowy@gmail.com", "Serwis Ogłoszeniowy PBX");
-                var toAddress = new MailAddress(email);
-                const string fromPassword = "Haslo123!";
-                const string subject = "Przypominamy hasło do serwisu PBX!";
-                string body = "Otrzymaliśmy twoje zgłoszenie o zapomnianym haśle. Twoje nowe hasło to: " + password;
-
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                };
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
-                    smtp.Send(message);
-                }
+                SendEmail(email, "Przypominamy hasło do serwisu PBX!", 
+                    "Dzień dobry, "+name+"\n\nOtrzymaliśmy twoje zgłoszenie o zapomnianym haśle. Twoje nowe hasło to: " + password+ " \n\nPozdrawiamy, Zespół PBX :)");
 
                 return RedirectToAction("Index", "Home");
             }

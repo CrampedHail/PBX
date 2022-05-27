@@ -1,37 +1,44 @@
 ﻿@using PBX.Models
 @model PBX.Models.Kategoria
+@{
+    ViewBag.Title = "Dodaj Kategorię";
+}
 
-@using (Html.BeginForm()) 
+<h2>
+    @ViewBag.Title
+</h2>
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Kategoria</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group d-flex justify-content-center">
-        @Html.EditorFor(model => model.nazwa, new { htmlAttributes = new { @class = "form-control", @placeholder="Nazwa Kategorii" } })
-        @Html.ValidationMessageFor(model => model.nazwa, "", new { @class = "text-danger" })
-    </div>
+    <div class="form-horizontal">
+        <h4>Kategoria</h4>
+        <hr />
+        <h4 class="text-danger">@ViewBag.error</h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group d-flex justify-content-center">
-        <label for="nadkategoria">Wybierz nadkategorię:</label>
-        <select>
-            <option selected> - </option>
-            @foreach (var kat in ViewBag.categories as List<Kategoria>)
-            {
-                <option value=@kat.nazwa></option>
-            }
-        </select>
-            @Html.DropDownList("nadkategoria_id", ViewBag.categories as SelectList, htmlAttributes: new { @class = "form-control", @id = "nadkategoria" })
+        <div class="form-group d-flex justify-content-center">
+            @Html.EditorFor(model => model.nazwa, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nazwa Kategorii" } })
+            @Html.ValidationMessageFor(model => model.nazwa, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group d-flex justify-content-center flex-column align-items-center">
+            <label class="control-label" for="nadkategoria">Wybierz nadkategorię:</label>
+            @Html.EditorFor(model => model.Kategoria2.nazwa, new { htmlAttributes = new { @class = "form-control", @type = "text", @Value = ViewBag.parentCategory, @list = "category-list", @name = "category", @placeholder = "Wybierz kategorię..." } })
+            <datalist id="category-list">
+                <option selected> - </option>
+                @foreach (Kategoria kat in ViewBag.categories as List<Kategoria>)
+                {
+                    <option>@kat.nazwa</option>
+                }
+            </datalist>
             @Html.ValidationMessageFor(model => model.nadkategoria_id, "", new { @class = "text-danger" })
-</div>
+        </div>
 
-    <div class="form-group d-flex justify-content-center">
-        <input type="submit" value="Create" class="btn btn-default" />
+        <div class="form-group d-flex justify-content-center">
+            <input type="submit" value="Dodaj" class="btn btn-default" />
+        </div>
     </div>
-</div>
 }
 
 <div>

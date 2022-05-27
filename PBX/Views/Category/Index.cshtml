@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<PBX.Models.Kategoria>
+@{
+    ViewBag.Title = "Lista Kategorii";
+}
 
+<h2>
+    @ViewBag.Title
+</h2>
 <p>
     @Html.ActionLink("Dodaj Kategorię", "Create")
 </p>
@@ -11,17 +17,18 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.nazwa)
-        </td>
-        <td>
-            @Html.ActionLink("Edytuj", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Szczegóły", "Details", new { id=item.id }) |
-            @Html.ActionLink("Usuń", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nazwa)
+            </td>
+            <td>
+                @Html.ActionLink("Edytuj", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Szczegóły", "Details", new { id = item.id }) |
+                @Html.ActionLink("Usuń", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
 
 </table>
