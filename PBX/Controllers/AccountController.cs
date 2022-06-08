@@ -380,7 +380,6 @@ namespace PBX.Controllers
             var fromAddress = new MailAddress("pbx.serwis.ogloszeniowy@gmail.com", "Serwis Ogłoszeniowy PBX");
             var toAddress = new MailAddress(email);
             const string fromPassword = "Haslo123!";
-
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
