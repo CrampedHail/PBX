@@ -61,10 +61,10 @@ namespace PBX.Controllers
                     if (_db.Kategoria.Where(k => k.nazwa.Equals(kategoria.nazwa)).Count() > 0) throw new IndexOutOfRangeException();
                     if (kategoria.nazwa==null || kategoria.nazwa.Equals(String.Empty)) throw new NullReferenceException();
                     int? nadkategoria_id = _db.Kategoria.
-                        Where(k => k.nazwa.Equals(kategoria.Kategoria2.nazwa)).
+                        Where(k => k.nazwa.Equals(kategoria.Nadkategoria.nazwa)).
                         Select(k => k.id).Count()>0
                         ? _db.Kategoria.
-                        Where(k => k.nazwa.Equals(kategoria.Kategoria2.nazwa)).
+                        Where(k => k.nazwa.Equals(kategoria.Nadkategoria.nazwa)).
                         Select(k => k.id).
                         First()
                         : -1;
@@ -73,7 +73,7 @@ namespace PBX.Controllers
                     kategoria.nadkategoria_id = nadkategoria_id>0
                         ? nadkategoria_id
                         : null;
-                    kategoria.Kategoria2 = null;
+                    kategoria.Nadkategoria = null;
                     if (ModelState.IsValid)
                     {
                         _db.Kategoria.Add(kategoria);
@@ -136,10 +136,10 @@ namespace PBX.Controllers
                     // TODO: Add update logic here
                     if (_db.Kategoria.Where(k => k.nazwa.Equals(kat.nazwa)).Count() > 1) throw new IndexOutOfRangeException();
                     int? nadkategoria_id = _db.Kategoria.
-                        Where(k => k.nazwa.Equals(kat.Kategoria2.nazwa)).
+                        Where(k => k.nazwa.Equals(kat.Nadkategoria.nazwa)).
                         Select(k => k.id).Count() > 0
                         ? _db.Kategoria.
-                        Where(k => k.nazwa.Equals(kat.Kategoria2.nazwa)).
+                        Where(k => k.nazwa.Equals(kat.Nadkategoria.nazwa)).
                         Select(k => k.id).
                         First()
                         : -1;

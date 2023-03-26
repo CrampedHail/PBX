@@ -7,49 +7,31 @@
     {
         if ((ViewBag.user as Uzytkownik).id == item.nadawca_id)
         {
-
-            if (Model.ElementAt(Model.Count() - 1).Equals(item))
+            <div @if (Model.ElementAt(Model.Count() - 1).Equals(item)) { @: id="last"
+                 }
+                 class="align-self-end p-3 your-message" title="@(item.wyslano.ToShortDateString()+" "+item.wyslano.ToShortTimeString())" style="border-radius:10px; background-color:gray;">
+                <p class="m-0 your-message">
+                    @Html.DisplayFor(modelItem => item.wiadomosc)
+                </p>
+            </div>
+            if (Model.ElementAt(Model.Count() - 1).Equals(item) && item.przeczytano)
             {
-                <div id="last" class="align-self-end p-3 your-message" title="@item.wyslano" style="border-radius:10px; background-color:gray;">
-                    <p class="m-0 your-message">
-                        @Html.DisplayFor(modelItem => item.wiadomosc1)
-                    </p>
-                </div>
-            }
-            else
-            {
-                <div class="align-self-end p-3 your-message" title="@item.wyslano" style="border-radius: 10px; background-color: gray;">
-                    <p class="m-0 your-message">
-                        @Html.DisplayFor(modelItem => item.wiadomosc1)
-                    </p>
-                </div>
+                <small class="align-self-end" style="color: var(--main-color)">Przeczytane</small>
             }
 
         }
         else
         {
-            if (Model.ElementAt(Model.Count() - 1).Equals(item))
-            {
-                <div id="last" class="recieved-message p-3" title="@item.wyslano">
-                    <h6 class="m-0">
-                        @Html.DisplayFor(modelItem => item.Uzytkownik.imie) napisał/a:
-                    </h6>
-                    <p class="mb-0 mt-2">
-                        @Html.DisplayFor(modelItem => item.wiadomosc1)
-                    </p>
-                </div>
-            }
-            else
-            {
-                <div class="recieved-message p-3" title="@item.wyslano" style="background-color: var(--accent-color); color: var(--main-color); width: fit-content; border-radius: 10px; ">
-                    <h6 class="m-0">
-                        @Html.DisplayFor(modelItem => item.Uzytkownik.imie) napisał/a:
-                    </h6>
-                    <p class="mb-0 mt-2">
-                        @Html.DisplayFor(modelItem => item.wiadomosc1)
-                    </p>
-                </div>
-            }
+            <div @if (Model.ElementAt(Model.Count() - 1).Equals(item)) { @: id="last"
+                 }
+                 class="recieved-message p-3" title="@(item.wyslano.ToShortDateString()+" "+item.wyslano.ToShortTimeString())">
+                <h6 class="m-0">
+                    @Html.DisplayFor(modelItem => item.Nadawca.imie) napisał/a:
+                </h6>
+                <p class="mb-0 mt-2">
+                    @Html.DisplayFor(modelItem => item.wiadomosc)
+                </p>
+            </div>
 
         }
     }
@@ -61,7 +43,7 @@ else
 <script>
     function bottom() {
         document.getElementById('last').scrollIntoView();
-        window.setTimeout(function () { top(); }, 2000);
+        window.setTimeout(function () { bottom(); }, 2000);
     };
 
     bottom();

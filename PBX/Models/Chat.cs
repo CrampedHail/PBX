@@ -13,36 +13,29 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Chat
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Chat()
         {
-            this.Wiadomosc = new HashSet<Wiadomosc>();
+            this.Wiadomosci = new HashSet<Wiadomosc>();
         }
 
-
-        [Required]
         [DisplayName("ID")]
-        public int id { get; set; } 
-
-        [Required]
-        [DisplayName("Og³oszenie ID")]
+        public int id { get; set; }
+        [DisplayName("ID Og³oszenia")]
         public int ogloszenie_id { get; set; }
-
-        [Required]
-        [DisplayName("Zainteresowany ID")]
+        [DisplayName("ID Zainteresowanego")]
         public int zainteresowany_id { get; set; }
-
-        [Required]
-        [DisplayName("Og³aszaj¹cy ID")]
+        [DisplayName("ID Og³aszaj¹cego")]
         public int oglaszajacy_id { get; set; }
     
-        public virtual Uzytkownik Uzytkownik { get; set; }
+        public virtual Uzytkownik Oglaszajacy { get; set; }
         public virtual Ogloszenie Ogloszenie { get; set; }
-        public virtual Uzytkownik Uzytkownik1 { get; set; }
+        public virtual Uzytkownik Zainteresowany { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Wiadomosc> Wiadomosc { get; set; }
+        public virtual ICollection<Wiadomosc> Wiadomosci { get; set; }
     }
 }

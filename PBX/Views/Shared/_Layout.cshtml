@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="~/Images/shopping_bag.png" type="image/x-icon">
+    <link rel="stylesheet" href="~/Content/Styles/styles.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="~/Content/Styles/styles.css" />
     <title>@ViewBag.Title - PBX</title>
     <script type="text/javascript">
         if (typeof jQuery == 'undefined') {
@@ -18,14 +18,15 @@
         }
     </script>
     @Scripts.Render("~/bundles/jquery")
-    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
 </head>
 <body class="d-flex flex-column align-items-center">
     @{
         bool isLoggedIn = false;
         int Id = -1;
         string Name = "";
+        PBX.Models.PBXDBEntities _db = new PBX.Models.PBXDBEntities();
         if ((ViewBag.user as PBX.Models.Uzytkownik) != null && (ViewBag.user as PBX.Models.Uzytkownik).id >= 0)
         {
             Id = (ViewBag.user as PBX.Models.Uzytkownik).id;
@@ -66,8 +67,14 @@
                                 @{
                                     if (isLoggedIn)
                                     {
+                                        int unreadChats = _db.Chat.Where(ch => ch.Wiadomosci.Where(w => !w.przeczytano && w.nadawca_id != Id).Count() > 0
+                                            && (ch.oglaszajacy_id == Id || ch.zainteresowany_id == Id)).Count();
                                         <a class="nav-link text-light" href="@Url.Action("Messages", "Home")">
                                             <img src="~/Images/chat_white.png" width="30" height="30" />
+                                            @if (unreadChats > 0)
+                                            {
+                                                <span class="notificationIndicator">@unreadChats</span>
+                                            }
                                             Wiadomości
                                         </a>
                                     }
@@ -84,8 +91,13 @@
                                 @{
                                     if (isLoggedIn)
                                     {
+                                        int favCount = _db.Ulubiona.Where(u => u.uzytkownik_id == Id).Count();
                                         <a class="nav-link text-light" href="@Url.Action("MyFavorites", "Advertisement")">
                                             <img src="~/Images/heart_full_white.png" width="30" height="30" />
+                                            @if (favCount > 0)
+                                            {
+                                                <span class="notificationIndicator">@favCount</span>
+                                            }
                                             Ulubione
                                         </a>
                                     }
@@ -98,6 +110,20 @@
                                     }
                                 }
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light"
+                                   @{ int cartCount = _db.Koszyk.Where(k => k.uzytkownik_id == Id).Count(); if (isLoggedIn) { @: href="@Url.Action("GetMyCart", "Advertisement")"
+                                   } else { @: href="@Url.Action("Login", "Account")"
+                                   } }>
+                                    <img src="~/Images/shopping_bag.png" width="30" height="30" />
+                                    @if (cartCount > 0)
+                                    {
+                                        <span class="notificationIndicator">@cartCount</span>
+                                    }
+                                    Koszyk
+
+                                </a>
+                            </li>
                             @{
                                 if (isLoggedIn)
                                 {
@@ -108,6 +134,15 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             @Html.ActionLink("Twoje ogłoszenia", "MyAds", "Advertisement", new { user = Session["user"] }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Kupujesz", "Bought", "Advertisement", new { }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Sprzedajesz", "Sold", "Advertisement", new { }, new { @class = "dropdown-item" })
+                                            <div class="themeContainer">
+                                                <div class="dropdown-divider"></div>
+                                                <div class="themeInputContainer" style="padding: .25rem 1.5rem; margin-bottom: 0px !important;">
+                                                    <p style="color:black!important;">Motyw: <span class="themeName"></span></p>
+                                                    <input class="slider" id="themeChange" type="range" min="1" max="3" />
+                                                </div>
+                                            </div>
                                             <div class="dropdown-divider"></div>
                                             @Html.ActionLink("Informacje o Tobie", "Details", "Account", new { id = (Session["user"] as PBX.Models.Uzytkownik).id }, new { @class = "dropdown-item" })
                                             @Html.ActionLink("Zmień hasło", "ChangePassword", "Account", "Account", new { @class = "dropdown-item" })
@@ -155,13 +190,152 @@
     }
 
 
-<div class="container body-content mt-0 mx-5 justify-content-center">
-            @RenderBody()
+    <div class="mainScreen container body-content mt-0 mx-5 justify-content-center">
+        @RenderBody()
+    </div>
+    <div class="waitingScreen" hidden>
+        <h4>Ładowanie</h4>
+        <div></div>
+    </div>
+    <div id="cookies-alert" style="display:none;">
+        <p>
+            Strona korzysta z plików cookies w celu oferowania spersonalizowanych informacji.
+            <a id="cookies-accept">
+                Akceptuj
+            </a>|
+            <a id="cookies-decline">
+                Odrzuć
+            </a>
+        </p>
+    </div>
     <footer class="text-center navbar-fixed-bottom background-secondary border-top" style="margin-top:10px;">
-        <p class="py-4 mb-0" style="color:var(--main-color);">&copy; Aplikacje Internetowe II Projekt - Paweł Brandt 19329</p>
+        <p class="py-4 mb-0" style="color:var(--main-color);">&copy; pbx.brandt-software.dev -  Paweł Brandt </p>
     </footer>
-</div>
 
+    <script type="text/javascript">
+        function toggleWaitingScreen() {
+            var mainScreen = document.querySelector(".mainScreen");
+            var waitingScreen = document.querySelector(".waitingScreen");
+            console.log(mainScreen.hidden);
+            console.log(waitingScreen.hidden);
+            if (!mainScreen.hidden) mainScreen.hidden = true;
+            else mainScreen.hidden = mainScreen.hidden != true;
+            if (!waitingScreen.hidden) waitingScreen.hidden = true;
+            else waitingScreen.hidden = waitingScreen.hidden != true;
+        }
+        var forms = document.getElementsByTagName("form");
+        for (let form of forms) {
+            form.setAttribute("onsubmit", "toggleWaitingScreen()");
+        }
+
+        const cookieStorage = {
+            getItem: (item) => {
+                const cookies = document.cookie
+                    .split(';')
+                    .map(cookie => cookie.split('='))
+                    .reduce((acc, [key, value]) => ({ ...acc, [key.trim()]: value }), {});
+                return cookies[item];
+            },
+            setItem: (item, value) => {
+                document.cookie = `${item}=${value};expires=` + new Date(Date.now() + 1000 * 60 * 60 * 24 * 28) + `;path=/;`;
+            }
+        }
+
+        const cookiesAlert = document.getElementById("cookies-alert");
+        const cookiesAcceptButton = document.getElementById("cookies-accept");
+        const cookiesDeclineButton = document.getElementById("cookies-decline");
+        if (!sessionStorage.getItem("cookies-declined") && (!cookieStorage.getItem("cookies-accepted") || new Date(cookieStorage.getItem("cookies-expire")) < new Date(Date.now()))) { 
+            cookiesAlert.style.display = "block";
+        }
+
+        cookiesAcceptButton.addEventListener("click", () => {
+            cookieStorage.setItem("cookies-accepted", true);
+            cookieStorage.setItem("cookies-expire", new Date(Date.now() + 1000 * 60 * 60 * 24 * 28))
+            cookiesAlert.style.display = "none";
+            if (document.querySelector(".themeContainer").hidden) { 
+                document.querySelector(".themeContainer").hidden = false;
+                checkTheme();
+            }
+        });
+
+        cookiesDeclineButton.addEventListener("click", () => {
+            cookiesAlert.style.display = "none";
+            sessionStorage.setItem("cookies-declined", true);
+        });
+
+        const themeName = document.querySelector(".themeName");
+        const themeSlider = document.querySelector(".slider#themeChange");
+        if (!cookieStorage.getItem("cookies-accepted")) {
+            document.querySelector(".themeContainer").hidden = true;
+        }
+        if (cookieStorage.getItem("cookies-accepted")) {
+            checkTheme();
+        }
+
+        themeSlider.addEventListener("change", (event) => {
+            switch (Number(themeSlider.value)) {
+                case 1: {
+                    console.log(event.target.value);
+                    cookieStorage.setItem("theme", "light");
+                    break;
+                }
+                case 3: {
+                    cookieStorage.setItem("theme", "dark");
+                    break;
+                }
+                case 2:
+                default: {
+                    cookieStorage.setItem("theme", "system");
+                    break;
+                }
+            }
+            checkTheme();
+        });
+
+        function checkTheme() {
+            switch (cookieStorage.getItem("theme")) {
+                case "dark": {
+                    setDarkTheme();
+                    themeName.innerHTML = "Ciemny";
+                    if(themeSlider!=3) themeSlider.value = 3;
+                    break;
+                }
+                case "light": {
+                    setLightTheme();
+                    themeName.innerHTML = "Jasny";
+                    if (themeSlider != 1) themeSlider.value = 1;
+                    break;
+                }
+                default: {
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                        setDarkTheme();
+                    else setLightTheme();
+                    themeName.innerHTML = "System";
+                    if (themeSlider != 2) themeSlider.value = 2;
+                    break;
+                }
+            }
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => checkTheme());
+
+        function setDarkTheme() {
+            document.documentElement.style.setProperty('--main-color', 'white');
+            document.documentElement.style.setProperty('--background-color', '#3D3D3F');
+            document.documentElement.style.setProperty('--your-message', '#F0F0F0');
+            document.documentElement.style.setProperty('--fourth-color', '#4D4D4F');
+            document.documentElement.style.setProperty('color-scheme', 'dark');
+        }
+
+        function setLightTheme() {
+            document.documentElement.style.setProperty('--main-color', '#343434');
+            document.documentElement.style.setProperty('--background-color', '#F2F2F2');
+            document.documentElement.style.setProperty('--your-message', 'white');
+            document.documentElement.style.setProperty('--fourth-color', '#E4E4E4');
+            document.documentElement.style.setProperty('color-scheme', 'light');
+        }
+
+    </script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

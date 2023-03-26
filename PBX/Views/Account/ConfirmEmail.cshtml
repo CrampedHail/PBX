@@ -1,44 +1,48 @@
 ﻿@model PBX.Models.Uzytkownik
-
+@{
+    ViewBag.Title = "Rejestracja";
+}
 <h2>Rejestracja</h2>
 <h3>Podaj kod weryfikacyjny.</h3>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <hr />
-    <h4>Został on wysłany na podanegy adres e-mail.</h4>
-    <h4 class="text-danger"> @ViewBag.Error </h4>
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <hr />
+        <h4>Został on wysłany na podanegy adres e-mail.</h4>
+        <h4 class="text-danger"> @ViewBag.Error </h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-    @Html.HiddenFor(model => model.imie)
+        @Html.HiddenFor(model => model.imie)
 
-    @Html.HiddenFor(model => model.nr_tel)
+        @Html.HiddenFor(model => model.nr_tel)
 
-    @Html.HiddenFor(model => model.email)
+        @Html.HiddenFor(model => model.email)
 
-    @Html.HiddenFor(model => model.haslo)
+        @Html.HiddenFor(model => model.haslo)
 
-    @Html.HiddenFor(model => model.dolaczono)
+        @Html.HiddenFor(model => model.dolaczono)
 
-    <h4 class="text-danger">@ViewBag.error</h4>
-    <div class="mb-5 d-flex justify-content-center">
-        <div id="otp" class="d-flex justify-content-center">
-            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="first" name="first" maxlength="1" />
-            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="second" name="second" maxlength="1" />
-            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="third" name="third" maxlength="1" />
-            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="fourth" name="fourth" maxlength="1" />
-            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="fifth" name="fifth" maxlength="1" />
-            <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="sixth" name="sixth" maxlength="1" />
+        @Html.HiddenFor(model => model.zdjecie)
+
+        <h4 class="text-danger">@ViewBag.error</h4>
+        <div class="mb-5 d-flex justify-content-center">
+            <div id="otp" class="d-flex justify-content-center">
+                <input class="text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="first" name="first" maxlength="1" />
+                <input class="text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="second" name="second" maxlength="1" />
+                <input class="text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="third" name="third" maxlength="1" />
+                <input class="text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="fourth" name="fourth" maxlength="1" />
+                <input class="text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="fifth" name="fifth" maxlength="1" />
+                <input class="text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" style="max-width:40px;" type="text" id="sixth" name="sixth" maxlength="1" />
+            </div>
+        </div>
+
+        <div class="form-group d-flex justify-content-center">
+            <input type="submit" value="Zarejestruj się" class="btn btn-default" />
         </div>
     </div>
-
-    <div class="form-group d-flex justify-content-center">
-        <input type="submit" value="Zarejestruj się" class="btn btn-default" />
-    </div>
-</div>
 }
 
 <div>

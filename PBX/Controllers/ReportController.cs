@@ -46,7 +46,7 @@ namespace PBX.Controllers
             {
                 Zgloszenie z = new Zgloszenie()
                 {
-                    Ogloszenie_id = id,
+                    ogloszenie_id = id,
                     zglaszajacy_id = user.id,
                     zgloszony_id = _db.Ogloszenie.Find(id).Uzytkownik.id,
                     tresc = ""
@@ -68,7 +68,7 @@ namespace PBX.Controllers
                 ViewBag.user = user;
                 Zgloszenie z = new Zgloszenie()
                 {
-                    Ogloszenie_id = id,
+                    ogloszenie_id = id,
                     zglaszajacy_id = user.id,
                     zgloszony_id = _db.Ogloszenie.Find(id).Uzytkownik.id,
                     tresc = collection["tresc"]
@@ -81,7 +81,7 @@ namespace PBX.Controllers
                     {
                         _db.Zgloszenie.Add(z);
                         _db.SaveChanges();
-                        return RedirectToAction("Details", "Advertisement", new { id = z.Ogloszenie_id });
+                        return RedirectToAction("Details", "Advertisement", new { id = z.ogloszenie_id });
                     }
                     else return View(z);
                 }
@@ -102,7 +102,7 @@ namespace PBX.Controllers
             if (user != null)
             {
                 ViewBag.user = user;
-                Zgloszenie zg = _db.Zgloszenie.Where(z => z.Ogloszenie_id==id && z.zglaszajacy_id==user.id).First();
+                Zgloszenie zg = _db.Zgloszenie.Where(z => z.ogloszenie_id==id && z.zglaszajacy_id==user.id).First();
                 _db.Zgloszenie.Remove(zg);
                 _db.SaveChanges();
                 return RedirectToAction("Details", "Advertisement", new { id=id });

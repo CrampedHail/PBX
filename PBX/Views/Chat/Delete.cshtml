@@ -1,45 +1,18 @@
 ﻿@model PBX.Models.Chat
+@using PBX.Models
 
 @{
     ViewBag.Title = "Usuwanie Chatu";
+    string rozmowca = Model.Zainteresowany.id == (ViewBag.user as Uzytkownik).id ? Model.Oglaszajacy.imie : Model.Zainteresowany.imie;
 }
 
 <h2>Usuwanie Chatu</h2>
 
-<h3>Na pewno chcesz usunąć chat z użytkownikiem @Model.Uzytkownik1.imie?</h3>
+<h3>Na pewno chcesz usunąć chat z użytkownikiem @rozmowca?</h3>
 <div>
     <hr />
     <h4>Chat Ogłoszenia:</h4>
     <h4>@Html.DisplayFor(model => model.Ogloszenie.nazwa) - @Html.DisplayFor(model => model.Ogloszenie.cena)</h4>
-    @*<div class=" d-flex flex-column justify-content-center align-items-center">
-        
-        <table class="info">
-            <tr>
-                <td class="table-cell-text-right">
-                    <strong>Nazwa Ogłoszenia</strong>
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.Ogloszenie.nazwa)
-                </td>
-            </tr>
-            <tr>
-                <td class="table-cell-text-right">
-                    <strong>@Html.DisplayNameFor(model => model.Ogloszenie.cena)</strong>
-                </td>
-                <td style="max-width:250px">
-                    @Html.DisplayFor(model => model.Ogloszenie.cena)
-                </td>
-            </tr>
-            <tr>
-                <td class="table-cell-text-right">
-                    <strong>Użytkownik</strong>
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.Uzytkownik1.imie)
-                </td>
-            </tr>
-        </table>
-    </div>*@
     
 
     @using (Html.BeginForm())

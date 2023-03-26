@@ -4,7 +4,7 @@
     ViewBag.Title = "Strona Główna";
 }
 
-@{ if ((ViewBag.user as PBX.Models.Uzytkownik) != null && (ViewBag.user as PBX.Models.Uzytkownik).id >= 0)
+@if ((ViewBag.user as PBX.Models.Uzytkownik) != null && (ViewBag.user as PBX.Models.Uzytkownik).id >= 0)
     {
         <h2 class="text-center">@((ViewBag.user as PBX.Models.Uzytkownik).imie), witamy na Stronie Głównej</h2>
     }
@@ -21,6 +21,3 @@
             }
         </div>
     </div>
-}
-
-

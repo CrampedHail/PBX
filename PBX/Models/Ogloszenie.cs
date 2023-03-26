@@ -13,6 +13,7 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Ogloszenie
     {
@@ -20,65 +21,55 @@ namespace PBX.Models
         public Ogloszenie()
         {
             this.Chat = new HashSet<Chat>();
+            this.Aplikacja = new HashSet<Aplikacja>();
             this.Ulubiona = new HashSet<Ulubiona>();
             this.Zgloszenie = new HashSet<Zgloszenie>();
+            this.Koszyk = new HashSet<Koszyk>();
+            this.Zamowienie = new HashSet<Zamowienie>();
         }
 
-
-        [Required]
         [DisplayName("ID")]
         public int id { get; set; }
-
-        [Required]
-        [DisplayName("Wystawi³ ID")]
+        [DisplayName("ID Og³aszaj¹cego")]
         public int wystawil_id { get; set; }
-
-        [Required]
-        [DisplayName("Kategoria ID")]
+        [DisplayName("ID Kategorii")]
         public int kategoria_id { get; set; }
-
-        [Required]
-        [DisplayName("Nazwa")]
+        [DisplayName("Nazwa Og³oszenia")]
         public string nazwa { get; set; }
-
-        [Required]
-        [DisplayName("Opis")]
+        [DisplayName("Opis Og³oszenia")]
         public string opis { get; set; }
-
         [DisplayName("Aktywne")]
         public bool aktywne { get; set; }
-
         [DisplayName("Dodano")]
-        [DataType(DataType.DateTime)]
         public System.DateTime dodano { get; set; }
-
-        [DisplayName("Typ")]
+        [DisplayName("Typ Og³oszenia")]
         public string typ { get; set; }
-
-        [Required]
-        [DisplayName("Cena")]
-        [DataType(DataType.Currency)]
+        [DisplayName("Cena/Wynagrodzenie")]
         public double cena { get; set; }
-
-        [Required]
-        [DisplayName("Do Negocjacji")]
+        [DisplayName("Negocjacja")]
         public bool negocjacja { get; set; }
-
-        [Required]
         [DisplayName("Poka¿ Numer Telefonu")]
         public bool pokaz_tel { get; set; }
-
-        [Required]
         [DisplayName("Poka¿ Adres Email")]
         public bool pokaz_email { get; set; }
+        [DisplayName("Zdjêcie")]
+        public byte[] zdjecie { get; set; }
+        [DisplayName("Lokalizacja")]
+        public string lokalizacja { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat { get; set; }
         public virtual Kategoria Kategoria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Aplikacja> Aplikacja { get; set; }
         public virtual Uzytkownik Uzytkownik { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ulubiona> Ulubiona { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Zgloszenie> Zgloszenie { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Koszyk> Koszyk { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Zamowienie> Zamowienie { get; set; }
     }
 }

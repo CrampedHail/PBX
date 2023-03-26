@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PBX.Models.Koszyk>
+@{ 
+    ViewBag.title = "Koszyk";
+}
+@if(Model.Count()<=0)
+{
+    <h2>Nie masz żadnych ogłoszeń w swoim koszyku.</h2>
+}
+else
+{
+    <h2>Koszyk</h2>
+    <table class="table w-75 align-self-center">
+        <thead style="font-size: 2.2rem;">
+            <tr>
+                <th>
+                    Nazwa Ogłoszenia
+                </th>
+                <th>
+                    Cena
+                </th>
+                <th style="width: 18rem;"></th>
+            </tr>
+        </thead>
+    @foreach (var item in Model) {
+        <tr style="font-size: 1.8rem;">
+            <td>
+                @Html.ActionLink(item.Ogloszenie.nazwa, "Details", new { id = item.ogloszenie_id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ogloszenie.cena) zł
+            </td>
+            <td >
+                <a href="@Url.Action("RemoveFromCart", "Advertisement", new { ogloszenie_id = item.ogloszenie_id })" class="d-flex justify-content-center">
+                    <img class="fav-img" src="~/Images/delete.png" width="30" height="30" />
+                </a>
+            </td>
+        </tr>
+    }
+        <tfoot>
+            <tr style="font-size: 1.8rem;">
+                <td>
+                    Suma:
+                </td>
+                <td>
+                    @Model.Sum(item => item.Ogloszenie.cena) zł
+                </td>
+                <td>
+                    @using (Html.BeginForm("PlaceOrder", "Advertisement", FormMethod.Post))
+                    {
+                        <button type="submit" class="btn btn-default">Złóż zamówienie</button>
+                    }
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}

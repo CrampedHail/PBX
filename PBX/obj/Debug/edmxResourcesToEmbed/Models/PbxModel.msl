@@ -35,7 +35,8 @@
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="ocena_od_id" ColumnName="ocena_od_id" />
           <ScalarProperty Name="ocena_dla_id" ColumnName="ocena_dla_id" />
-          <ScalarProperty Name="ocena1" ColumnName="ocena" />
+          <ScalarProperty Name="ocena" ColumnName="ocena" />
+          <ScalarProperty Name="komentarz" ColumnName="komentarz" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -54,6 +55,8 @@
           <ScalarProperty Name="negocjacja" ColumnName="negocjacja" />
           <ScalarProperty Name="pokaz_tel" ColumnName="pokaz_tel" />
           <ScalarProperty Name="pokaz_email" ColumnName="pokaz_email" />
+          <ScalarProperty Name="zdjecie" ColumnName="zdjecie" />
+          <ScalarProperty Name="lokalizacja" ColumnName="lokalizacja" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -76,6 +79,7 @@
           <ScalarProperty Name="haslo" ColumnName="haslo" />
           <ScalarProperty Name="dolaczono" ColumnName="dolaczono" />
           <ScalarProperty Name="usunieto" ColumnName="usunieto" />
+          <ScalarProperty Name="zdjecie" ColumnName="zdjecie" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -88,6 +92,7 @@
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="haslo" ColumnName="haslo" />
           <ScalarProperty Name="dolaczono" ColumnName="dolaczono" />
+          <ScalarProperty Name="zdjecie" ColumnName="zdjecie" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -97,8 +102,9 @@
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="chat_id" ColumnName="chat_id" />
           <ScalarProperty Name="nadawca_id" ColumnName="nadawca_id" />
-          <ScalarProperty Name="wiadomosc1" ColumnName="wiadomosc" />
+          <ScalarProperty Name="wiadomosc" ColumnName="wiadomosc" />
           <ScalarProperty Name="wyslano" ColumnName="wyslano" />
+          <ScalarProperty Name="przeczytano" ColumnName="przeczytano" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -106,10 +112,40 @@
       <EntityTypeMapping TypeName="PBXDBModel.Zgloszenie">
         <MappingFragment StoreEntitySet="Zgloszenie">
           <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="Ogloszenie_id" ColumnName="Ogloszenie_id" />
+          <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
           <ScalarProperty Name="zglaszajacy_id" ColumnName="zglaszajacy_id" />
           <ScalarProperty Name="zgloszony_id" ColumnName="zgloszony_id" />
           <ScalarProperty Name="tresc" ColumnName="tresc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Aplikacja">
+      <EntityTypeMapping TypeName="PBXDBModel.Aplikacja">
+        <MappingFragment StoreEntitySet="Aplikacja">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
+          <ScalarProperty Name="uzytkownik_id" ColumnName="uzytkownik_id" />
+          <ScalarProperty Name="cv" ColumnName="cv" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Koszyk">
+      <EntityTypeMapping TypeName="PBXDBModel.Koszyk">
+        <MappingFragment StoreEntitySet="Koszyk">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="uzytkownik_id" ColumnName="uzytkownik_id" />
+          <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Zamowienie">
+      <EntityTypeMapping TypeName="PBXDBModel.Zamowienie">
+        <MappingFragment StoreEntitySet="Zamowienie">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="data" ColumnName="data" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="uzytkownik_id" ColumnName="uzytkownik_id" />
+          <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

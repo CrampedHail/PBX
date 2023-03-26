@@ -13,32 +13,23 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Zgloszenie
     {
-
-        [Required]
         [DisplayName("ID")]
         public int id { get; set; }
-
-        [Required]
-        [DisplayName("Og³oszenie ID")]
-        public int Ogloszenie_id { get; set; }
-
-        [Required]
-        [DisplayName("Zg³aszaj¹cy ID")]
+        [DisplayName("ID Og³oszenia")]
+        public int ogloszenie_id { get; set; }
+        [DisplayName("ID Zg³aszaj¹cego")]
         public int zglaszajacy_id { get; set; }
-
-        [Required]
-        [DisplayName("Zg³oszony ID")]
+        [DisplayName("ID Zg³oszonego")]
         public int zgloszony_id { get; set; }
-
-        [Required]
         [DisplayName("Treœæ Zg³oszenia")]
         public string tresc { get; set; }
     
         public virtual Ogloszenie Ogloszenie { get; set; }
-        public virtual Uzytkownik Uzytkownik { get; set; }
-        public virtual Uzytkownik Uzytkownik1 { get; set; }
+        public virtual Uzytkownik Zglaszajacy { get; set; }
+        public virtual Uzytkownik Zgloszony { get; set; }
     }
 }

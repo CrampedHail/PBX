@@ -1,0 +1,44 @@
+﻿@model IEnumerable<PBX.Models.Aplikacja>
+
+@{
+    ViewBag.Title = "Aplikacje";
+}
+
+@if (Model.Count() <= 0)
+{
+    <h2>Nie ma jeszcze żadnej aplikacji na wystawione przez Ciebie ogłoszenie pracy.</h2>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                Nazwa Ogłoszenia
+            </th>
+            <th>
+                Aplikujący
+            </th>
+            <th>
+                CV
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ogloszenie.nazwa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Aplikujacy.imie)
+                </td>
+                <td>
+                    @Html.ActionLink("Pobierz", "DownloadCv", "Advertisement", new { ogloszenie_id = item.ogloszenie_id, aplikujacy_id = item.uzytkownik_id }, new { target = "_blank" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+

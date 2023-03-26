@@ -13,20 +13,15 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Ulubiona
     {
-
-        [Required]
         [DisplayName("ID")]
         public int id { get; set; }
-
-        [Required]
-        [DisplayName("U¿ytkownik ID")]
+        [DisplayName("ID U¿ytkownika")]
         public int uzytkownik_id { get; set; }
-
-        [Required]
-        [DisplayName("Og³oszenie ID")]
+        [DisplayName("ID Og³oszenia")]
         public int ogloszenie_id { get; set; }
     
         public virtual Ogloszenie Ogloszenie { get; set; }

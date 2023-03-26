@@ -1,4 +1,5 @@
 ﻿@using PBX.Models
+@using System.Drawing
 @model PBX.Models.Uzytkownik
 
 @{
@@ -58,7 +59,7 @@
 
     .rating, .rating-label {
         display: block;
-        font-family: ui-sans-serif, system-ui, sans-serif;
+        @*font-family: ui-sans-serif, system-ui, sans-serif;*@
     }
 
     .rating-label {
@@ -108,6 +109,10 @@ else
     <h4>Szczegóły konta</h4>
     <hr />
     <div class=" d-flex flex-column justify-content-center align-items-center">
+        @{
+            string imgString = "data:image;base64," + Convert.ToBase64String(Model.zdjecie);
+        }
+        <img class="avatar" src="@imgString" />
         <table class="info">
             <tr>
                 <td class="table-cell-text-right">
@@ -147,7 +152,14 @@ else
                     <strong>@Html.DisplayNameFor(model => model.nr_tel)</strong>
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.nr_tel)
+                    @if ((ViewBag.user as Uzytkownik).id == Model.id)
+                    {
+                        @Html.DisplayFor(model => model.nr_tel)
+                    }
+                    else
+                    {
+                        <a href="tel:@Model.nr_tel" title="Naciśnij aby zadzwonić">@Model.nr_tel</a>
+                    }
                 </td>
             </tr>
             <tr>
@@ -155,7 +167,14 @@ else
                     <strong>@Html.DisplayNameFor(model => model.email)</strong>
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.email)
+                    @if ((ViewBag.user as Uzytkownik).id == Model.id)
+                    {
+                        @Html.DisplayFor(model => model.email)
+                    }
+                    else
+                    {
+                        <a href="mailto:@Model.email" title="Naciśnij aby wysłać maila">@Model.email</a>
+                    }
                 </td>
             </tr>
             <tr>
@@ -169,112 +188,28 @@ else
         </table>
 
     </div>
-    @*<dl class="dl-horizontal">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.imie)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.imie)
-        </dd>
-
-
-        @if ((ViewBag.user as Uzytkownik).id == Model.id)
-        {
-
-            if (ViewBag.iloscOcen > 0)
-            {
-                <dt>
-                    Oceny
-                </dt>
-                <dd>
-                    <div>
-                        <input class="rating" title="@ViewBag.sredniaOcen/5"
-                               max="5"
-                               readonly
-                               step="0.01"
-                               style="--fill:var(--accent-color);--value:@(ViewBag.cal+"."+ViewBag.resz)"
-                               type="range"
-                               value="@ViewBag.sredniaOcen">
-                    </div>
-                </dd>
-            }
-            else
-            {
-                <dt>Oceny</dt>
-                <dd>
-                    Brak
-                </dd>
-            }
-            <dt>
-                @Html.DisplayNameFor(model => model.nr_tel)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.nr_tel)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.email)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.email)
-            </dd>
-        }
-        else
-        {
-            if (ViewBag.iloscOcen > 0)
-            {
-                <dt>
-                    Oceny dla @Html.DisplayFor(model => model.imie)
-                </dt>
-                <dd>
-                    <div>
-                        <input class="rating" title="@ViewBag.sredniaOcen/5"
-                               max="5"
-                               readonly
-                               step="0.01"
-                               style="--fill:var(--accent-color);--value:@(ViewBag.cal+"."+ViewBag.resz)"
-                               type="range"
-                               value="@ViewBag.sredniaOcen">
-                    </div>
-                </dd>
-            }
-            else
-            {
-                <dt>Oceny</dt>
-                <dd>
-                    Brak
-                </dd>
-            }
-        }
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dolaczono)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dolaczono)
-        </dd>
-
-    </dl>*@
 </div>
 
 @if ((ViewBag.user as Uzytkownik).id == Model.id)
 {
-    <p>
-        @Html.ActionLink("Edytuj", "Edit")
-    </p>
+    <div class="d-flex justify-content-center mt-5">
+        <p class="mr-5">
+            @Html.ActionLink("Edytuj", "Edit")
+        </p>
+        <p class="ml-5">
+            @Html.ActionLink("Usuń konto", "Delete", new { id=Model.id })
+        </p>
+    </div>
 }
 else
 {
-<p>
-    @if (ViewBag.mozeWystawicOcene)
-    {
-        @Html.ActionLink("Wystaw ocenę użytkownikowi "+Model.imie, "AddRate", "Account", new {id=Model.id }, "")
-    }
-</p>
+    <p>
+        @if (ViewBag.mozeWystawicOcene)
+        {
+            @Html.ActionLink("Wystaw ocenę użytkownikowi " + Model.imie, "AddRate", "Account", new { id = Model.id }, "")
+        }
+    </p>
 }
 
 

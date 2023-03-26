@@ -157,18 +157,26 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
+    <Compile Include="Controllers\EmailSender.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\Types.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin.cs">
       <DependentUpon>PbxModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Aplikacja.cs">
+      <DependentUpon>PbxModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Chat.cs">
       <DependentUpon>PbxModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Kategoria.cs">
+      <DependentUpon>PbxModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Koszyk.cs">
       <DependentUpon>PbxModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ocena.cs">
@@ -204,6 +212,9 @@
     <Compile Include="Models\Wiadomosc.cs">
       <DependentUpon>PbxModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Zamowienie.cs">
+      <DependentUpon>PbxModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Zgloszenie.cs">
       <DependentUpon>PbxModel.tt</DependentUpon>
     </Compile>
@@ -218,6 +229,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ForbiddenWords\wulgaryzmy.txt" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Selectize\css\selectize.bootstrap2.css" />
     <Content Include="Content\Selectize\css\selectize.bootstrap3.css" />
@@ -228,6 +240,7 @@
     <Content Include="Content\Selectize\js\selectize.min.js" />
     <Content Include="Content\Selectize\js\standalone\selectize.js" />
     <Content Include="Content\Selectize\js\standalone\selectize.min.js" />
+    <Content Include="Content\Styles\Font\Poppins\OFL.txt" />
     <Content Include="Content\Styles\styles.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -279,16 +292,20 @@
     <Content Include="Images\add_white.png" />
     <Content Include="Images\chat.png" />
     <Content Include="Images\chat_white.png" />
+    <Content Include="Images\delete.png" />
     <Content Include="Images\favorite.png" />
     <Content Include="Images\heart_border_white.png" />
     <Content Include="Images\heart_full.png" />
     <Content Include="Images\heart_full_white.png" />
+    <Content Include="Images\loading.png" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\no_image.png" />
     <Content Include="Images\search.png" />
     <Content Include="Images\search_white.png" />
     <Content Include="Images\send_black.png" />
     <Content Include="Images\send_white.png" />
     <Content Include="Images\shopping_bag.png" />
+    <Content Include="Images\unknown_profile_picture.png" />
     <Content Include="Models\PbxModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PbxModel.edmx</DependentUpon>
@@ -301,13 +318,6 @@
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\PbxModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PbxModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\PbxModel.edmx.diagram">
-      <DependentUpon>PbxModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\Selectize\less\selectize.less" />
     <Content Include="Content\Selectize\less\selectize.legacy.less" />
     <Content Include="Content\Selectize\less\selectize.default.less" />
@@ -317,6 +327,33 @@
     <Content Include="Content\Selectize\less\plugins\optgroup_columns.less" />
     <Content Include="Content\Selectize\less\plugins\dropdown_header.less" />
     <Content Include="Content\Selectize\less\plugins\drag_drop.less" />
+    <EntityDeploy Include="Models\PbxModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PbxModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\PbxModel.edmx.diagram">
+      <DependentUpon>PbxModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Content\Styles\Font\Poppins\Poppins-Black.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-BlackItalic.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-Bold.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-BoldItalic.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-ExtraBold.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-ExtraBoldItalic.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-ExtraLight.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-ExtraLightItalic.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-Italic.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-Light.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-LightItalic.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-Medium.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-MediumItalic.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-Regular.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-SemiBold.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-SemiBoldItalic.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-Thin.ttf" />
+    <Content Include="Content\Styles\Font\Poppins\Poppins-ThinItalic.ttf" />
+    <Content Include="Content\ForbiddenWords\README.md" />
+    <Content Include="Content\ForbiddenWords\wulgaryzmy.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\categoryModal.js" />
     <None Include="Scripts\jquery-3.6.0-vsdoc.js" />
@@ -381,6 +418,15 @@
     <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\Category\Delete.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\Created.cshtml" />
+    <Content Include="Views\Advertisement\Created.cshtml" />
+    <Content Include="Views\Advertisement\Apply.cshtml" />
+    <Content Include="Views\Advertisement\Applications.cshtml" />
+    <Content Include="Views\Advertisement\GetMyCart.cshtml" />
+    <Content Include="Views\Advertisement\PlaceOrder.cshtml" />
+    <Content Include="Views\Advertisement\Bought.cshtml" />
+    <Content Include="Views\Advertisement\Sold.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

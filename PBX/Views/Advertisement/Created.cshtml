@@ -1,0 +1,18 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Ogłoszenie";
+}
+<h2>Ogłoszenie zostało dodane!</h2>
+
+<div class="form-horizontal">
+    <hr />
+    <div class="form-group d-flex justify-content-center">
+        @Html.ActionLink("Pokaż Ogłoszenie", "Details", new { id = Model }, new { @style = "font-size: 2rem;"})
+    </div>
+    <div class="form-group d-flex justify-content-center">
+        @Html.ActionLink("Strona Główna", "Index", "Home")
+    </div>
+
+</div>
+}

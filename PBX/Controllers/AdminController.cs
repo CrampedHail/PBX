@@ -87,7 +87,7 @@ namespace PBX.Controllers
                     }
                     _db.Chat.Remove(chat);
                 }
-                List<Zgloszenie> reports = _db.Zgloszenie.Where(z => z.Ogloszenie_id==o.id).ToList();
+                List<Zgloszenie> reports = _db.Zgloszenie.Where(z => z.ogloszenie_id==o.id).ToList();
                 foreach(Zgloszenie z in reports)
                 {
                     _db.Zgloszenie.Remove(z);

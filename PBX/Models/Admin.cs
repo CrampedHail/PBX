@@ -13,21 +13,15 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Admin
     {
-
-        [Required]
         [DisplayName("ID")]
         public int id { get; set; }
-
-        [Required]
-        [DisplayName("login")]
+        [DisplayName("Login")]
         public string login { get; set; }
-
-        [Required]
         [DisplayName("Has³o")]
-        [DataType(DataType.Password)]
         public string haslo { get; set; }
     }
 }

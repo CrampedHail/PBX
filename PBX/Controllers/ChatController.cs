@@ -20,10 +20,14 @@ namespace PBX.Controllers
                 ViewBag.user = user;
                 Chat chat = _db.Chat.Find(id);
                 ViewBag.chat_id = id;
-                ViewBag.rozmowca = chat.oglaszajacy_id == user.id ? chat.Uzytkownik1.imie : chat.Uzytkownik.imie;
-                ViewBag.rozmowca_id = chat.oglaszajacy_id == user.id ? chat.Uzytkownik1.id : chat.Uzytkownik.id;
+                ViewBag.rozmowca = chat.oglaszajacy_id == user.id ? chat.Zainteresowany.imie : chat.Oglaszajacy.imie;
+                ViewBag.rozmowca_id = chat.oglaszajacy_id == user.id ? chat.Zainteresowany.id : chat.Oglaszajacy.id;
                 ViewBag.ogloszenie_id = _db.Chat.Where(ch => ch.id == id).First().ogloszenie_id;
                 ViewBag.ogloszenie_nazwa = _db.Chat.Where(ch => ch.id == id).First().Ogloszenie.nazwa;
+                foreach(Wiadomosc w in _db.Wiadomosc.Where(w => w.chat_id == id).ToList()){
+                    if(w.nadawca_id!=user.id) w.przeczytano = true;
+                }
+                _db.SaveChanges();
                 return View(chat);
             }
             else return RedirectToAction("Login", "Account");
@@ -32,13 +36,9 @@ namespace PBX.Controllers
         public PartialViewResult GetChatView(int id)
         {
             Uzytkownik user = SharedSession["user"] as Uzytkownik;
-            if (user != null)
-            {
-                ViewBag.user = user;
-                Chat chat = _db.Chat.Find(id);
-                return PartialView("ChatPartial", _db.Wiadomosc.Where(w => w.chat_id == id).ToList());
-            }
-            else return PartialView("CategoryPartial");
+            ViewBag.user = user;
+            Chat chat = _db.Chat.Find(id);
+            return PartialView("ChatPartial", _db.Wiadomosc.Where(w => w.chat_id == id).ToList());
         }
 
         // GET: Chat/Details/5
@@ -100,7 +100,7 @@ namespace PBX.Controllers
                     {
                         chat_id = chat,
                         nadawca_id = user.id,
-                        wiadomosc1 = collection["wiadomosc"],
+                        wiadomosc = collection["wiadomosc"],
                         wyslano = DateTime.Now
                     });
                     _db.SaveChanges();

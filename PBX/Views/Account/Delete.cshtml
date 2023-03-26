@@ -1,0 +1,30 @@
+﻿@model PBX.Models.Uzytkownik
+
+<h3>Usuwanie konta</h3>
+<div>
+    <hr />
+    <h3>Czy na pewno chcesz usunąć swoje konto?</h3>
+    
+    <div class="form-actions no-color d-flex flex-column align-items-center">
+        <input type="submit" value="Usuń" class="btn btn-danger openModal" />
+        @Html.ActionLink("Anuluj", "Details", new { id=Model.id })
+    </div>
+    <dialog class="deleteModal">
+        @using (Html.BeginForm("Delete", "Account", new { id = Model.id }, FormMethod.Post, ""))
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color d-flex flex-column align-items-center">
+            <h4>Wszystkie wiadomości, chaty, ogłoszenia i wszystko co związane z Twoim kontem zostanie usunięte bezpowrotnie.</h4>
+            <input type="submit" value="Tak" class="btn btn-danger" />
+            @Html.ActionLink("Anuluj", "Details", new { id = Model.id })
+        </div>
+        }
+    </dialog>
+</div>
+<script type="text/javascript">
+    const openButton = document.querySelector("input.openModal");
+    openButton.addEventListener("click", () => {
+        document.querySelector("dialog.deleteModal").showModal();
+    })
+</script>

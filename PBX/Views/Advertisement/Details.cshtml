@@ -1,4 +1,4 @@
-﻿@using PBX.Models
+﻿   @using PBX.Models
 @model PBX.Models.Ogloszenie
 
 @{
@@ -6,33 +6,38 @@
 }
 
 <h3>Szczegóły Ogłoszenia</h3>
-
 <div>
-
-
-    <div>
-        <h2>
-            @Html.DisplayFor(model => model.nazwa)
-            @if (Model.cena <= 0)
-            {
-                <span>Za darmo</span>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="d-flex justify-content-center mr-5">
+            @{
+                string imgString = "data:image;base64," + Convert.ToBase64String(Model.zdjecie);
             }
-            else
-            {
-                <span>
-                    -
-                    @Html.DisplayFor(model => model.cena)
+            <img class="picture-big" src="@imgString" />
+        </div>
+        <div class="d-flex flex-column justify-content-center">
+            <h2>
+                @Html.DisplayFor(model => model.nazwa)
+                @if (Model.cena <= 0)
+                {
+                    <span>Za darmo</span>
+                }
+                else
+                {
+                    <span>
+                        -
+                        @Html.DisplayFor(model => model.cena)
 
-                    @if (Model.negocjacja)
-                    {
-                        <span>
-                            do negocjacji
-                        </span>
-                    }
-                </span>
-            }
-        </h2>
-        <h5>@Model.dodano.ToShortDateString() o godzinie @Model.dodano.ToShortTimeString()</h5>
+                        @if (Model.negocjacja)
+                        {
+                            <span>
+                                do negocjacji
+                            </span>
+                        }
+                    </span>
+                }
+            </h2>
+            <h5>Wystawione @Model.dodano.ToShortDateString() o godzinie @Model.dodano.ToShortTimeString() przez @Html.ActionLink(Model.Uzytkownik.imie, "Details", "Account", new { id = Model.Uzytkownik.id }, new { @title = "Naciśnij aby wyświetlić profil" })</h5>
+        </div>
     </div>
 
 
@@ -69,17 +74,53 @@
                 <span>Ogłoszenie zostało już zgłoszone. @Html.ActionLink("Anuluj zgłoszenie", "Cancel", "Report", new { id = Model.id }, "")</span>
             }
         </p>
+        if (Model.typ.Equals("Oferta pracy"))
+        {
+            <p class="d-flex justify-content-center">
+                @if (!ViewBag.applied)
+                {
+                    @Html.ActionLink("Aplikuj", "Apply", "Advertisement", new { id = Model.id }, new { enctype = "multipart/form-data" });
+                }
+                else
+                {
+                    <span>Aplikacja została wysłana. @Html.ActionLink("Wycofaj aplikację", "WithdrawApplication", new { id = Model.id })</span>
+                }
+            </p>
+        }
+        if (Model.typ.Equals("Oferta sprzedaży"))
+        {
+            <p class="d-flex justify-content-center">
+                @if (!ViewBag.addedToCart)
+                {
+                    <a href="@Url.Action("AddToCart", "Advertisement", new { id = Model.id })">
+                        <img src="~/Images/shopping_bag.png" width="30" height="30" />
+                        Dodaj do koszyka
+                    </a>
+                }
+                else
+                {
+                    <span>To ogłoszenie masz już w koszyku. @Html.ActionLink("Usuń z koszyka", "RemoveFromCart", new { ogloszenie_id = Model.id })</span>
+                }
+          
+            </p>
+        }
     }
     else
     {
-        <p class="d-flex" style="justify-content:center;">
+        <p class="d-flex justify-content-center">
             @Html.ActionLink("Edytuj", "Edit", new { id = Model.id })
         </p>
+        if (Model.typ.Equals("Oferta pracy"))
+        {
+            <p class="d-flex justify-content-center">
+                @Html.ActionLink("Zobacz aplikacje", "Applications", new { id = Model.id })
+            </p>
+        }
     }
 
 
-    <div class="d-flex justify-content-start w-100">
-        <div style="min-width:50%;">
+    <div class="d-flex justify-content-around w-100">
+        <div class="" style="min-width:40%;">
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.typ)
@@ -100,7 +141,7 @@
                     </dt>
 
                     <dd>
-                        @Html.DisplayFor(model => model.Uzytkownik.nr_tel)
+                        <a href="tel:@Model.Uzytkownik.nr_tel" title="Naciśnij aby zadzwonić">@Model.Uzytkownik.nr_tel</a>
                     </dd>
                 }
                 @if (Model.pokaz_email)
@@ -110,19 +151,13 @@
                     </dt>
 
                     <dd>
-                        @Html.DisplayFor(model => model.Uzytkownik.email)
+                        <a href="mailto:@Model.Uzytkownik.email" title="Naciśnij aby wysłać maila">@Model.Uzytkownik.email</a>
                     </dd>
                 }
-                <dt>
-                    Wystawione przez
-                </dt>
-                <dd>
-                    @Html.ActionLink(Model.Uzytkownik.imie, "Details", "Account", new { id = Model.Uzytkownik.id }, new { @title = "Naciśnij aby wyświetlić profil" })
-                </dd>
             </dl>
         </div>
 
-        <div style="min-width:50%;">
+        <div class="d-flex flex-column align-items-center justify-content-center">
             <fieldset class="desc-fs">
                 <legend>
                     Opis
@@ -132,6 +167,16 @@
                 </p>
             </fieldset>
         </div>
+    </div>
+
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <h4>@Model.lokalizacja</h4>
+        <iframe id="google-map"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCCXqhU4mSHIUchFylDvyKMjB3mb9tPpf8&q= @Model.lokalizacja">
+        </iframe>
     </div>
 
 

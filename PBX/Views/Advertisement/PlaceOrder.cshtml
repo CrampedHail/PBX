@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Złożono zamówienie";
+}
+<h2>Dziękujemy za złożenie zamówienia!</h2>
+
+<div class="form-horizontal">
+    <hr />
+    <div class="form-group d-flex justify-content-center">
+        @Html.ActionLink("Twoje zamówienia", "MyOrders", "Advertisement", new { }, new { @style = "font-size: 2rem;", @onsubmit="toggleWaitingScreen" })
+    </div>
+    <div class="form-group d-flex justify-content-center">
+        @Html.ActionLink("Strona Główna", "Index", "Home")
+    </div>
+
+</div>
+}

@@ -21,14 +21,6 @@
             </tr>
             <tr>
                 <td class="table-cell-text-right">
-                    <strong>@Html.DisplayNameFor(model => model.opis)</strong>
-                </td>
-                <td style="max-width:250px">
-                    @Html.DisplayFor(model => model.opis)
-                </td>
-            </tr>
-            <tr>
-                <td class="table-cell-text-right">
                     <strong>@Html.DisplayNameFor(model => model.dodano)</strong>
                 </td>
                 <td>
@@ -53,30 +45,6 @@
             </tr>
             <tr>
                 <td class="table-cell-text-right">
-                    <strong>@Html.DisplayNameFor(model => model.negocjacja)</strong>
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.negocjacja)
-                </td>
-            </tr>
-            <tr>
-                <td class="table-cell-text-right">
-                    <strong>@Html.DisplayNameFor(model => model.pokaz_tel)</strong>
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.pokaz_tel)
-                </td>
-            </tr>
-            <tr>
-                <td class="table-cell-text-right">
-                    <strong>@Html.DisplayNameFor(model => model.pokaz_email)</strong>
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.pokaz_email)
-                </td>
-            </tr>
-            <tr>
-                <td class="table-cell-text-right">
                     <strong>Kategoria</strong>
                 </td>
                 <td>
@@ -84,16 +52,22 @@
                 </td>
             </tr>
         </table>
-    </div>
-
-
+        @Html.HiddenFor(model => model.opis)
+        @Html.HiddenFor(model => model.negocjacja)
+        @Html.HiddenFor(model => model.pokaz_email)
+        @Html.HiddenFor(model => model.pokaz_tel)
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
-            <div class="form-actions no-color">
-                <input type="submit" value="Usuń" class="btn btn-outline-danger" /> |
-                @Html.ActionLink("Powrót", "Index", "Home")
+            <div class="form-actions no-color mt-3">
+                <input type="submit" value="Usuń" class="btn btn-danger" />
             </div>
         }
+    </div>
+
+
+    
+
+    @Html.ActionLink("Powrót", "MyAds", "Advertisement")
 </div>

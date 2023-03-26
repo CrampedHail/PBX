@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PBXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PBXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Admin">
           <Key>
             <PropertyRef Name="id" />
@@ -12,6 +12,15 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="login" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="haslo" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Aplikacja">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ogloszenie_id" Type="int" Nullable="false" />
+          <Property Name="uzytkownik_id" Type="int" Nullable="false" />
+          <Property Name="cv" Type="varbinary(max)" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Chat">
           <Key>
@@ -27,8 +36,16 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="nadkategoria_id" Type="int" Nullable="false" />
-          <Property Name="nazwa" Type="varchar" MaxLength="50" />
+          <Property Name="nadkategoria_id" Type="int" />
+          <Property Name="nazwa" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Koszyk">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ogloszenie_id" Type="int" Nullable="false" />
+          <Property Name="uzytkownik_id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Ocena">
           <Key>
@@ -37,7 +54,8 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ocena_od_id" Type="int" Nullable="false" />
           <Property Name="ocena_dla_id" Type="int" Nullable="false" />
-          <Property Name="ocena" Type="float" />
+          <Property Name="ocena" Type="float" Nullable="false" />
+          <Property Name="komentarz" Type="nchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Ogloszenie">
           <Key>
@@ -46,15 +64,17 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="wystawil_id" Type="int" Nullable="false" />
           <Property Name="kategoria_id" Type="int" Nullable="false" />
-          <Property Name="nazwa" Type="varchar" MaxLength="100" />
-          <Property Name="opis" Type="varchar" MaxLength="500" />
-          <Property Name="aktywne" Type="bit" />
-          <Property Name="dodano" Type="datetime" />
-          <Property Name="typ" Type="varchar" MaxLength="50" />
-          <Property Name="cena" Type="float" />
-          <Property Name="negocjacja" Type="bit" />
-          <Property Name="pokaz_tel" Type="bit" />
-          <Property Name="pokaz_email" Type="bit" />
+          <Property Name="nazwa" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="opis" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="aktywne" Type="bit" Nullable="false" />
+          <Property Name="dodano" Type="datetime" Nullable="false" />
+          <Property Name="typ" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cena" Type="float" Nullable="false" />
+          <Property Name="negocjacja" Type="bit" Nullable="false" />
+          <Property Name="pokaz_tel" Type="bit" Nullable="false" />
+          <Property Name="pokaz_email" Type="bit" Nullable="false" />
+          <Property Name="zdjecie" Type="varbinary(max)" Nullable="false" />
+          <Property Name="lokalizacja" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Ulubiona">
           <Key>
@@ -69,23 +89,25 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="imie" Type="varchar" MaxLength="30" />
-          <Property Name="nr_tel" Type="varchar" MaxLength="100" />
-          <Property Name="email" Type="varchar" MaxLength="100" />
-          <Property Name="haslo" Type="varchar" MaxLength="100" />
-          <Property Name="dolaczono" Type="date" />
-          <Property Name="usunieto" Type="date" />
+          <Property Name="imie" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="nr_tel" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="haslo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="dolaczono" Type="date" Nullable="false" />
+          <Property Name="usunieto" Type="date" Nullable="false" />
+          <Property Name="zdjecie" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Uzytkownik">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="imie" Type="varchar" MaxLength="30" />
-          <Property Name="nr_tel" Type="varchar" MaxLength="100" />
-          <Property Name="email" Type="varchar" MaxLength="100" />
-          <Property Name="haslo" Type="varchar" MaxLength="100" />
-          <Property Name="dolaczono" Type="date" />
+          <Property Name="imie" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="nr_tel" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="haslo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="dolaczono" Type="date" Nullable="false" />
+          <Property Name="zdjecie" Type="varbinary(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Wiadomosc">
           <Key>
@@ -94,19 +116,54 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="chat_id" Type="int" Nullable="false" />
           <Property Name="nadawca_id" Type="int" Nullable="false" />
-          <Property Name="wiadomosc" Type="varchar" MaxLength="500" />
-          <Property Name="wyslano" Type="datetime" />
+          <Property Name="wiadomosc" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="wyslano" Type="datetime" Nullable="false" />
+          <Property Name="przeczytano" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Zamowienie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ogloszenie_id" Type="int" Nullable="false" />
+          <Property Name="uzytkownik_id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="data" Type="datetime" Nullable="false" />
+          <Property Name="status" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Zgloszenie">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Ogloszenie_id" Type="int" Nullable="false" />
+          <Property Name="ogloszenie_id" Type="int" Nullable="false" />
           <Property Name="zglaszajacy_id" Type="int" Nullable="false" />
           <Property Name="zgloszony_id" Type="int" Nullable="false" />
-          <Property Name="tresc" Type="varchar" MaxLength="500" />
+          <Property Name="tresc" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
+        <Association Name="FK__Aplikacja__oglos__41EDCAC5">
+          <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
+          <End Role="Aplikacja" Type="Self.Aplikacja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ogloszenie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Aplikacja">
+              <PropertyRef Name="ogloszenie_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Aplikacja__uzytk__40F9A68C">
+          <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+          <End Role="Aplikacja" Type="Self.Aplikacja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Aplikacja">
+              <PropertyRef Name="uzytkownik_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Chat__oglaszajac__4CA06362">
           <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
           <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
@@ -143,8 +200,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Kategoria__nadka__3A81B327">
-          <End Role="Kategoria" Type="Self.Kategoria" Multiplicity="1" />
+        <Association Name="FK__Kategoria__nadka__01142BA1">
+          <End Role="Kategoria" Type="Self.Kategoria" Multiplicity="0..1" />
           <End Role="Kategoria1" Type="Self.Kategoria" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Kategoria">
@@ -152,6 +209,30 @@
             </Principal>
             <Dependent Role="Kategoria1">
               <PropertyRef Name="nadkategoria_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Koszyk__ogloszen__3F115E1A">
+          <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
+          <End Role="Koszyk" Type="Self.Koszyk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ogloszenie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Koszyk">
+              <PropertyRef Name="ogloszenie_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Koszyk__uzytkown__3E1D39E1">
+          <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+          <End Role="Koszyk" Type="Self.Koszyk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Koszyk">
+              <PropertyRef Name="uzytkownik_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -251,6 +332,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Zamowieni__oglos__3C34F16F">
+          <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ogloszenie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="ogloszenie_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Zamowieni__uzytk__3B40CD36">
+          <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="uzytkownik_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Zgloszeni__Oglos__48CFD27E">
           <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
           <End Role="Zgloszenie" Type="Self.Zgloszenie" Multiplicity="*" />
@@ -259,7 +364,7 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Zgloszenie">
-              <PropertyRef Name="Ogloszenie_id" />
+              <PropertyRef Name="ogloszenie_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -289,15 +394,26 @@
         </Association>
         <EntityContainer Name="PBXDBModelStoreContainer">
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Aplikacja" EntityType="Self.Aplikacja" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chat" EntityType="Self.Chat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Kategoria" EntityType="Self.Kategoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Koszyk" EntityType="Self.Koszyk" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ocena" EntityType="Self.Ocena" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ogloszenie" EntityType="Self.Ogloszenie" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ulubiona" EntityType="Self.Ulubiona" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usunieci" EntityType="Self.Usunieci" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Uzytkownik" EntityType="Self.Uzytkownik" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Wiadomosc" EntityType="Self.Wiadomosc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Zamowienie" EntityType="Self.Zamowienie" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zgloszenie" EntityType="Self.Zgloszenie" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Aplikacja__oglos__41EDCAC5" Association="Self.FK__Aplikacja__oglos__41EDCAC5">
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+            <End Role="Aplikacja" EntitySet="Aplikacja" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Aplikacja__uzytk__40F9A68C" Association="Self.FK__Aplikacja__uzytk__40F9A68C">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Aplikacja" EntitySet="Aplikacja" />
+          </AssociationSet>
           <AssociationSet Name="FK__Chat__oglaszajac__4CA06362" Association="Self.FK__Chat__oglaszajac__4CA06362">
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
             <End Role="Chat" EntitySet="Chat" />
@@ -310,9 +426,17 @@
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
             <End Role="Chat" EntitySet="Chat" />
           </AssociationSet>
-          <AssociationSet Name="FK__Kategoria__nadka__3A81B327" Association="Self.FK__Kategoria__nadka__3A81B327">
+          <AssociationSet Name="FK__Kategoria__nadka__01142BA1" Association="Self.FK__Kategoria__nadka__01142BA1">
             <End Role="Kategoria" EntitySet="Kategoria" />
             <End Role="Kategoria1" EntitySet="Kategoria" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Koszyk__ogloszen__3F115E1A" Association="Self.FK__Koszyk__ogloszen__3F115E1A">
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+            <End Role="Koszyk" EntitySet="Koszyk" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Koszyk__uzytkown__3E1D39E1" Association="Self.FK__Koszyk__uzytkown__3E1D39E1">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Koszyk" EntitySet="Koszyk" />
           </AssociationSet>
           <AssociationSet Name="FK__Ocena__ocena_dla__3F466844" Association="Self.FK__Ocena__ocena_dla__3F466844">
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
@@ -346,6 +470,14 @@
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
             <End Role="Wiadomosc" EntitySet="Wiadomosc" />
           </AssociationSet>
+          <AssociationSet Name="FK__Zamowieni__oglos__3C34F16F" Association="Self.FK__Zamowieni__oglos__3C34F16F">
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+            <End Role="Zamowienie" EntitySet="Zamowienie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Zamowieni__uzytk__3B40CD36" Association="Self.FK__Zamowieni__uzytk__3B40CD36">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Zamowienie" EntitySet="Zamowienie" />
+          </AssociationSet>
           <AssociationSet Name="FK__Zgloszeni__Oglos__48CFD27E" Association="Self.FK__Zgloszeni__Oglos__48CFD27E">
             <End Role="Ogloszenie" EntitySet="Ogloszenie" />
             <End Role="Zgloszenie" EntitySet="Zgloszenie" />
@@ -359,8 +491,7 @@
             <End Role="Zgloszenie" EntitySet="Zgloszenie" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PBXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -380,21 +511,21 @@
           <Property Name="ogloszenie_id" Type="Int32" Nullable="false" />
           <Property Name="zainteresowany_id" Type="Int32" Nullable="false" />
           <Property Name="oglaszajacy_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Chat__oglaszajac__4CA06362" FromRole="Chat" ToRole="Uzytkownik" />
+          <NavigationProperty Name="Oglaszajacy" Relationship="Self.FK__Chat__oglaszajac__4CA06362" FromRole="Chat" ToRole="Uzytkownik" />
           <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Chat__ogloszenie__4BAC3F29" FromRole="Chat" ToRole="Ogloszenie" />
-          <NavigationProperty Name="Uzytkownik1" Relationship="Self.FK__Chat__zaintereso__4D94879B" FromRole="Chat" ToRole="Uzytkownik" />
-          <NavigationProperty Name="Wiadomosc" Relationship="Self.FK__Wiadomosc__chat___5165187F" FromRole="Chat" ToRole="Wiadomosc" />
+          <NavigationProperty Name="Zainteresowany" Relationship="Self.FK__Chat__zaintereso__4D94879B" FromRole="Chat" ToRole="Uzytkownik" />
+          <NavigationProperty Name="Wiadomosci" Relationship="Self.FK__Wiadomosc__chat___5165187F" FromRole="Chat" ToRole="Wiadomosc" />
         </EntityType>
         <EntityType Name="Kategoria">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nadkategoria_id" Type="Int32" Nullable="false" />
-          <Property Name="nazwa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Kategoria1" Relationship="Self.FK__Kategoria__nadka__3A81B327" FromRole="Kategoria" ToRole="Kategoria1" />
-          <NavigationProperty Name="Kategoria2" Relationship="Self.FK__Kategoria__nadka__3A81B327" FromRole="Kategoria1" ToRole="Kategoria" />
-          <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Ogloszeni__kateg__4316F928" FromRole="Kategoria" ToRole="Ogloszenie" />
+          <Property Name="nadkategoria_id" Type="Int32" Nullable="true" />
+          <Property Name="nazwa" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Podkategorie" Relationship="Self.FK__Kategoria__nadka__01142BA1" FromRole="Kategoria" ToRole="Kategoria1" />
+          <NavigationProperty Name="Nadkategoria" Relationship="Self.FK__Kategoria__nadka__01142BA1" FromRole="Kategoria1" ToRole="Kategoria" />
+          <NavigationProperty Name="Ogloszenia" Relationship="Self.FK__Ogloszeni__kateg__4316F928" FromRole="Kategoria" ToRole="Ogloszenie" />
         </EntityType>
         <EntityType Name="Ocena">
           <Key>
@@ -403,9 +534,10 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ocena_od_id" Type="Int32" Nullable="false" />
           <Property Name="ocena_dla_id" Type="Int32" Nullable="false" />
-          <Property Name="ocena1" Type="Double" />
-          <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Ocena__ocena_dla__3F466844" FromRole="Ocena" ToRole="Uzytkownik" />
-          <NavigationProperty Name="Uzytkownik1" Relationship="Self.FK__Ocena__ocena_od___403A8C7D" FromRole="Ocena" ToRole="Uzytkownik" />
+          <Property Name="ocena" Type="Double" Nullable="false" />
+          <Property Name="komentarz" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="true" />
+          <NavigationProperty Name="OcenaDla" Relationship="Self.FK__Ocena__ocena_dla__3F466844" FromRole="Ocena" ToRole="Uzytkownik" />
+          <NavigationProperty Name="OcenaOd" Relationship="Self.FK__Ocena__ocena_od___403A8C7D" FromRole="Ocena" ToRole="Uzytkownik" />
         </EntityType>
         <EntityType Name="Ogloszenie">
           <Key>
@@ -414,20 +546,25 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="wystawil_id" Type="Int32" Nullable="false" />
           <Property Name="kategoria_id" Type="Int32" Nullable="false" />
-          <Property Name="nazwa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="opis" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="aktywne" Type="Boolean" />
-          <Property Name="dodano" Type="DateTime" Precision="3" />
-          <Property Name="typ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cena" Type="Double" />
-          <Property Name="negocjacja" Type="Boolean" />
-          <Property Name="pokaz_tel" Type="Boolean" />
-          <Property Name="pokaz_email" Type="Boolean" />
+          <Property Name="nazwa" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="opis" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="aktywne" Type="Boolean" Nullable="false" />
+          <Property Name="dodano" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="typ" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cena" Type="Double" Nullable="false" />
+          <Property Name="negocjacja" Type="Boolean" Nullable="false" />
+          <Property Name="pokaz_tel" Type="Boolean" Nullable="false" />
+          <Property Name="pokaz_email" Type="Boolean" Nullable="false" />
+          <Property Name="zdjecie" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="lokalizacja" Type="String" FixedLength="false" Unicode="true" MaxLength="50" Nullable="false" />
           <NavigationProperty Name="Chat" Relationship="Self.FK__Chat__ogloszenie__4BAC3F29" FromRole="Ogloszenie" ToRole="Chat" />
           <NavigationProperty Name="Kategoria" Relationship="Self.FK__Ogloszeni__kateg__4316F928" FromRole="Ogloszenie" ToRole="Kategoria" />
+          <NavigationProperty Name="Aplikacja" Relationship="Self.FK__Aplikacja__oglos__41EDCAC5" FromRole="Ogloszenie" ToRole="Aplikacja" />
           <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Ogloszeni__wysta__440B1D61" FromRole="Ogloszenie" ToRole="Uzytkownik" />
           <NavigationProperty Name="Ulubiona" Relationship="Self.FK__Ulubiona__oglosz__5535A963" FromRole="Ogloszenie" ToRole="Ulubiona" />
           <NavigationProperty Name="Zgloszenie" Relationship="Self.FK__Zgloszeni__Oglos__48CFD27E" FromRole="Ogloszenie" ToRole="Zgloszenie" />
+          <NavigationProperty Name="Koszyk" Relationship="PBXDBModel.FK__Koszyk__ogloszen__3F115E1A" FromRole="Ogloszenie" ToRole="Koszyk" />
+          <NavigationProperty Name="Zamowienie" Relationship="PBXDBModel.FK__Zamowieni__oglos__3C34F16F" FromRole="Ogloszenie" ToRole="Zamowienie" />
         </EntityType>
         <EntityType Name="Ulubiona">
           <Key>
@@ -444,32 +581,37 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="imie" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="nr_tel" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="haslo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="dolaczono" Type="DateTime" Precision="0" />
-          <Property Name="usunieto" Type="DateTime" Precision="0" />
+          <Property Name="imie" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nr_tel" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="haslo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dolaczono" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="usunieto" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="zdjecie" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Uzytkownik">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="imie" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="nr_tel" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="haslo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="dolaczono" Type="DateTime" Precision="0" />
+          <Property Name="imie" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nr_tel" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="haslo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dolaczono" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="zdjecie" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <NavigationProperty Name="Chat" Relationship="Self.FK__Chat__oglaszajac__4CA06362" FromRole="Uzytkownik" ToRole="Chat" />
           <NavigationProperty Name="Chat1" Relationship="Self.FK__Chat__zaintereso__4D94879B" FromRole="Uzytkownik" ToRole="Chat" />
-          <NavigationProperty Name="Ocena" Relationship="Self.FK__Ocena__ocena_dla__3F466844" FromRole="Uzytkownik" ToRole="Ocena" />
-          <NavigationProperty Name="Ocena1" Relationship="Self.FK__Ocena__ocena_od___403A8C7D" FromRole="Uzytkownik" ToRole="Ocena" />
-          <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Ogloszeni__wysta__440B1D61" FromRole="Uzytkownik" ToRole="Ogloszenie" />
-          <NavigationProperty Name="Ulubiona" Relationship="Self.FK__Ulubiona__uzytko__5441852A" FromRole="Uzytkownik" ToRole="Ulubiona" />
-          <NavigationProperty Name="Wiadomosc" Relationship="Self.FK__Wiadomosc__nadaw__5070F446" FromRole="Uzytkownik" ToRole="Wiadomosc" />
-          <NavigationProperty Name="Zgloszenie" Relationship="Self.FK__Zgloszeni__zglas__46E78A0C" FromRole="Uzytkownik" ToRole="Zgloszenie" />
-          <NavigationProperty Name="Zgloszenie1" Relationship="Self.FK__Zgloszeni__zglos__47DBAE45" FromRole="Uzytkownik" ToRole="Zgloszenie" />
+          <NavigationProperty Name="OtrzymaneOceny" Relationship="Self.FK__Ocena__ocena_dla__3F466844" FromRole="Uzytkownik" ToRole="Ocena" />
+          <NavigationProperty Name="WystawioneOceny" Relationship="Self.FK__Ocena__ocena_od___403A8C7D" FromRole="Uzytkownik" ToRole="Ocena" />
+          <NavigationProperty Name="Ogloszenia" Relationship="Self.FK__Ogloszeni__wysta__440B1D61" FromRole="Uzytkownik" ToRole="Ogloszenie" />
+          <NavigationProperty Name="Ulubione" Relationship="Self.FK__Ulubiona__uzytko__5441852A" FromRole="Uzytkownik" ToRole="Ulubiona" />
+          <NavigationProperty Name="Aplikacje" Relationship="Self.FK__Aplikacja__uzytk__40F9A68C" FromRole="Uzytkownik" ToRole="Aplikacja" />
+          <NavigationProperty Name="Wiadomosci" Relationship="Self.FK__Wiadomosc__nadaw__5070F446" FromRole="Uzytkownik" ToRole="Wiadomosc" />
+          <NavigationProperty Name="ZgloszeniaPrzez" Relationship="Self.FK__Zgloszeni__zglas__46E78A0C" FromRole="Uzytkownik" ToRole="Zgloszenie" />
+          <NavigationProperty Name="ZgloszeniaNa" Relationship="Self.FK__Zgloszeni__zglos__47DBAE45" FromRole="Uzytkownik" ToRole="Zgloszenie" />
+          <NavigationProperty Name="Koszyk" Relationship="PBXDBModel.FK__Koszyk__uzytkown__3E1D39E1" FromRole="Uzytkownik" ToRole="Koszyk" />
+          <NavigationProperty Name="Zamowienie" Relationship="PBXDBModel.FK__Zamowieni__uzytk__3B40CD36" FromRole="Uzytkownik" ToRole="Zamowienie" />
         </EntityType>
         <EntityType Name="Wiadomosc">
           <Key>
@@ -478,23 +620,35 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="chat_id" Type="Int32" Nullable="false" />
           <Property Name="nadawca_id" Type="Int32" Nullable="false" />
-          <Property Name="wiadomosc1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="wyslano" Type="DateTime" Precision="3" />
+          <Property Name="wiadomosc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="wyslano" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="przeczytano" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Chat" Relationship="Self.FK__Wiadomosc__chat___5165187F" FromRole="Wiadomosc" ToRole="Chat" />
-          <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Wiadomosc__nadaw__5070F446" FromRole="Wiadomosc" ToRole="Uzytkownik" />
+          <NavigationProperty Name="Nadawca" Relationship="Self.FK__Wiadomosc__nadaw__5070F446" FromRole="Wiadomosc" ToRole="Uzytkownik" />
         </EntityType>
         <EntityType Name="Zgloszenie">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ogloszenie_id" Type="Int32" Nullable="false" />
+          <Property Name="ogloszenie_id" Type="Int32" Nullable="false" />
           <Property Name="zglaszajacy_id" Type="Int32" Nullable="false" />
           <Property Name="zgloszony_id" Type="Int32" Nullable="false" />
-          <Property Name="tresc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="tresc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Zgloszeni__Oglos__48CFD27E" FromRole="Zgloszenie" ToRole="Ogloszenie" />
-          <NavigationProperty Name="Uzytkownik" Relationship="Self.FK__Zgloszeni__zglas__46E78A0C" FromRole="Zgloszenie" ToRole="Uzytkownik" />
-          <NavigationProperty Name="Uzytkownik1" Relationship="Self.FK__Zgloszeni__zglos__47DBAE45" FromRole="Zgloszenie" ToRole="Uzytkownik" />
+          <NavigationProperty Name="Zglaszajacy" Relationship="Self.FK__Zgloszeni__zglas__46E78A0C" FromRole="Zgloszenie" ToRole="Uzytkownik" />
+          <NavigationProperty Name="Zgloszony" Relationship="Self.FK__Zgloszeni__zglos__47DBAE45" FromRole="Zgloszenie" ToRole="Uzytkownik" />
+        </EntityType>
+        <EntityType Name="Aplikacja">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ogloszenie_id" Type="Int32" Nullable="false" />
+          <Property Name="uzytkownik_id" Type="Int32" Nullable="false" />
+          <Property Name="cv" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Ogloszenie" Relationship="Self.FK__Aplikacja__oglos__41EDCAC5" FromRole="Aplikacja" ToRole="Ogloszenie" />
+          <NavigationProperty Name="Aplikujacy" Relationship="Self.FK__Aplikacja__uzytk__40F9A68C" FromRole="Aplikacja" ToRole="Uzytkownik" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <Association Name="FK__Chat__oglaszajac__4CA06362">
           <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
@@ -544,8 +698,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Kategoria__nadka__3A81B327">
-          <End Role="Kategoria" Type="Self.Kategoria" Multiplicity="1" />
+        <Association Name="FK__Kategoria__nadka__01142BA1">
+          <End Role="Kategoria" Type="Self.Kategoria" Multiplicity="0..1" />
           <End Role="Kategoria1" Type="Self.Kategoria" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Kategoria">
@@ -592,6 +746,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Aplikacja__oglos__41EDCAC5">
+          <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
+          <End Role="Aplikacja" Type="Self.Aplikacja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ogloszenie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Aplikacja">
+              <PropertyRef Name="ogloszenie_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Ogloszeni__wysta__440B1D61">
           <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
           <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="*" />
@@ -624,7 +790,7 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Zgloszenie">
-              <PropertyRef Name="Ogloszenie_id" />
+              <PropertyRef Name="ogloszenie_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -636,6 +802,18 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Ulubiona">
+              <PropertyRef Name="uzytkownik_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Aplikacja__uzytk__40F9A68C">
+          <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+          <End Role="Aplikacja" Type="Self.Aplikacja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Aplikacja">
               <PropertyRef Name="uzytkownik_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -687,6 +865,7 @@
           <EntitySet Name="Uzytkownik" EntityType="Self.Uzytkownik" />
           <EntitySet Name="Wiadomosc" EntityType="Self.Wiadomosc" />
           <EntitySet Name="Zgloszenie" EntityType="Self.Zgloszenie" />
+          <EntitySet Name="Aplikacja" EntityType="Self.Aplikacja" />
           <AssociationSet Name="FK__Chat__oglaszajac__4CA06362" Association="Self.FK__Chat__oglaszajac__4CA06362">
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
             <End Role="Chat" EntitySet="Chat" />
@@ -703,7 +882,7 @@
             <End Role="Chat" EntitySet="Chat" />
             <End Role="Wiadomosc" EntitySet="Wiadomosc" />
           </AssociationSet>
-          <AssociationSet Name="FK__Kategoria__nadka__3A81B327" Association="Self.FK__Kategoria__nadka__3A81B327">
+          <AssociationSet Name="FK__Kategoria__nadka__01142BA1" Association="Self.FK__Kategoria__nadka__01142BA1">
             <End Role="Kategoria" EntitySet="Kategoria" />
             <End Role="Kategoria1" EntitySet="Kategoria" />
           </AssociationSet>
@@ -718,6 +897,10 @@
           <AssociationSet Name="FK__Ocena__ocena_od___403A8C7D" Association="Self.FK__Ocena__ocena_od___403A8C7D">
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
             <End Role="Ocena" EntitySet="Ocena" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Aplikacja__oglos__41EDCAC5" Association="Self.FK__Aplikacja__oglos__41EDCAC5">
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+            <End Role="Aplikacja" EntitySet="Aplikacja" />
           </AssociationSet>
           <AssociationSet Name="FK__Ogloszeni__wysta__440B1D61" Association="Self.FK__Ogloszeni__wysta__440B1D61">
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
@@ -735,6 +918,10 @@
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
             <End Role="Ulubiona" EntitySet="Ulubiona" />
           </AssociationSet>
+          <AssociationSet Name="FK__Aplikacja__uzytk__40F9A68C" Association="Self.FK__Aplikacja__uzytk__40F9A68C">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Aplikacja" EntitySet="Aplikacja" />
+          </AssociationSet>
           <AssociationSet Name="FK__Wiadomosc__nadaw__5070F446" Association="Self.FK__Wiadomosc__nadaw__5070F446">
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
             <End Role="Wiadomosc" EntitySet="Wiadomosc" />
@@ -747,7 +934,95 @@
             <End Role="Uzytkownik" EntitySet="Uzytkownik" />
             <End Role="Zgloszenie" EntitySet="Zgloszenie" />
           </AssociationSet>
+          <EntitySet Name="Koszyk" EntityType="PBXDBModel.Koszyk" />
+          <EntitySet Name="Zamowienie" EntityType="PBXDBModel.Zamowienie" />
+          <AssociationSet Name="FK__Koszyk__ogloszen__3F115E1A" Association="PBXDBModel.FK__Koszyk__ogloszen__3F115E1A">
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+            <End Role="Koszyk" EntitySet="Koszyk" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Koszyk__uzytkown__3E1D39E1" Association="PBXDBModel.FK__Koszyk__uzytkown__3E1D39E1">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Koszyk" EntitySet="Koszyk" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Zamowieni__oglos__3C34F16F" Association="PBXDBModel.FK__Zamowieni__oglos__3C34F16F">
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+            <End Role="Zamowienie" EntitySet="Zamowienie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Zamowieni__uzytk__3B40CD36" Association="PBXDBModel.FK__Zamowieni__uzytk__3B40CD36">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Zamowienie" EntitySet="Zamowienie" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Koszyk">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ogloszenie_id" Type="Int32" Nullable="false" />
+          <Property Name="uzytkownik_id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Ogloszenie" Relationship="PBXDBModel.FK__Koszyk__ogloszen__3F115E1A" FromRole="Koszyk" ToRole="Ogloszenie" />
+          <NavigationProperty Name="Uzytkownik" Relationship="PBXDBModel.FK__Koszyk__uzytkown__3E1D39E1" FromRole="Koszyk" ToRole="Uzytkownik" />
+        </EntityType>
+        <EntityType Name="Zamowienie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ogloszenie_id" Type="Int32" Nullable="false" />
+          <Property Name="uzytkownik_id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Ogloszenie" Relationship="PBXDBModel.FK__Zamowieni__oglos__3C34F16F" FromRole="Zamowienie" ToRole="Ogloszenie" />
+          <NavigationProperty Name="Uzytkownik" Relationship="PBXDBModel.FK__Zamowieni__uzytk__3B40CD36" FromRole="Zamowienie" ToRole="Uzytkownik" />
+          <Property Name="data" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Koszyk__ogloszen__3F115E1A">
+          <End Type="PBXDBModel.Ogloszenie" Role="Ogloszenie" Multiplicity="1" />
+          <End Type="PBXDBModel.Koszyk" Role="Koszyk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ogloszenie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Koszyk">
+              <PropertyRef Name="ogloszenie_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Koszyk__uzytkown__3E1D39E1">
+          <End Type="PBXDBModel.Uzytkownik" Role="Uzytkownik" Multiplicity="1" />
+          <End Type="PBXDBModel.Koszyk" Role="Koszyk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Koszyk">
+              <PropertyRef Name="uzytkownik_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Zamowieni__oglos__3C34F16F">
+          <End Type="PBXDBModel.Ogloszenie" Role="Ogloszenie" Multiplicity="1" />
+          <End Type="PBXDBModel.Zamowienie" Role="Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ogloszenie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="ogloszenie_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Zamowieni__uzytk__3B40CD36">
+          <End Type="PBXDBModel.Uzytkownik" Role="Uzytkownik" Multiplicity="1" />
+          <End Type="PBXDBModel.Zamowienie" Role="Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="uzytkownik_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -788,7 +1063,8 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ocena_od_id" ColumnName="ocena_od_id" />
                 <ScalarProperty Name="ocena_dla_id" ColumnName="ocena_dla_id" />
-                <ScalarProperty Name="ocena1" ColumnName="ocena" />
+                <ScalarProperty Name="ocena" ColumnName="ocena" />
+                <ScalarProperty Name="komentarz" ColumnName="komentarz" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -807,6 +1083,8 @@
                 <ScalarProperty Name="negocjacja" ColumnName="negocjacja" />
                 <ScalarProperty Name="pokaz_tel" ColumnName="pokaz_tel" />
                 <ScalarProperty Name="pokaz_email" ColumnName="pokaz_email" />
+                <ScalarProperty Name="zdjecie" ColumnName="zdjecie" />
+                <ScalarProperty Name="lokalizacja" ColumnName="lokalizacja" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -829,6 +1107,7 @@
                 <ScalarProperty Name="haslo" ColumnName="haslo" />
                 <ScalarProperty Name="dolaczono" ColumnName="dolaczono" />
                 <ScalarProperty Name="usunieto" ColumnName="usunieto" />
+                <ScalarProperty Name="zdjecie" ColumnName="zdjecie" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -841,6 +1120,7 @@
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="haslo" ColumnName="haslo" />
                 <ScalarProperty Name="dolaczono" ColumnName="dolaczono" />
+                <ScalarProperty Name="zdjecie" ColumnName="zdjecie" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -850,8 +1130,9 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="chat_id" ColumnName="chat_id" />
                 <ScalarProperty Name="nadawca_id" ColumnName="nadawca_id" />
-                <ScalarProperty Name="wiadomosc1" ColumnName="wiadomosc" />
+                <ScalarProperty Name="wiadomosc" ColumnName="wiadomosc" />
                 <ScalarProperty Name="wyslano" ColumnName="wyslano" />
+                <ScalarProperty Name="przeczytano" ColumnName="przeczytano" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -859,10 +1140,40 @@
             <EntityTypeMapping TypeName="PBXDBModel.Zgloszenie">
               <MappingFragment StoreEntitySet="Zgloszenie">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Ogloszenie_id" ColumnName="Ogloszenie_id" />
+                <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
                 <ScalarProperty Name="zglaszajacy_id" ColumnName="zglaszajacy_id" />
                 <ScalarProperty Name="zgloszony_id" ColumnName="zgloszony_id" />
                 <ScalarProperty Name="tresc" ColumnName="tresc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Aplikacja">
+            <EntityTypeMapping TypeName="PBXDBModel.Aplikacja">
+              <MappingFragment StoreEntitySet="Aplikacja">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
+                <ScalarProperty Name="uzytkownik_id" ColumnName="uzytkownik_id" />
+                <ScalarProperty Name="cv" ColumnName="cv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Koszyk">
+            <EntityTypeMapping TypeName="PBXDBModel.Koszyk">
+              <MappingFragment StoreEntitySet="Koszyk">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="uzytkownik_id" ColumnName="uzytkownik_id" />
+                <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zamowienie">
+            <EntityTypeMapping TypeName="PBXDBModel.Zamowienie">
+              <MappingFragment StoreEntitySet="Zamowienie">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="data" ColumnName="data" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="uzytkownik_id" ColumnName="uzytkownik_id" />
+                <ScalarProperty Name="ogloszenie_id" ColumnName="ogloszenie_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

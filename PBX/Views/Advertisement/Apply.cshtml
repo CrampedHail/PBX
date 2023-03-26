@@ -1,0 +1,54 @@
+﻿@model PBX.Models.Ogloszenie
+@{
+    ViewBag.Title = "Rekrutacja";
+}
+
+@using (Html.BeginForm("Apply", "Advertisement", Model , FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Aplikacja na ogłoszenie pracy</h4>
+        <hr />
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.opis)
+        @Html.HiddenFor(model => model.aktywne)
+        @Html.HiddenFor(model => model.dodano)
+        @Html.HiddenFor(model => model.typ)
+        @Html.HiddenFor(model => model.cena)
+        @Html.HiddenFor(model => model.negocjacja)
+        @Html.HiddenFor(model => model.pokaz_tel)
+        @Html.HiddenFor(model => model.pokaz_email)
+        @Html.HiddenFor(model => model.zdjecie)
+        @Html.HiddenFor(model => model.lokalizacja)
+
+        <div class="form-group d-flex flex-column align-items-center justify-content-center">
+            <h4>Czy chcesz wziąć udział w rekrutacji na stanowisko w ogłoszeniu <span style="color:var(--accent-color)!important;">@Html.DisplayFor(model => model.nazwa)</span>?</h4>
+        </div>
+
+        <div class="form-group d-flex flex-column align-items-center justify-content-center">
+            <h4>@ViewBag.Error</h4>
+            <p class="cv-file"></p>
+            <input class="cv-input" type="file" accept=".pdf" name="UploadedCv" />
+            <script type="text/javascript">
+            const file = document.querySelector('.cv-input');
+                file.addEventListener('change', (e) => {
+                    document.querySelector('.cv-file').innerHTML = e.target.files[0].name;
+            });
+            </script>
+        </div>
+
+
+        <div class="form-group d-flex justify-content-center">
+            <div class="d-flex justify-content-center">
+                <input type="submit" value="Aplikuj" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Powrót", "Details", new { id = Model.id })
+</div>

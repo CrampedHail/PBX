@@ -13,40 +13,25 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Usunieci
     {
-        [Required]
         [DisplayName("ID")]
         public int id { get; set; }
-
-        [Required]
         [DisplayName("Imiê")]
         public string imie { get; set; }
-
-        [Required]
         [DisplayName("Numer Telefonu")]
-        [DataType(DataType.PhoneNumber)]
         public string nr_tel { get; set; }
-
-        [Required]
-        [DisplayName("Email")]
-        [DataType(DataType.EmailAddress)]
+        [DisplayName("Adres Email")]
         public string email { get; set; }
-
-        [Required]
         [DisplayName("Has³o")]
-        [DataType(DataType.Password)]
         public string haslo { get; set; }
-
-        [Required]
         [DisplayName("Do³¹czono")]
-        [DataType(DataType.Date)]
-        public Nullable<System.DateTime> dolaczono { get; set; }
-
-        [Required]
+        public System.DateTime dolaczono { get; set; }
         [DisplayName("Usuniêto")]
-        [DataType(DataType.DateTime)]
-        public Nullable<System.DateTime> usunieto { get; set; }
+        public System.DateTime usunieto { get; set; }
+        [DisplayName("Zdjêcie")]
+        public byte[] zdjecie { get; set; }
     }
 }

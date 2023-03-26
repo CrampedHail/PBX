@@ -8,50 +8,66 @@
 <h2>Wiadomości</h2>
 @{if (Model.Count() > 0)
     {
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Uzytkownik.imie)
-                </th>
-                <th>
-                    Ogłoszenie
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Ogloszenie.cena)
-                </th>
-                <th></th>
-            </tr>
-
+        <div class="messages d-flex flex-column align-items-start align-self-center mt-3" style="width:fit-content;">
             @foreach (var item in Model)
             {
-        <tr>
-            @if ((ViewBag.user as Uzytkownik).id != item.Uzytkownik.id)
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Uzytkownik.imie)
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Uzytkownik1.imie)
-                </td>
-            }
+                <div class="d-flex justify-content-start align-items-center w-100">
+                    <a href="@Url.Action("Index", "Chat", new { id = item.id })" class="w-100 chatListItem
+                   @if (!(ViewBag.chatIsRead as List<bool>).ElementAt((ViewBag.chatIds as List<int>).IndexOf(item.id))) { @: unread-chat
+                   }
+                   " style="font-size: 1.5rem;">
+                        <div class="d-flex">
+                            @{
+                                string imgString = "data:image;base64," + Convert.ToBase64String(item.Ogloszenie.zdjecie);
+                            }
+                            <img class="picture-small" src="@imgString" />
+                            <div class="d-flex flex-column ml-5">
+                                <p class=" mb-1">
+                                    @Html.DisplayFor(modelItem => item.Ogloszenie.nazwa) - @(item.Ogloszenie.cena)zł
+                                </p>
+                                @if ((ViewBag.user as Uzytkownik).id != item.Oglaszajacy.id)
+                                {
+                                    <p class=" mb-1">
+                                        @{
+                                            string personImgString = "data:image;base64," + Convert.ToBase64String(item.Oglaszajacy.zdjecie);
+                                        }
+                                        <img class="picture-tiny" src="@personImgString" />
+                                        @Html.DisplayFor(modelItem => item.Oglaszajacy.imie)
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class=" mb-1">
+                                        @{
+                                            string personImgString = "data:image;base64," + Convert.ToBase64String(item.Zainteresowany.zdjecie);
+                                        }
+                                        <img class="picture-tiny" src="@personImgString" />
+                                        @Html.DisplayFor(modelItem => item.Zainteresowany.imie)
+                                    </p>
+                                }
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Ogloszenie.nazwa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ogloszenie.cena)
-            </td>
-            <td>
-                @Html.ActionLink("Podgląd", "Index", "Chat", new { id = item.id }, "")
-                @Html.ActionLink("Usuń", "Delete", "Chat", new { id = item.id }, "")
-            </td>
-        </tr>
+                                <p class=" mb-1">
+                                    @if (item.Wiadomosci.Last().nadawca_id == (ViewBag.user as Uzytkownik).id)
+                                    {
+                                        @: Ty:
+                                    }
+                                    @{
+                                        int maxLength = 30;
+                                        string wiadomosc = item.Wiadomosci.Last().wiadomosc.Trim();
+                                        wiadomosc = wiadomosc.Length > maxLength ? wiadomosc.Substring(0, maxLength) + "..." : wiadomosc;
+                                    }
+                                    @wiadomosc
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="ml-5" href="@Url.Action("Delete", "Chat", new { id = item.id })">
+                        <img class="fav-img" src="~/Images/delete.png" width="30" height="30" />
+                    </a>
+                </div>
             }
+        </div>
 
-        </table>
     }
     else
     {

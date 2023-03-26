@@ -35,5 +35,8 @@ namespace PBX.Models
         public virtual DbSet<Uzytkownik> Uzytkownik { get; set; }
         public virtual DbSet<Wiadomosc> Wiadomosc { get; set; }
         public virtual DbSet<Zgloszenie> Zgloszenie { get; set; }
+        public virtual DbSet<Aplikacja> Aplikacja { get; set; }
+        public virtual DbSet<Koszyk> Koszyk { get; set; }
+        public virtual DbSet<Zamowienie> Zamowienie { get; set; }
     }
 }

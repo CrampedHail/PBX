@@ -13,34 +13,24 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Wiadomosc
     {
-
-        [Required]
         [DisplayName("ID")]
         public int id { get; set; }
-
-        [Required]
-        [DisplayName("Chat ID")]
+        [DisplayName("ID Chatu")]
         public int chat_id { get; set; }
-
-        [Required]
-        [DisplayName("Nadawca ID")]
+        [DisplayName("ID Nadawcy")]
         public int nadawca_id { get; set; }
-
-        [Required]
-        [DisplayName("Treœæ")]
-        public string wiadomosc1 { get; set; }
-
-        [Required]
+        [DisplayName("Wiadomoœæ")]
+        public string wiadomosc { get; set; }
         [DisplayName("Wys³ano")]
-        [DataType(DataType.DateTime)]
         public System.DateTime wyslano { get; set; }
-
+        [DisplayName("Przeczytano")]
         public bool przeczytano { get; set; }
     
         public virtual Chat Chat { get; set; }
-        public virtual Uzytkownik Uzytkownik { get; set; }
+        public virtual Uzytkownik Nadawca { get; set; }
     }
 }

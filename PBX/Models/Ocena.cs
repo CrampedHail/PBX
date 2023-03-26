@@ -13,30 +13,22 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Ocena
     {
-
-        [Required]
         [DisplayName("ID")]
         public int id { get; set; }
-
-        [Required]
-        [DisplayName("Od")]
+        [DisplayName("ID U¿ytkownika wystawiaj¹cego Ocenê")]
         public int ocena_od_id { get; set; }
-
-        [Required]
-        [DisplayName("Dla")]
+        [DisplayName("ID U¿ytkownika otrzymuj¹cego Ocenê")]
         public int ocena_dla_id { get; set; }
-
-        [Required]
         [DisplayName("Ocena")]
-        [Range(0, 5, ErrorMessage = "Ocena musi byæ w skali 0-5")]
-        public double ocena1 { get; set; }
-
+        public double ocena { get; set; }
+        [DisplayName("Komentarz")]
         public string komentarz { get; set; }
     
-        public virtual Uzytkownik Uzytkownik { get; set; }
-        public virtual Uzytkownik Uzytkownik1 { get; set; }
+        public virtual Uzytkownik OcenaDla { get; set; }
+        public virtual Uzytkownik OcenaOd { get; set; }
     }
 }

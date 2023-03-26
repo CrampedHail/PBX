@@ -7,10 +7,10 @@
 
 <h2>Edytuj Ogłoszenie</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Advertisement", new { }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -19,67 +19,96 @@
     @Html.HiddenFor(model => model.dodano)
 
 
-    <div class="form-group d-flex justify-content-center">
-            @Html.EditorFor(model => model.nazwa, new { htmlAttributes = new { @class = "form-control", @placeholder="Tytuł" } })
-            @Html.ValidationMessageFor(model => model.nazwa, "", new { @class = "text-danger" })
-    </div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @{
+        string imgString = "data:image;base64," + Convert.ToBase64String(Model.zdjecie);
+    }
+    <img class="picture" src="@imgString"/>
+    @Html.ValidationMessageFor(model => model.zdjecie, "", new { @class = "text-danger" })
+    <input class="picture-input" type="file" accept=".jpg,.jpeg,.png" name="UploadedPicture" />
+    <script type="text/javascript">
+        const file = document.querySelector('.picture-input');
+        file.addEventListener('change', (e) => {
+            document.querySelector('.picture').src = URL.createObjectURL(e.target.files[0]);
+        });
+    </script>
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.nazwa, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.nazwa, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tytuł" } })
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.kategoria_id, "", new { @class = "text-danger" })
+    <input class="form-control" type="text" list="category-list" name="category" value="@ViewBag.currKat" />
+    <datalist id="category-list" placeholder="Wybierz kategorię...">
+        @foreach (Kategoria kat in ViewBag.kategorie as List<Kategoria>)
+        {
+            <option value="@kat.nazwa.Trim()"></option>
+        }
+    </datalist>
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.opis, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.opis, new { htmlAttributes = new { @class = "form-control", @placeholder = "Opis" } })
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.typ, "", new { @class = "text-danger" })
+    <select class="form-control" name="type" id="type-list" placeholder="Wybierz typ...">
+        @foreach (string typ in ViewBag.typy as string[])
+        {
+            if ((ViewBag.currTyp as string).Equals(typ))
+            {
+                <option value="@typ" selected>@typ</option>
+            }
+            else
+            {
+                <option value="@typ">@typ</option>
+            }
+        }
+    </select>
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.cena, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.cena, new { htmlAttributes = new { @class = "form-control", @placeholder = "Cena" } })
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.negocjacja, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.negocjacja)
+    @Html.LabelFor(model => model.negocjacja, htmlAttributes: new { @class = "pl-3" })
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.pokaz_tel, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.pokaz_tel)
+    @Html.LabelFor(model => model.pokaz_tel, htmlAttributes: new { @class = "pl-3" })
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.pokaz_email, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.pokaz_email)
+    @Html.LabelFor(model => model.pokaz_email, htmlAttributes: new { @class = "pl-3" })
+</div>
+
+<div class="form-group d-flex flex-column align-items-center justify-content-center">
+    @Html.ValidationMessageFor(model => model.lokalizacja, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.lokalizacja, new { htmlAttributes = new { @class = "form-control mb-3", @placeholder = "Lokalizacja", @id = "txt_location", @onfocusout = "updateLocation()" } })
+    <iframe id="google-map"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCCXqhU4mSHIUchFylDvyKMjB3mb9tPpf8&q= @Model.lokalizacja">
+    </iframe>
+</div>
 
     <div class="form-group d-flex justify-content-center">
-            <input class="form-control" type="text" list="category-list" name="category" value="@ViewBag.currKat" />
-            <datalist id="category-list" placeholder="Wybierz kategorię...">
-                @foreach (Kategoria kat in ViewBag.kategorie as List<Kategoria>)
-                {
-                    <option value="@kat.nazwa.Trim()"></option>
-                }
-            </datalist>
-    </div>
-
-    <div class="form-group d-flex justify-content-center">
-            @Html.EditorFor(model => model.opis, new { htmlAttributes = new { @class = "form-control", @placeholder = "Opis" } })
-            @Html.ValidationMessageFor(model => model.opis, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group d-flex justify-content-center">
-            <select class="form-control" name="type" id="type-list" placeholder="Wybierz kategorię...">
-                @foreach (string typ in ViewBag.typy as string[])
-                {
-                    if ((ViewBag.currTyp as string).Equals(typ))
-                    {
-                        <option value="@typ" selected>@typ</option>
-                    }
-                    else
-                    {
-                        <option value="@typ">@typ</option>
-                    }
-                }
-            </select>
-    </div>
-
-    <div class="form-group d-flex justify-content-center">
-            @Html.EditorFor(model => model.cena, new { htmlAttributes = new { @class = "form-control", @placeholder = "Cena" } })
-            @Html.ValidationMessageFor(model => model.cena, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group d-flex justify-content-center">
-        @Html.EditorFor(model => model.negocjacja)
-        @Html.LabelFor(model => model.negocjacja, htmlAttributes: new { @class = "pl-3" })
-        @Html.ValidationMessageFor(model => model.negocjacja, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group d-flex justify-content-center">
-        @Html.EditorFor(model => model.pokaz_tel)
-        @Html.LabelFor(model => model.pokaz_tel, htmlAttributes: new { @class = "pl-3" })
-        @Html.ValidationMessageFor(model => model.pokaz_tel, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group d-flex justify-content-center">
-        @Html.EditorFor(model => model.pokaz_email)
-        @Html.LabelFor(model => model.pokaz_email, htmlAttributes: new { @class = "pl-3" })
-        @Html.ValidationMessageFor(model => model.pokaz_email, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group d-flex justify-content-center">
-            <input type="submit" value="Zapisz zmiany" class="btn btn-danger" />
+        <input type="submit" value="Zapisz zmiany" class="btn btn-danger" />
     </div>
 </div>
 }
@@ -87,3 +116,14 @@
 <div>
     @Html.ActionLink("Powrót", "Index", "Home")
 </div>
+
+<script type="text/javascript">
+    function updateLocation() {
+        let frame = document.getElementById("google-map")
+        let textbox = document.getElementById("txt_location")
+        var location = textbox.value;
+        if (location == "") location = "Poland";
+        frame.src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCCXqhU4mSHIUchFylDvyKMjB3mb9tPpf8&q=" + location;
+        console.log(textbox.value);
+    }
+</script> 

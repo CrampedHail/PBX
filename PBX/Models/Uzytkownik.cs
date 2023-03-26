@@ -13,13 +13,9 @@ namespace PBX.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
-    public abstract class ViewBaseModel
-    {
-        public abstract int Id { get; }
-        public abstract string Name { get; }
-    }
-    
+
     public partial class Uzytkownik
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -27,60 +23,56 @@ namespace PBX.Models
         {
             this.Chat = new HashSet<Chat>();
             this.Chat1 = new HashSet<Chat>();
-            this.Ocena = new HashSet<Ocena>();
-            this.Ocena1 = new HashSet<Ocena>();
-            this.Ogloszenie = new HashSet<Ogloszenie>();
-            this.Ulubiona = new HashSet<Ulubiona>();
-            this.Wiadomosc = new HashSet<Wiadomosc>();
-            this.Zgloszenie = new HashSet<Zgloszenie>();
-            this.Zgloszenie1 = new HashSet<Zgloszenie>();
+            this.OtrzymaneOceny = new HashSet<Ocena>();
+            this.WystawioneOceny = new HashSet<Ocena>();
+            this.Ogloszenia = new HashSet<Ogloszenie>();
+            this.Ulubione = new HashSet<Ulubiona>();
+            this.Aplikacje = new HashSet<Aplikacja>();
+            this.Wiadomosci = new HashSet<Wiadomosc>();
+            this.ZgloszeniaPrzez = new HashSet<Zgloszenie>();
+            this.ZgloszeniaNa = new HashSet<Zgloszenie>();
+            this.Koszyk = new HashSet<Koszyk>();
+            this.Zamowienie = new HashSet<Zamowienie>();
         }
 
-        [Required]
         [DisplayName("ID")]
         public int id { get; set; }
-
-        [Required]
         [DisplayName("Imiê")]
         public string imie { get; set; }
-
-        [Required]
         [DisplayName("Numer Telefonu")]
-        [DataType(DataType.PhoneNumber)]
         public string nr_tel { get; set; }
-
-        [Required]
-        [DisplayName("Email")]
-        [DataType(DataType.EmailAddress)]
+        [DisplayName("Adres Email")]
         public string email { get; set; }
-
-        [Required]
         [DisplayName("Has³o")]
-        [DataType(DataType.Password)]
         public string haslo { get; set; }
-
         [DisplayName("Do³¹czono")]
-        [DataType(DataType.Date)]
-        public Nullable<System.DateTime> dolaczono { get; set; }
-
+        public System.DateTime dolaczono { get; set; }
+        [DisplayName("Zdjêcie")]
+        public byte[] zdjecie { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ocena> Ocena { get; set; }
+        public virtual ICollection<Ocena> OtrzymaneOceny { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ocena> Ocena1 { get; set; }
+        public virtual ICollection<Ocena> WystawioneOceny { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ogloszenie> Ogloszenie { get; set; }
+        public virtual ICollection<Ogloszenie> Ogloszenia { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ulubiona> Ulubiona { get; set; }
+        public virtual ICollection<Ulubiona> Ulubione { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Wiadomosc> Wiadomosc { get; set; }
+        public virtual ICollection<Aplikacja> Aplikacje { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Zgloszenie> Zgloszenie { get; set; }
+        public virtual ICollection<Wiadomosc> Wiadomosci { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Zgloszenie> Zgloszenie1 { get; set; }
+        public virtual ICollection<Zgloszenie> ZgloszeniaPrzez { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Zgloszenie> ZgloszeniaNa { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Koszyk> Koszyk { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Zamowienie> Zamowienie { get; set; }
     }
 }

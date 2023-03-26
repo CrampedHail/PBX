@@ -26,11 +26,6 @@
                             <option value="@sort">@sort</option>
                         }
                     }
-                    @*<option value="new" selected>od najnowszych</option>
-                        <option value="old">od najstarszych</option>
-                        <option value="low">od najtańszych</option>
-                        <option value="high">od najdroższych</option>
-                        <option value="name">nazwą alfabetycznie</option>*@
                 </select>
             </div>
 
@@ -75,6 +70,35 @@
 </div>
 
 <fieldset>
+    @{ if (Model.Count() <= 0)
+        {
+            <h4>Nie znaleziono żadnych ogłoszeń.</h4>
+        }
+        else
+        {
+            <div class="searchList">
+                @foreach (var item in Model)
+                {
+                    <a href="@Url.Action("Details", new { id = item.id })">
+                        <div class="searchItem d-flex align-items-center">
+                            @{
+                                string imgString = "data:image;base64," + Convert.ToBase64String(item.zdjecie);
+                            }
+                            <img class="picture" src="@imgString"/>
+                            <div class="d-flex flex-column justify-content-start w-100 mr-3">
+                                <h4 style="width: fit-content; text-align: start;">@item.nazwa</h4>
+                                <div class="d-flex justify-content-between w-100">
+                                    @if (item.cena == 0) {<p>Za darmo</p>}
+                                    else { <p>@item.cena zł</p>}
+                                <p>@item.dodano.ToShortDateString()</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+    }
     @if (Model.Count() > 0)
     {
         if (ViewBag.searched != null)
@@ -88,84 +112,26 @@
         <p>Znaleziono @ViewBag.found wyników</p>
 
 
-        <table class="table">
-            <tr>
-                <th>
-                    Nazwa Ogłszenia
-                </th>
-                <th>
-                    Dodano
-                </th>
-                <th>
-                    Typ
-                </th>
-                <th>
-                    Cena
-                </th>
-                <th>
-                    Kategoria
-                </th>
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.nazwa)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.dodano)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.typ)
-                    </td>
-                    <td>
-                        @if (item.cena == 0)
-                        {
-                            <span>Za darmo</span>
-                        }
-                        else
-                        {
-                            <span>@Html.DisplayFor(modelItem => item.cena)</span>
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Kategoria.nazwa)
-                    </td>
-                    @{
-                        if (Session["user"] as PBX.Models.Uzytkownik != null && (Session["user"] as PBX.Models.Uzytkownik).id == item.wystawil_id)
-                        {
-                            <td>
-                                @Html.ActionLink("Edytuj", "Edit", new { id = item.id }) |
-                                @Html.ActionLink("Szczegóły", "Details", new { id = item.id }) |
-                                @Html.ActionLink("Usuń", "Delete", new { id = item.id })
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                @Html.ActionLink("Szczegóły", "Details", new { id = item.id })
-                            </td>
-                        }
-                    }
-
-                </tr>
-            }
-
-        </table>
+   
     }
     else
     {
         <h2>Nie naleziono żadnych ogłoszeń.</h2>
     }
-<p>
-    Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
-</p>
-    
+    <p>
+        Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
+    </p>
+
 
     @Html.PagedListPager(Model, page => Url.Action("Search",
-        new { page, sortOrder = ViewBag.sort, query = ViewBag.searched, 
-            typ = ViewBag.type, kategoria = ViewBag.category, 
-            price_od = ViewBag.price_from, price_do = ViewBag.price_to}))
+        new
+            {
+                page,
+                sortOrder = ViewBag.sort,
+                query = ViewBag.searched,
+            typ = ViewBag.type,
+                kategoria = ViewBag.category,
+            price_od = ViewBag.price_from,
+                price_do = ViewBag.price_to
+            }))
 </fieldset>
