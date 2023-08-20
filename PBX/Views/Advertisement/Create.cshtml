@@ -20,6 +20,7 @@
                 <img class="picture" />
                 @Html.ValidationMessageFor(model => model.zdjecie, "", new { @class = "text-danger" })
                 <input class="picture-input" type="file" accept=".jpg,.jpeg,.png" name="UploadedPicture" />
+
                 <script type="text/javascript">
                     const file = document.querySelector('.picture-input');
                     file.addEventListener('change', (e) => {
@@ -56,36 +57,66 @@
 
             <div class="form-group d-flex flex-column align-items-center justify-content-center flex-column align-items-center">
                 @Html.ValidationMessageFor(model => model.cena, "", new { @class = "text-danger" })
-                @Html.EditorFor(model => model.cena, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                @Html.EditorFor(model => model.cena, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder="Cena / Wynagrodzenie", @pattern= "[0-9]*" } })
             </div>
         </div>
 
         <div style="width:40%; min-width:280px;">
             <div class="form-group d-flex flex-column align-items-center justify-content-center">
                 @Html.ValidationMessageFor(model => model.negocjacja, "", new { @class = "text-danger" })
-                <div class="form-group d-flexjustify-content-center">
+                <div class="form-group d-flex justify-content-center">
                     @Html.CheckBoxFor(model => model.negocjacja)
                     @Html.LabelFor(model => model.negocjacja, htmlAttributes: new { @class = "pl-3" })
+                    <div class="function-hint">
+                        ?
+                    </div>
+                    <span class="function-hint-description">Jeśli zaznaczysz tę opcję oglądający to ogłoszenie będą poinformowani o możliwości negocjacji</span>
                 </div>
             </div>
 
             <div class="form-group d-flex flex-column align-items-center justify-content-center">
                 @Html.ValidationMessageFor(model => model.pokaz_tel, "", new { @class = "text-danger" })
-                <div class="form-group d-flexjustify-content-center">
+                <div class="form-group d-flex justify-content-center">
                     @Html.CheckBoxFor(model => model.pokaz_tel)
                     @Html.LabelFor(model => model.pokaz_tel, htmlAttributes: new { @class = "pl-3" })
+                    <div class="function-hint">
+                        ?
+                    </div>
+                    <span class="function-hint-description">Jeśli zaznaczysz tę opcję oglądający to ogłoszenie będą widzieć twój numer telefonu</span>
                 </div>
             </div>
 
             <div class="form-group d-flex flex-column align-items-center justify-content-center">
                 @Html.ValidationMessageFor(model => model.pokaz_email, "", new { @class = "text-danger" })
-                <div class="form-group d-flexjustify-content-center">
+                <div class="form-group d-flex justify-content-center">
                     @Html.CheckBoxFor(model => model.pokaz_email)
                     @Html.LabelFor(model => model.pokaz_email, htmlAttributes: new { @class = "pl-3" })
+                    <div class="function-hint">
+                        ?
+                    </div>
+                    <span class="function-hint-description">Jeśli zaznaczysz tę opcję oglądający to ogłoszenie będą widzieć twój adres email</span>
+                </div>
+            </div>
+
+            <div class="form-group d-flex flex-column align-items-center justify-content-center">
+                @Html.ValidationMessageFor(model => model.auto_przedluzanie, "", new { @class = "text-danger" })
+                <div class="form-group d-flex justify-content-center">
+                    @Html.CheckBoxFor(model => model.auto_przedluzanie)
+                    @Html.LabelFor(model => model.auto_przedluzanie, htmlAttributes: new { @class = "pl-3" })
+                    <div class="function-hint">
+                        ?
+                    </div>
+                    <span class="function-hint-description">Jeśli zaznaczysz tę opcję ogłoszenie pozostanie aktywne nawet po zakończonym zamówieniu</span>
                 </div>
             </div>
 
             <div class="form-group d-flex flex-column align-items-center flex-column align-items-center justify-content-center">
+                <div class="location-hints d-flex">
+                    @foreach (string location in (ViewBag.locations))
+                    {
+                        <div class="location-hint" onclick="insertLocationHint('@location')">@location</div>
+                    }
+                </div>
                 @Html.ValidationMessageFor(model => model.lokalizacja, "", new { @class = "text-danger" })
                 @Html.EditorFor(model => model.lokalizacja, new { htmlAttributes = new { @class = "form-control mb-3", @placeholder = "Lokalizacja", @id = "txt_location", @onfocusout = "updateLocation()" } })
                 <iframe id="google-map"
@@ -117,4 +148,19 @@
         if (location == "") location = "Poland";
         frame.src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCCXqhU4mSHIUchFylDvyKMjB3mb9tPpf8&q=" + location;
     }
+
+    function insertLocationHint(l) {
+        document.querySelector('#txt_location').value = l;
+        updateLocation();
+    }
 </script> 
+<style>
+    div.location-hint{
+        color: var(--white);
+        background-color: var(--accent-color);
+        padding: 3px 6px;
+        border-radius: 13px;
+        margin: 10px 10px;
+        cursor:pointer;
+    }
+</style>

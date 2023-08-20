@@ -13,17 +13,17 @@
             <th>
                 @Html.DisplayNameFor(model => model.nazwa)
             </th>
-            <th>
+            <th class="hideIfScreeenIsNarrow">
                 @Html.DisplayNameFor(model => model.dodano)
             </th>
-            <th>
+            <th class="hideIfScreeenIsNarrow">
                 @Html.DisplayNameFor(model => model.typ)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.cena)
+                Cena / Wynagrodzenie
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Kategoria.nazwa)
+            <th class="hideIfScreeenIsNarrow">
+                Kategoria
             </th>
             <th></th>
         </tr>
@@ -34,16 +34,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.nazwa)
                 </td>
-                <td>
+                <td class="hideIfScreeenIsNarrow">
                     @Html.DisplayFor(modelItem => item.dodano)
                 </td>
-                <td>
+                <td class="hideIfScreeenIsNarrow">
                     @Html.DisplayFor(modelItem => item.typ)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.cena)
                 </td>
-                <td>
+                <td class="hideIfScreeenIsNarrow">
                     @Html.DisplayFor(modelItem => item.Kategoria.nazwa)
                 </td>
                 <td>

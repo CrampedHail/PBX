@@ -70,6 +70,7 @@
     <NavigationProperty Name="Zgloszenie" Relationship="Self.FK__Zgloszeni__Oglos__48CFD27E" FromRole="Ogloszenie" ToRole="Zgloszenie" />
     <NavigationProperty Name="Koszyk" Relationship="PBXDBModel.FK__Koszyk__ogloszen__3F115E1A" FromRole="Ogloszenie" ToRole="Koszyk" />
     <NavigationProperty Name="Zamowienie" Relationship="PBXDBModel.FK__Zamowieni__oglos__3C34F16F" FromRole="Ogloszenie" ToRole="Zamowienie" />
+    <Property Name="auto_przedluzanie" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="Ulubiona">
     <Key>

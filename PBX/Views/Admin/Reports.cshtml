@@ -1,10 +1,45 @@
 ﻿@model IEnumerable<PBX.Models.Zgloszenie>
-
+@using PBX.Models
 @{
     ViewBag.Title = "Zgłoszenia";
 }
 
 <h2>Zgłoszenia</h2>
+<div class="d-flex justify-content-between">
+    @Html.ActionLink("Powrót", "Index", "Admin")
+
+    <div class="dropdown mb-3">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filtrowanie
+        </button>
+        <div id="filter" class="dropdown-menu px-4 py-3" aria-labelledby="dropdownMenuButton">
+            @using (Html.BeginForm("Reports", "Admin", "", FormMethod.Get, new { @class = "form-inline d-flex flex-column align-items-end" }))
+            {
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="content">Treść: </label>
+                    <input class="form-control" type="text" id="content" value="@ViewBag.content" name="content" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="advertisement">Ogłoszenie: </label>
+                    <input class="form-control" type="text" id="advertisement" value="@ViewBag.advertisement" name="advertisement" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="reported_user">Zgłoszono: </label>
+                    <input class="form-control" type="text" id="reported_user" value="@ViewBag.reported_user" name="reported_user" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="reporting_user">Zgłoszono: </label>
+                    <input class="form-control" type="text" id="reporting_user" value="@ViewBag.reporting_user" name="reporting_user" />
+                </div>
+
+                <input class="btn btn-primary mt-2" type="submit" value="Zastosuj" />
+            }
+        </div>
+    </div>
+</div>
 @{
     if (Model.Count() > 0)
     {
@@ -27,23 +62,23 @@
 
             @foreach (var item in Model)
             {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.tresc)
-            </td>
-            <td>
-                @Html.ActionLink(item.Ogloszenie.nazwa, "AdDetails", new { id = item.Ogloszenie_id })
-            </td>
-            <td>
-                @Html.ActionLink(item.Uzytkownik1.imie, "UserDetails", new { id = item.zgloszony_id })
-            </td>
-            <td>
-                @Html.ActionLink(item.Uzytkownik.imie, "UserDetails", new { id = item.zglaszajacy_id })
-            </td>
-            <td>
-                @Html.ActionLink("Usuń zgłoszenie", "DeleteReport", new { id = item.id })
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tresc)
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.Ogloszenie.nazwa, "AdDetails", new { id = item.ogloszenie_id })
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.Zgloszony.imie, "UserDetails", new { id = item.zgloszony_id })
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.Zglaszajacy.imie, "UserDetails", new { id = item.zglaszajacy_id })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Usuń zgłoszenie", "DeleteReport", new { id = item.id })
+                    </td>
+                </tr>
             }
 
         </table>
@@ -52,7 +87,7 @@
     else
     {
         <h4>
-            Nie ma żadnych zgłoszeń.
+            Nie znaleziono żadnych zgłoszeń.
         </h4>
     }
 }

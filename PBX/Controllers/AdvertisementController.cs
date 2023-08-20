@@ -25,6 +25,7 @@ namespace PBX.Controllers
             new SelectListItem() { Text="Zamówienie wysłane", Value= "Zamówienie wysłane" },
             new SelectListItem() { Text="W doręczeniu", Value= "W doręczeniu" },
             new SelectListItem() { Text="Zamówienie doręczone", Value= "Zamówienie doręczone" },
+            new SelectListItem() { Text="Zamówienie odebrane", Value= "Zamówienie odebrane" },
             new SelectListItem() { Text="Zamówienie zakończone", Value= "Zamówienie zakończone" },
         };
     // GET: Advertisement
@@ -48,6 +49,7 @@ namespace PBX.Controllers
             ViewBag.searched = searchQuery==null || searchQuery==""? null : searchQuery;
             ViewBag.kategorie = _db.Kategoria.ToList();
             ViewBag.typy = typy.ToList();
+
             List<Ogloszenie> results = searchQuery == null || searchQuery == "" ?
                 _db.Ogloszenie.OrderBy(o=>o.dodano).ToList() :
                 _db.Ogloszenie.Where(o => 
@@ -90,8 +92,12 @@ namespace PBX.Controllers
             ViewBag.category = category;
             if (category!=null && category.Length > 0)
             {
-                results = results.Where(o => o.Kategoria.nazwa.Equals(category)).ToList();
+                int category_id = _db.Kategoria.Where(k => k.nazwa.Equals(category)).Select(k => k.id).First();
+                List<int> categories = new List<int>(category_id);
+                categories.AddRange(findAllSubcategories(category_id));
+                results = results.Where(o => categories.Contains(o.kategoria_id)).ToList();
             }
+
             string type = collection["ad-type"];
             type = typ != null ? typ : type;
             type = type != null && type.Equals("Oferta sprzedazy") ? "Oferta sprzedaży" : type;
@@ -104,6 +110,14 @@ namespace PBX.Controllers
                     : collection["ad-type"];
                 results = results.Where(o => o.typ.Equals(type)).ToList();
             }
+
+            string location = collection["location"];
+            if(location!=null && location != "")
+            {
+                results = results.Where(o => o.lokalizacja.Equals(location)).ToList();
+                ViewBag.location = location;
+            }
+
             int price_from;
             try
             {
@@ -145,6 +159,17 @@ namespace PBX.Controllers
             int pageSize = 10;
             var res = from r in results select r;
             return View(res.ToPagedList(pageNumber, pageSize));
+        }
+
+        private List<int> findAllSubcategories(int id)
+        {
+            List<int> categories = new List<int>();
+            categories.Add(id);
+            foreach (Kategoria k in _db.Kategoria.Where(k => k.nadkategoria_id==id))
+            {
+                categories.AddRange(findAllSubcategories(k.id));
+            }
+            return categories;
         }
 
 
@@ -198,6 +223,7 @@ namespace PBX.Controllers
             ViewBag.reported = _db.Zgloszenie.Where(z => z.ogloszenie_id == id && z.zglaszajacy_id == user.id).Count() > 0;
             ViewBag.applied = _db.Aplikacja.Where(a => a.ogloszenie_id == id && a.uzytkownik_id == user.id).Count() > 0;
             ViewBag.addedToCart = _db.Koszyk.Where(k => k.ogloszenie_id == id && k.uzytkownik_id == user.id).Count() > 0;
+            ViewBag.ordered = _db.Zamowienie.Where(z => z.ogloszenie_id == id && z.uzytkownik_id == user.id).Count() > 0;
             return View(_db.Ogloszenie.Find(id));
         }
 
@@ -222,7 +248,13 @@ namespace PBX.Controllers
             ViewBag.user = user;
             ViewBag.kategorie = _db.Kategoria.ToList();
             ViewBag.typy = typy;
-            return View(new Ogloszenie());
+            List<string> locations = new List<string>();
+            ViewBag.locations = _db.Ogloszenie
+                .Where(o => o.wystawil_id == user.id)
+                .Select(o => o.lokalizacja)
+                .ToHashSet()
+                .Take(3).ToList();
+            return View();
         }
 
         // POST: Advertisement/Create
@@ -236,18 +268,22 @@ namespace PBX.Controllers
             ViewBag.kategorie = _db.Kategoria.ToList();
             ViewBag.typy = typy;
 
-            bool nazwaIsVulgar = ContainsVulgarism(o.nazwa);
-            bool opisIsVulgar = ContainsVulgarism(o.opis);
-            bool lokalizacjaIsVulgar = ContainsVulgarism(o.lokalizacja);
-            bool kategoriaIsVulgar = ContainsVulgarism(collection["category"]);
-            if (nazwaIsVulgar || opisIsVulgar || lokalizacjaIsVulgar || kategoriaIsVulgar)
-            {
-                if (nazwaIsVulgar) ModelState.AddModelError(nameof(o.nazwa), "W podanej nazwie znajduje się nieładne słowo!");
-                if (opisIsVulgar) ModelState.AddModelError(nameof(o.opis), "W podanym opisie znajduje się nieładne słowo!");
-                if (kategoriaIsVulgar) ModelState.AddModelError(nameof(o.kategoria_id), "W podanej kategorii znajduje się nieładne słowo!");
-                if (lokalizacjaIsVulgar) ModelState.AddModelError(nameof(o.lokalizacja), "W podanej lokalizacji znajduje się nieładne słowo!");
-                return View(o);
-            }
+            if(o.cena<0) ModelState.AddModelError(nameof(o.cena), "Cena/Wynagrodzenie nie może być liczbą ujemną!");
+            if (o.cena > 9999999) ModelState.AddModelError(nameof(o.cena), "Pole Cena/Wynagrodzenie jest za duże!");
+
+            if (o.nazwa == null || o.nazwa.Length <= 0) ModelState.AddModelError(nameof(o.nazwa), "Pole z nazwą ogłoszenia jest wymagane!");
+            else if (ContainsVulgarism(o.nazwa)) ModelState.AddModelError(nameof(o.nazwa), "W podanej nazwie znajduje się nieładne słowo!");
+
+            if (o.opis == null || o.opis.Length <= 0) ModelState.AddModelError(nameof(o.opis), "Pole z opisem ogłoszenia jest wymagane!");
+            else if (ContainsVulgarism(o.opis)) ModelState.AddModelError(nameof(o.opis), "W podanym opisie znajduje się nieładne słowo!");
+
+            if (collection["category"] == null || collection["category"].Length <= 0) ModelState.AddModelError(nameof(o.kategoria_id), "Pole z kategorią ogłoszenia jest wymagane!");
+            else if (ContainsVulgarism(collection["category"])) ModelState.AddModelError(nameof(o.kategoria_id), "W podanej kategorii znajduje się nieładne słowo!");
+
+            if (o.lokalizacja == null || o.lokalizacja.Length <= 0) ModelState.AddModelError(nameof(o.lokalizacja), "Pole z lokalizacją ogłoszenia jest wymagane!");
+            else if (ContainsVulgarism(o.lokalizacja)) ModelState.AddModelError(nameof(o.lokalizacja), "W podanej lokalizacji znajduje się nieładne słowo!");
+
+            if (!ModelState.IsValid) return View(o);
 
             int katFound;
             try
@@ -370,18 +406,22 @@ namespace PBX.Controllers
             ViewBag.currKat = collection["category"].Trim();
             var originalAd = _db.Ogloszenie.Find(id);
 
-            bool nazwaIsVulgar = ContainsVulgarism(o.nazwa);
-            bool opisIsVulgar = ContainsVulgarism(o.opis);
-            bool kategoriaIsVulgar = ContainsVulgarism(collection["category"]);
-            bool lokalizacjaIsVulgar = ContainsVulgarism(o.lokalizacja);
-            if (nazwaIsVulgar || opisIsVulgar || lokalizacjaIsVulgar || kategoriaIsVulgar)
-            {
-                if (nazwaIsVulgar) ModelState.AddModelError(nameof(o.nazwa), "W podanej nazwie znajduje się nieładne słowo!");
-                if (opisIsVulgar) ModelState.AddModelError(nameof(o.opis), "W podanym opisie znajduje się nieładne słowo!");
-                if (kategoriaIsVulgar) ModelState.AddModelError(nameof(o.kategoria_id), "W podanej kategorii znajduje się nieładne słowo!");
-                if (lokalizacjaIsVulgar) ModelState.AddModelError(nameof(o.lokalizacja), "W podanej lokalizacji znajduje się nieładne słowo!");
-                return View(o);
-            }
+            if (o.cena < 0) ModelState.AddModelError(nameof(o.cena), "Pole Cena/Wynagrodzenie nie może być liczbą ujemną!");
+            if (o.cena > 9999999) ModelState.AddModelError(nameof(o.cena), "Pole Cena/Wynagrodzenie jest za duże!");
+
+            if (o.nazwa == null || o.nazwa.Length <= 0) ModelState.AddModelError(nameof(o.nazwa), "Pole z nazwą ogłoszenia jest wymagane!");
+            else if (ContainsVulgarism(o.nazwa)) ModelState.AddModelError(nameof(o.nazwa), "W podanej nazwie znajduje się nieładne słowo!");
+
+            if (o.opis == null || o.opis.Length <= 0) ModelState.AddModelError(nameof(o.opis), "Pole z opisem ogłoszenia jest wymagane!");
+            else if (ContainsVulgarism(o.opis)) ModelState.AddModelError(nameof(o.opis), "W podanym opisie znajduje się nieładne słowo!");
+
+            if (collection["category"] == null || collection["category"].Length <= 0) ModelState.AddModelError(nameof(o.kategoria_id), "Pole z kategorią ogłoszenia jest wymagane!");
+            else if (ContainsVulgarism(collection["category"])) ModelState.AddModelError(nameof(o.kategoria_id), "W podanej kategorii znajduje się nieładne słowo!");
+
+            if (o.lokalizacja == null || o.lokalizacja.Length <= 0) ModelState.AddModelError(nameof(o.lokalizacja), "Pole z lokalizacją ogłoszenia jest wymagane!");
+            else if (ContainsVulgarism(o.lokalizacja)) ModelState.AddModelError(nameof(o.lokalizacja), "W podanej lokalizacji znajduje się nieładne słowo!");
+
+            if (!ModelState.IsValid) return View(originalAd);
 
             try
             {
@@ -394,9 +434,10 @@ namespace PBX.Controllers
                 catch
                 {
                     ModelState.AddModelError(nameof(o.kategoria_id), "Podano nieprawidłową kategorię ogłoszenia.");
-                    return RedirectToAction("Edit");
+                    return View(o);
                 }
 
+                bool originalPictureIsTooSmalOrNull = originalAd.zdjecie == null || originalAd.zdjecie.Length <= 0;
                 bool pictureIsNullOrTooSmall = UploadedPicture == null || UploadedPicture.ContentLength <= 0;
                 bool pictureIsTooBig = UploadedPicture == null ? false : UploadedPicture.ContentLength >= 8388608;
                 string fileExtension = UploadedPicture == null ? ".png" : Path.GetExtension(UploadedPicture.FileName);
@@ -425,7 +466,7 @@ namespace PBX.Controllers
                         originalAd.zdjecie = o.zdjecie;
                     }
                 }
-                else
+                else if (originalPictureIsTooSmalOrNull)
                 {
                     Image img = Image.FromFile(@"C:\Users\Paweł Brandt\Documents\GitHub\PBX\PBX\Images\no_image.png");
                     using (MemoryStream ms = new MemoryStream())
@@ -440,7 +481,7 @@ namespace PBX.Controllers
                 originalAd.typ = collection["type"];
                 o.typ = collection["type"];
                 bool valid = ModelState.IsValid;
-                if (TryUpdateModel(originalAd, new string[] { "nazwa", "opis", "cena", "negocjacja", "pokaz_tel", "pokaz_email", "lokalizacja", "zdjecie" } ))
+                if (TryUpdateModel(originalAd, new string[] { "nazwa", "opis", "cena", "negocjacja", "pokaz_tel", "pokaz_email", "lokalizacja", "zdjecie", "auto_przedluzanie" } ))
                 {
                     _db.SaveChanges();
                     return RedirectToAction("Index", "Home");
@@ -474,7 +515,15 @@ namespace PBX.Controllers
 
             try
             {
-                _db.Ogloszenie.Remove(_db.Ogloszenie.Find(id));
+                o = _db.Ogloszenie.Find(id);
+                _db.Wiadomosc.RemoveRange(_db.Wiadomosc.Where(w => w.Chat.ogloszenie_id==o.id));
+                _db.Chat.RemoveRange(_db.Chat.Where(ch => ch.ogloszenie_id==o.id));
+                _db.Aplikacja.RemoveRange(_db.Aplikacja.Where(a => a.ogloszenie_id == o.id));
+                _db.Zamowienie.RemoveRange(_db.Zamowienie.Where(z => z.ogloszenie_id == o.id));
+                _db.Zgloszenie.RemoveRange(_db.Zgloszenie.Where(z => z.ogloszenie_id == o.id));
+                _db.Ulubiona.RemoveRange(_db.Ulubiona.Where(u => u.ogloszenie_id == o.id));
+                _db.Koszyk.RemoveRange(_db.Koszyk.Where(k => k.ogloszenie_id == o.id));
+                _db.Ogloszenie.Remove(o);
                 _db.SaveChanges();
                 return RedirectToAction("MyAds");
             }
@@ -714,15 +763,68 @@ namespace PBX.Controllers
             ViewBag.user = user;
 
             Zamowienie zamowienie = _db.Zamowienie.Where(z => z.id == id).First();
-            if(TryUpdateModel(zamowienie, new string[] { "status" }))
+            if (TryUpdateModel(zamowienie, new string[] { "status" }))
             {
                 _db.SaveChanges();
                 emailSender.SendEmail(zamowienie.Uzytkownik.email,
                     "Nowy status zamówienia!",
-                    "<strong>To już niedługo!</strong></br>Twoje zamówienie dotyczące ogłoszenia \""+zamowienie.Ogloszenie.nazwa+"\" właśnie zmieniło status na: "+zamowienie.status+".");
+                    "<strong>To już niedługo!</strong></br>Twoje zamówienie dotyczące ogłoszenia \"" + zamowienie.Ogloszenie.nazwa + "\" właśnie zmieniło status na: " + zamowienie.status + ".");
             }
 
             return RedirectToAction("Sold");
+        }
+        public ActionResult OrderReceived(int id)
+        {
+            Uzytkownik user = SharedSession["user"] as Uzytkownik;
+            if (user == null) return RedirectToAction("Login", "Account");
+            ViewBag.user = user;
+
+            Zamowienie zamowienie = _db.Zamowienie.Where(z => z.id == id).First();
+            zamowienie.status = "Zamówienie odebrane";
+            if (TryUpdateModel(zamowienie, new string[] { "status" }))
+            {
+                _db.SaveChanges();
+                emailSender.SendEmail(zamowienie.Ogloszenie.Uzytkownik.email,
+                    "Kupujący odebrał zamówione produkty!",
+                    "<strong>Zakończ zamówienie!</strong></br>Zamówienie dotyczące Twojego ogłoszenia \"" + zamowienie.Ogloszenie.nazwa + "\" właśnie zostało odebrane.");
+            }
+
+            return RedirectToAction("Bought");
+        }
+        public ActionResult FinaliseOrder(int id)
+        {
+            Uzytkownik user = SharedSession["user"] as Uzytkownik;
+            if (user == null) return RedirectToAction("Login", "Account");
+            ViewBag.user = user;
+
+            Zamowienie zamowienie = _db.Zamowienie.Where(z => z.id == id).First();
+            zamowienie.status = "Zamówienie zakończone";
+            if (TryUpdateModel(zamowienie, new string[] { "status" }))
+            {
+                Ogloszenie o = _db.Ogloszenie.Find(zamowienie.ogloszenie_id);
+                o.aktywne = o.auto_przedluzanie;
+                _db.SaveChanges();
+                emailSender.SendEmail(zamowienie.Uzytkownik.email,
+                    "Sprzedający zakończył zamówienie!",
+                    "<strong>Wszystko gotowe!</strong></br>Twoje zamówienie dotyczące ogłoszenia \"" + zamowienie.Ogloszenie.nazwa + "\" właśnie zostało zakończone.");
+            }
+
+            return RedirectToAction("Sold");
+        }
+        public ActionResult ActivateAd(int id)
+        {
+            Uzytkownik user = SharedSession["user"] as Uzytkownik;
+            if (user == null) return RedirectToAction("Login", "Account");
+            ViewBag.user = user;
+
+            Ogloszenie o = _db.Ogloszenie.Find(id);
+            o.aktywne = true;
+            if (TryUpdateModel(o, new string[] { "aktywne" }))
+            {
+                _db.SaveChanges();
+            }
+
+            return RedirectToAction("MyAds");
         }
     }
 }

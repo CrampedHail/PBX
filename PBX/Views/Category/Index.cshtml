@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<PBX.Models.Kategoria>
+@using PBX.Models
 @{
     ViewBag.Title = "Lista Kategorii";
 }
@@ -6,9 +7,45 @@
 <h2>
     @ViewBag.Title
 </h2>
-<p>
+<div class="d-flex justify-content-between">
+    @Html.ActionLink("Powrót", "Index", "Admin")
     @Html.ActionLink("Dodaj Kategorię", "Create")
-</p>
+
+    <div class="dropdown mb-3">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filtrowanie
+        </button>
+        <div id="filter" class="dropdown-menu px-4 py-3" aria-labelledby="dropdownMenuButton">
+            @using (Html.BeginForm("Index", "Category", "", FormMethod.Get, new { @class = "form-inline d-flex flex-column align-items-end" }))
+            {
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="category">ID: </label>
+                    <input class="form-control" type="text" id="category" value="@ViewBag.category_id" name="category_id" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="category">Nazwa: </label>
+                    <input class="form-control" type="text" list="category-list" id="category" value="@ViewBag.category" name="category" />
+                    <datalist id="category-list" placeholder="Wybierz kategorię...">
+                        @foreach (Kategoria kat in ViewBag.kategorie as List<Kategoria>)
+                        {
+                            <option value="@kat.nazwa.Trim()"></option>
+                        }
+                    </datalist>
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="parent_category">Nadkategoria: </label>
+                    <input class="form-control" type="text" id="parent_category" value="@ViewBag.parent_category_id" name="parent_category_id" />
+                </div>
+
+                <input class="btn btn-primary mt-2" type="submit" value="Zastosuj" />
+            }
+        </div>
+    </div>
+</div>
+@if(Model.Count()>0)
+{ 
 <table class="table">
     <tr>
         <th>
@@ -32,3 +69,8 @@
     }
 
 </table>
+}
+else 
+{
+<h4>Nie znaleziono ogłoszeń w podanych kryteriach.</h4>
+}

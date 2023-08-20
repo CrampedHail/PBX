@@ -8,16 +8,17 @@
 }
 else
 {
+    <h2>Kupione przedmioty</h2>
     <table class="table">
         <thead>
             <tr>
                 <th>
                     Ogłoszenie
                 </th>
-                <th>
+                <th class="hideIfScreeenIsNarrow">
                     Cena
                 </th>
-                <th>
+                <th class="hideIfScreeenIsNarrow">
                     Data zamówienia
                 </th>
                 <th>
@@ -29,17 +30,24 @@ else
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Ogloszenie.nazwa)
+
+                    @Html.ActionLink(item.Ogloszenie.nazwa, "Details", new { id = item.Ogloszenie.id })
                 </td>
-                <td>
+                <td class="hideIfScreeenIsNarrow">
                     @Html.DisplayFor(modelItem => item.Ogloszenie.cena)
                 </td>
-                <td>
+                <td class="hideIfScreeenIsNarrow">
                     @Html.DisplayFor(modelItem => item.data)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.status)
                 </td>
+                @if(!item.status.Equals("Zamówienie odebrane") && !item.status.Equals("Zamówienie zakończone")) 
+                { 
+                    <td>
+                        @Html.ActionLink("Potwierdź otrzymanie zamówienia", "OrderReceived", new { id=item.id })
+                    </td>
+                }
             </tr>
         }
 

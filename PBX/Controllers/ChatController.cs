@@ -93,20 +93,22 @@ namespace PBX.Controllers
             try
             {
                 Uzytkownik user = SharedSession["user"] as Uzytkownik;
-                if (user != null)
-                {
-                    ViewBag.user = user;
-                    _db.Wiadomosc.Add(new Wiadomosc
-                    {
-                        chat_id = chat,
-                        nadawca_id = user.id,
-                        wiadomosc = collection["wiadomosc"],
-                        wyslano = DateTime.Now
-                    });
-                    _db.SaveChanges();
+                if (user == null) RedirectToAction("Index", "Home");
+                ViewBag.user = user;
+                var wiad = collection["wiadomosc"].Length;
+                if (collection["wiadomosc"] == null || collection["wiadomosc"].Length<=0)
                     return RedirectToAction("Index", "Chat", new { id = _db.Chat.Find(chat).id });
-                }
-                return RedirectToAction("Index", "Home");
+
+                _db.Wiadomosc.Add(new Wiadomosc
+                {
+                    chat_id = chat,
+                    nadawca_id = user.id,
+                    wiadomosc = collection["wiadomosc"],
+                    wyslano = DateTime.Now
+                });
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Chat", new { id = _db.Chat.Find(chat).id });
+
             }
             catch
             {

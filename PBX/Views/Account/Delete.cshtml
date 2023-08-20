@@ -1,30 +1,40 @@
 ﻿@model PBX.Models.Uzytkownik
-
+@{ 
+    ViewBag.title = "Usuwanie konta";
+}
 <h3>Usuwanie konta</h3>
 <div>
     <hr />
     <h3>Czy na pewno chcesz usunąć swoje konto?</h3>
-    
-    <div class="form-actions no-color d-flex flex-column align-items-center">
-        <input type="submit" value="Usuń" class="btn btn-danger openModal" />
-        @Html.ActionLink("Anuluj", "Details", new { id=Model.id })
-    </div>
-    <dialog class="deleteModal">
-        @using (Html.BeginForm("Delete", "Account", new { id = Model.id }, FormMethod.Post, ""))
-        {
-            @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color d-flex flex-column align-items-center">
-            <h4>Wszystkie wiadomości, chaty, ogłoszenia i wszystko co związane z Twoim kontem zostanie usunięte bezpowrotnie.</h4>
-            <input type="submit" value="Tak" class="btn btn-danger" />
-            @Html.ActionLink("Anuluj", "Details", new { id = Model.id })
+    <div class="form-actions no-color d-flex flex-column align-items-center">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Usuń
+        </button>
+        @Html.ActionLink("Anuluj", "Details", new { id = Model.id })
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Usuwanie konta</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("Delete", "Account", new { id = Model.id }, FormMethod.Post, ""))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <h4>Wszystkie wiadomości, chaty, ogłoszenia i wszystko co związane z Twoim kontem zostanie usunięte bezpowrotnie.</h4>
+                        <h4>Czy na pewno chcesz usunąć konto?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary mr-3">Tak</button>
+                        @Html.ActionLink("Nie", "Details", new { id = Model.id })
+                    </div>
+                }
+                </div>
         </div>
-        }
-    </dialog>
+    </div>
 </div>
-<script type="text/javascript">
-    const openButton = document.querySelector("input.openModal");
-    openButton.addEventListener("click", () => {
-        document.querySelector("dialog.deleteModal").showModal();
-    })
-</script>

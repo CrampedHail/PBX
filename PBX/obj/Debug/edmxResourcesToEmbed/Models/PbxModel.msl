@@ -43,6 +43,7 @@
     <EntitySetMapping Name="Ogloszenie">
       <EntityTypeMapping TypeName="PBXDBModel.Ogloszenie">
         <MappingFragment StoreEntitySet="Ogloszenie">
+          <ScalarProperty Name="auto_przedluzanie" ColumnName="auto_przedluzanie" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="wystawil_id" ColumnName="wystawil_id" />
           <ScalarProperty Name="kategoria_id" ColumnName="kategoria_id" />

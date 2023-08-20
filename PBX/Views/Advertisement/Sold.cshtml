@@ -8,19 +8,20 @@
 }
 else
 {
+    <h2>Sprzedane przedmioty</h2>
     <table class="table">
         <thead>
             <tr>
                 <th>
                     Ogłoszenie
                 </th>
-                <th>
+                <th class="hideIfScreeenIsNarrow">
                     Kupujący
                 </th>
-                <th>
+                <th class="hideIfScreeenIsNarrow">
                     Cena
                 </th>
-                <th>
+                <th class="hideIfScreeenIsNarrow">
                     Data zamówienia
                 </th>
                 <th>
@@ -32,35 +33,44 @@ else
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Ogloszenie.nazwa)
+                    @Html.ActionLink(item.Ogloszenie.nazwa, "Details", "Advertisement", new { id = item.Ogloszenie.id })
                 </td>
-                <td>
+                <td class="hideIfScreeenIsNarrow">
                     @Html.DisplayFor(modelItem => item.Uzytkownik.imie)
                 </td>
-                <td>
+                <td class="hideIfScreeenIsNarrow">
                     @Html.DisplayFor(modelItem => item.Ogloszenie.cena)
                 </td>
-                <td>
+                <td class="hideIfScreeenIsNarrow">
                     @Html.DisplayFor(modelItem => item.data)
                 </td>
                 <td>
-                    @{
+                    @if (!item.status.Equals("Zamówienie odebrane") && !item.status.Equals("Zamówienie zakończone")) 
+                    { 
                         SelectListItem[] statusy = new SelectListItem[]
-                        {
-                        new SelectListItem() { Text="Nowe zamówienie", Value= "Nowe zamówienie" },
-                        new SelectListItem() { Text="Zamówienie przygotowane", Value= "Zamówienie przygotowane" },
-                        new SelectListItem() { Text="Zamówienie wysłane", Value= "Zamówienie wysłane" },
-                        new SelectListItem() { Text="W doręczeniu", Value= "W doręczeniu" },
-                        new SelectListItem() { Text="Zamówienie doręczone", Value= "Zamówienie doręczone" },
-                        new SelectListItem() { Text="Zamówienie zakończone", Value= "Zamówienie zakończone" }
-                    };
+                            {
+                            new SelectListItem() { Text="Nowe zamówienie", Value= "Nowe zamówienie" },
+                            new SelectListItem() { Text="Zamówienie przygotowane", Value= "Zamówienie przygotowane" },
+                            new SelectListItem() { Text="Zamówienie wysłane", Value= "Zamówienie wysłane" },
+                            new SelectListItem() { Text="W doręczeniu", Value= "W doręczeniu" },
+                            new SelectListItem() { Text="Zamówienie doręczone", Value= "Zamówienie doręczone" }
+                        };
                         var selected = statusy.Where(s => s.Text.Equals(item.status)).First();
                         selected.Selected = true;
+                        using (Html.BeginForm("ChangeOrderStatus", "Advertisement", new { id = item.id, status = "status" }, FormMethod.Post, new { @class = "form" + item.id, @id = item.status }))
+                        {
+                            @Html.DropDownListFor(modelItem => item.status, statusy, new { @onchange = "statusChanged(this)", @id = item.id })
+                            <button type="submit" class=" btn btn-default btn-@item.id" hidden>Zapisz</button>
+                        }
                     }
-                    @using (Html.BeginForm("ChangeOrderStatus", "Advertisement", new { id = item.id, status = "status" }, FormMethod.Post, new { @class = "form" + item.id, @id = item.status }))
+                    else if(item.status.Equals("Zamówienie odebrane"))
                     {
-                        @Html.DropDownListFor(modelItem => item.status, statusy, new { @onchange = "statusChanged(this)", @id = item.id })
-                        <button type="submit" class="btn-@item.id" hidden>Zapisz</button>
+                        <span>Zamówienie odebrane</span><br/>
+                        @Html.ActionLink("Zakończ zamówienie", "FinaliseOrder", new { id = item.id })
+                    }
+                    else
+                    {
+                        <span>@item.status</span>
                     }
                 </td>
             </tr>

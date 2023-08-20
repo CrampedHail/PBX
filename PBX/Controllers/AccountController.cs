@@ -22,33 +22,25 @@ namespace PBX.Controllers
         public ActionResult Details(int id=-1)
         {
             Uzytkownik user = SharedSession["user"] as Uzytkownik;
-            if (user != null)
-            {
-                ViewBag.user = user;
-                if (id < 0) id = user.id;
-                int iloscOcen = _db.Ocena.Where(o => o.ocena_dla_id == id).Count();
-                double wartoscOcen = iloscOcen > 0 ? _db.Ocena.Where(o => o.ocena_dla_id==id).Sum(o => o.ocena) : 0;
-                double sredniaOcen = iloscOcen > 0 ? wartoscOcen / iloscOcen * 1.0 : 0.0;
-                ViewBag.iloscOcen = iloscOcen;
-                ViewBag.sredniaOcen = (sredniaOcen * 1.0);
-                ViewBag.cal = Int32.Parse(Math.Round(sredniaOcen).ToString()).ToString();
-                ViewBag.resz = Int32.Parse((Math.Round(sredniaOcen % 1, 1)*10).ToString()).ToString(); 
+            if (user == null) return RedirectToAction("Login", "Account");
 
-                int chatsFound = _db.Chat.Where(c =>
-                (c.oglaszajacy_id == id && c.zainteresowany_id == user.id) ||
-                (c.zainteresowany_id == id && c.oglaszajacy_id == user.id)
-                ).Count();
+            ViewBag.user = user;
+            if (id < 0) id = user.id;
+            int iloscOcen = _db.Ocena.Where(o => o.ocena_dla_id == id).Count();
+            double wartoscOcen = iloscOcen > 0 ? _db.Ocena.Where(o => o.ocena_dla_id==id).Sum(o => o.ocena) : 0;
+            double sredniaOcen = iloscOcen > 0 ? wartoscOcen / iloscOcen * 1.0 : 0.0;
+            ViewBag.iloscOcen = iloscOcen;
+            ViewBag.sredniaOcen = (sredniaOcen * 1.0);
+            ViewBag.cal = Int32.Parse(Math.Round(sredniaOcen).ToString()).ToString();
+            ViewBag.resz = Int32.Parse((Math.Round(sredniaOcen % 1, 1)*10).ToString()).ToString();
 
-                int messagesInChat = 0;
-                messagesInChat += _db.Wiadomosc.Where(w => w.nadawca_id == id).Count() > 0 ? 1 : 0;
-                messagesInChat += _db.Wiadomosc.Where(w => w.nadawca_id == user.id).Count() > 0 ? 1 : 0;
+            int ordersFound = _db.Zamowienie
+                .Where(z => z.uzytkownik_id == user.id || z.Ogloszenie.wystawil_id == user.id).Count();
+            int ratesFound = _db.Ocena.Where(o => o.ocena_od_id == user.id && o.ocena_dla_id == id).Count();
 
-                int ratesFound = _db.Ocena.Where(o => o.ocena_od_id == user.id && o.ocena_dla_id == id).Count();
-                ViewBag.mozeWystawicOcene = ratesFound == 0 && chatsFound > 0 && messagesInChat >= 2;
-                Uzytkownik foundUser = _db.Uzytkownik.Find(id);
-                return id > 0 ? View(foundUser) : View(user);
-            }
-            else return RedirectToAction("Login", "Account");
+            ViewBag.mozeWystawicOcene = ratesFound == 0 && ordersFound > 0;
+            Uzytkownik foundUser = _db.Uzytkownik.Find(id);
+            return id > 0 ? View(foundUser) : View(user);
         }
 
         // GET: Account/AddRate/5
@@ -73,20 +65,30 @@ namespace PBX.Controllers
         public ActionResult AddRate(int id, FormCollection collection)
         {
             Uzytkownik user = SharedSession["user"] as Uzytkownik;
-            if (user != null)
+            if (user == null) return RedirectToAction("Login", "Account");
+            ViewBag.user = user;
+
+            try
             {
-                ViewBag.user = user;
+                double rate = Double.Parse(collection["ocena"]);
+                if (rate < 0 || rate > 5) throw new Exception();
+
                 Ocena ocena = new Ocena()
                 {
                     ocena_dla_id = id,
                     ocena_od_id = user.id,
-                    ocena = Double.Parse(collection["ocena"])
-            };
+                    ocena = rate
+                };
                 _db.Ocena.Add(ocena);
                 _db.SaveChanges();
                 return RedirectToAction("Details", "Account", new { id = ocena.ocena_dla_id });
             }
-            return RedirectToAction("Login", "Account");
+            catch
+            {
+                ModelState.AddModelError("ocena", "Nieprawidłowa wartość oceny");
+                return View();
+            }
+            
         }
 
         // GET: Account/Create
@@ -102,22 +104,32 @@ namespace PBX.Controllers
 
         // POST: Account/Create
         [HttpPost]
-        public ActionResult Create(Uzytkownik newUser, HttpPostedFileBase UploadedAvatar)
+        public ActionResult Create(Uzytkownik newUser, HttpPostedFileBase UploadedAvatar, FormCollection collection)
         {
             Uzytkownik user = SharedSession["user"] as Uzytkownik;
             if (user != null) ViewBag.user = user;
 
+            bool privacyPolicyAccepted = collection["privacy-policy"].Contains("true") ? true : false;
+            if (!privacyPolicyAccepted) ModelState.AddModelError("PrivacyError", "Aby korzystać z serwisu należy zaakceptować politykę prywatności.");
+            
             try
             {
+                if (newUser.imie==null || newUser.imie.Length <= 0) ModelState.AddModelError(nameof(newUser.imie), "Pole z imieniem jest wymagane!");
+                else if (ContainsVulgarism(newUser.imie)) ModelState.AddModelError(nameof(newUser.imie), "Podany numer telefonu zawiera nieładne słowo!");
+
+                if (newUser.haslo == null || newUser.haslo.Length <= 0) ModelState.AddModelError(nameof(newUser.haslo), "Pole z hasłem jest wymagane!");
+
                 int samePhones = _db.Uzytkownik.Where(u => u.nr_tel.Equals(newUser.nr_tel)).Count()
                     + _db.Usunieci.Where(u => u.nr_tel.Equals(newUser.nr_tel)).Count();
-                if (samePhones > 0) ModelState.AddModelError(nameof(newUser.nr_tel), "Podany numer telefonu jest już zajęty!");
-                if (ContainsVulgarism(newUser.nr_tel)) ModelState.AddModelError(nameof(newUser.nr_tel), "Podany numer telefonu zawiera nieładne słowo!");
+                if (newUser.nr_tel == null || newUser.nr_tel.Length <= 0) ModelState.AddModelError(nameof(newUser.nr_tel), "Pole z numerem telefonu jest wymagane!");
+                else if (samePhones > 0) ModelState.AddModelError(nameof(newUser.nr_tel), "Podany numer telefonu jest już zajęty!");
+                else if (ContainsVulgarism(newUser.nr_tel)) ModelState.AddModelError(nameof(newUser.nr_tel), "Podany numer telefonu zawiera nieładne słowo!");
 
                 int sameEmails = _db.Uzytkownik.Where(u => u.email.Equals(newUser.email)).Count()
                     + _db.Uzytkownik.Where(u => u.email.Equals(newUser.email)).Count();
-                if (sameEmails > 0) ModelState.AddModelError(nameof(newUser.email), "Podany adres email jest już zajęty!");
-                if (ContainsVulgarism(newUser.email)) ModelState.AddModelError(nameof(newUser.email), "Podany adres email zawiera nieładne słowo!");
+                if (newUser.email == null || newUser.email.Length <= 0) ModelState.AddModelError(nameof(newUser.email), "Pole z adresem mailowym jest wymagane!");
+                else if (sameEmails > 0) ModelState.AddModelError(nameof(newUser.email), "Podany adres email jest już zajęty!");
+                else if (ContainsVulgarism(newUser.email)) ModelState.AddModelError(nameof(newUser.email), "Podany adres email zawiera nieładne słowo!");
 
                 bool avatarIsNull = UploadedAvatar==null;
                 bool avatarIsTooBig = avatarIsNull ? false : UploadedAvatar.ContentLength >= 8388608;
@@ -127,13 +139,16 @@ namespace PBX.Controllers
                 bool avatarWrongFileType = !fileExtension.Equals(".png") && !fileExtension.Equals(".jpg") && !fileExtension.Equals(".jpeg");
                 if (avatarWrongFileType) ModelState.AddModelError(nameof(newUser.zdjecie), "Wrzucone zdjęcie ma złe rozszerzenie! (Przyjmujemy pliki .png, .jpg i .jpeg)");
                 
+                ModelState["dolaczono"].Errors.Clear();
+
+                if (!ModelState.IsValid) return View();
+
+
                 newUser.imie = newUser.imie.Trim();
                 newUser.dolaczono = DateTime.Today;
                 newUser.haslo = BC.HashPassword(newUser.haslo);
 
-                if (!ModelState.IsValid) return View();
-
-                if(!avatarIsNull){
+                if (!avatarIsNull){
                     using (Stream inputStream = UploadedAvatar.InputStream)
                     {
                         MemoryStream memoryStream = inputStream as MemoryStream;
@@ -167,6 +182,7 @@ namespace PBX.Controllers
 
         private bool ContainsVulgarism(string text)
         {
+            if (text.Length <= 0) return false;
             string[] words = System.IO.File.ReadAllLines(@"C:\Users\Paweł Brandt\Documents\GitHub\PBX\PBX\Content\ForbiddenWords\wulgaryzmy.txt");
             foreach (string word in words)
             {
@@ -472,14 +488,20 @@ namespace PBX.Controllers
             string password = "";
             try
             {
+                if (collection["imie"] == null || collection["imie"].Length <= 0)
+                    ModelState.AddModelError("imie", "Do resetowania hasła należy podać imię podane przy tworzeniu konta.");
+                if (collection["nr_tel"] == null || collection["nr_tel"].Length <= 0)
+                    ModelState.AddModelError("nr_tel", "Do resetowania hasła należy podać numer telefonu podany przy tworzeniu konta.");
+                if (collection["email"] == null || collection["email"].Length <= 0)
+                    ModelState.AddModelError("email", "Do resetowania hasła należy podać adres email podany przy tworzeniu konta.");
+                if (!ModelState.IsValid)
+                    return View();
+
                 string name = collection["imie"];
                 string phone = collection["nr_tel"];
                 string email = collection["email"];
                 password = GeneratePassword();
-                ViewBag.Error = password;
-                List<Uzytkownik> found = _db.Uzytkownik.Where(u => u.nr_tel.Equals(phone)).ToList();
-                /*found = found.Where(u => u.imie.Equals(name)).ToList();*/
-                found = found.Where(u => u.email.Equals(email)).ToList();
+                List<Uzytkownik> found = _db.Uzytkownik.Where(u => u.nr_tel.Equals(phone) && u.email.Equals(email)).ToList();
                 Uzytkownik userFound = found.First();
                 _db.Uzytkownik.Find(userFound.id).haslo = BC.HashPassword(password);
                 _db.SaveChanges();
@@ -491,12 +513,12 @@ namespace PBX.Controllers
             }
             catch(ArgumentNullException)
             {
-                ViewBag.Error += "Nie znaleziono użytkownika o wprowadzonych danych.";
-                return View();
+                ModelState.AddModelError("Error", "Nie znaleziono użytkownika o wprowadzonych danych.");
+                return View(); 
             }
             catch
             {
-                ViewBag.Error += "Wystąpił błąd. Proszę spróbować później. ";
+                ModelState.AddModelError("Error", "Wystąpił błąd. Proszę spróbować później.");
                 return View();
             }
         }
@@ -518,9 +540,20 @@ namespace PBX.Controllers
             if (user != null) ViewBag.user = user;
             try
             {
+                _db.Ulubiona.RemoveRange(_db.Ulubiona.Where(u => u.Ogloszenie.wystawil_id==user.id || u.uzytkownik_id==user.id));
+                _db.Zgloszenie.RemoveRange(_db.Zgloszenie.Where(z => z.zglaszajacy_id==user.id || z.zgloszony_id==user.id || z.Ogloszenie.wystawil_id==user.id));
+                _db.Aplikacja.RemoveRange(_db.Aplikacja.Where(a => a.uzytkownik_id == user.id || a.Ogloszenie.wystawil_id==user.id));
+                _db.Zamowienie.RemoveRange(_db.Zamowienie.Where(z => z.uzytkownik_id == user.id || z.Ogloszenie.wystawil_id == user.id));
+                _db.Koszyk.RemoveRange(_db.Koszyk.Where(k => k.uzytkownik_id == user.id || k.Ogloszenie.wystawil_id == user.id));
+                _db.Ocena.RemoveRange(_db.Ocena.Where(o => o.ocena_od_id == user.id || o.ocena_dla_id == user.id));
+                _db.Wiadomosc.RemoveRange(_db.Wiadomosc.Where(w => w.Chat.oglaszajacy_id == user.id || w.Chat.zainteresowany_id == user.id));
+                _db.Chat.RemoveRange(_db.Chat.Where(ch => ch.oglaszajacy_id==user.id || ch.zainteresowany_id==user.id));
+                _db.Ogloszenie.RemoveRange(_db.Ogloszenie.Where(o => o.wystawil_id == user.id));
                 _db.Uzytkownik.Remove(_db.Uzytkownik.Find(id));
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                SharedSession["user"] = null;
+                SharedSession["admin"] = null;
+                return RedirectToAction("Index", "Home");
             }
             catch
             {

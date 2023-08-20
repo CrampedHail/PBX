@@ -19,14 +19,14 @@
                     @Html.DisplayFor(model => model.nazwa)
                 </td>
             </tr>
-            @if (Model.Kategoria2 != null)
+            @if (Model.Nadkategoria != null)
             {
                 <tr>
                     <td class="table-cell-text-right">
                         <strong>Nadkategoria:</strong>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Kategoria2.nazwa)
+                        @Html.DisplayFor(model => model.Nadkategoria.nazwa)
                     </td>
                 </tr>
             }

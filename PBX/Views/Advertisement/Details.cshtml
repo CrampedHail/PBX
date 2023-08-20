@@ -6,7 +6,7 @@
 }
 
 <h3>Szczegóły Ogłoszenia</h3>
-<div>
+<div class="ad-details">
     <div class="d-flex justify-content-center mt-5">
         <div class="d-flex justify-content-center mr-5">
             @{
@@ -25,7 +25,7 @@
                 {
                     <span>
                         -
-                        @Html.DisplayFor(model => model.cena)
+                        <span>@Html.DisplayFor(model => model.cena)</span>zł
 
                         @if (Model.negocjacja)
                         {
@@ -40,144 +40,164 @@
         </div>
     </div>
 
-
-    <hr style="margin-bottom:.5rem;" />
-
-    @if (Model.wystawil_id != (ViewBag.user as Uzytkownik).id)
+    @if (Model.aktywne)
     {
-        <p class="d-flex" style="justify-content:space-between;">
-            @if (ViewBag.fav > 0)
-            {
-                <a href="@Url.Action("RemoveFavorite", "Advertisement", new {id=Model.id})">
-                    <img class="fav-img" src="~/Images/heart_full.png" width="30" height="30" />
-                    Usuń z ulubionych
-                </a>
-            }
-            else
-            {
-                <a href="@Url.Action("AddFavorite", "Advertisement", new {id=Model.id})">
-                    <img class="fav-img" src="~/Images/favorite.png" width="30" height="30" />
-                    Dodaj do ulubionych
-                </a>
-            }
+        <hr style="margin-bottom:.5rem;" />
 
-            @Html.ActionLink("Napisz wiadomość", "Create", "Chat", new { id = Model.id }, "")
-
-            @if (!ViewBag.reported)
-            {
-
-                @Html.ActionLink("Zgłoś ogłoszenie", "Create", "Report", new { id = Model.id }, "")
-
-            }
-            else
-            {
-                <span>Ogłoszenie zostało już zgłoszone. @Html.ActionLink("Anuluj zgłoszenie", "Cancel", "Report", new { id = Model.id }, "")</span>
-            }
-        </p>
-        if (Model.typ.Equals("Oferta pracy"))
+        if (Model.wystawil_id != (ViewBag.user as Uzytkownik).id)
         {
-            <p class="d-flex justify-content-center">
-                @if (!ViewBag.applied)
+            <p class="d-flex" style="justify-content:space-between;">
+                @if (ViewBag.fav > 0)
                 {
-                    @Html.ActionLink("Aplikuj", "Apply", "Advertisement", new { id = Model.id }, new { enctype = "multipart/form-data" });
-                }
-                else
-                {
-                    <span>Aplikacja została wysłana. @Html.ActionLink("Wycofaj aplikację", "WithdrawApplication", new { id = Model.id })</span>
-                }
-            </p>
-        }
-        if (Model.typ.Equals("Oferta sprzedaży"))
-        {
-            <p class="d-flex justify-content-center">
-                @if (!ViewBag.addedToCart)
-                {
-                    <a href="@Url.Action("AddToCart", "Advertisement", new { id = Model.id })">
-                        <img src="~/Images/shopping_bag.png" width="30" height="30" />
-                        Dodaj do koszyka
+                    <a href="@Url.Action("RemoveFavorite", "Advertisement", new {id=Model.id})">
+                        <img class="fav-img" src="~/Images/heart_full.png" width="30" height="30" />
+                        <span class="hideIfScreeenIsNarrow">Usuń z ulubionych</span>
                     </a>
                 }
                 else
                 {
-                    <span>To ogłoszenie masz już w koszyku. @Html.ActionLink("Usuń z koszyka", "RemoveFromCart", new { ogloszenie_id = Model.id })</span>
+                    <a href="@Url.Action("AddFavorite", "Advertisement", new {id=Model.id})">
+                        <img class="fav-img" src="~/Images/favorite.png" width="30" height="30" />
+                        <span class="hideIfScreeenIsNarrow">Dodaj do ulubionych</span>
+                    </a>
                 }
-          
+
+                <a href="@Url.Action("Create", "Chat", new {id=Model.id})">
+                    <img class="fav-img" src="~/Images/chat.png" width="30" height="30" />
+                    <span class="hideIfScreeenIsNarrow">Napisz wiadomość</span>
+                </a>
+
+                @if (!ViewBag.reported)
+                {
+
+                    @Html.ActionLink("Zgłoś ogłoszenie", "Create", "Report", new { id = Model.id }, "")
+
+                }
+                else
+                {
+                    <span><span class="hideIfScreeenIsNarrow">Ogłoszenie zostało już zgłoszone. </span> @Html.ActionLink("Anuluj zgłoszenie", "Cancel", "Report", new { id = Model.id }, "")</span>
+                }
             </p>
+            if (Model.typ.Equals("Oferta pracy"))
+            {
+                <p class="d-flex justify-content-center">
+                    @if (!ViewBag.applied)
+                    {
+                        @Html.ActionLink("Aplikuj", "Apply", "Advertisement", new { id = Model.id }, new { enctype = "multipart/form-data" });
+                    }
+                    else
+                    {
+                        <span><span class="hideIfScreeenIsNarrow">Aplikacja została wysłana. </span> @Html.ActionLink("Wycofaj aplikację", "WithdrawApplication", new { id = Model.id })</span>
+                    }
+                </p>
+            }
+            if (Model.typ.Equals("Oferta sprzedaży"))
+            {
+
+
+                <p class="d-flex justify-content-center">
+                    @if (!ViewBag.ordered)
+                    {
+                        if (!ViewBag.addedToCart)
+                        {
+                            <a href="@Url.Action("AddToCart", "Advertisement", new { id = Model.id })">
+                                <img src="~/Images/shopping_bag.png" width="30" height="30" />
+                                Dodaj do koszyka
+                            </a>
+                        }
+                        else
+                        {
+                            <span>To ogłoszenie masz już w koszyku. @Html.ActionLink("Usuń z koszyka", "RemoveFromCart", new { ogloszenie_id = Model.id })</span>
+                        }
+                    }
+                    else
+                    {
+                        <span>Zamówienie na to ogłoszenie zostało już złożone.</span>
+                    }
+
+                </p>
+            }
         }
-    }
-    else
-    {
-        <p class="d-flex justify-content-center">
-            @Html.ActionLink("Edytuj", "Edit", new { id = Model.id })
-        </p>
-        if (Model.typ.Equals("Oferta pracy"))
+        else if (Model.wystawil_id == (ViewBag.user as Uzytkownik).id)
         {
             <p class="d-flex justify-content-center">
-                @Html.ActionLink("Zobacz aplikacje", "Applications", new { id = Model.id })
+                @Html.ActionLink("Edytuj", "Edit", new { id = Model.id })
             </p>
+            if (Model.typ.Equals("Oferta pracy"))
+            {
+                <p class="d-flex justify-content-center">
+                    @Html.ActionLink("Zobacz aplikacje", "Applications", new { id = Model.id })
+                </p>
+            }
         }
-    }
-
-
-    <div class="d-flex justify-content-around w-100">
-        <div class="" style="min-width:40%;">
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.typ)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.typ)
-                </dd>
-                <dt>
-                    Kategoria
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Kategoria.nazwa)
-                </dd>
-                @if (Model.pokaz_tel)
-                {
+        <div class="d-flex justify-content-around w-100">
+            <div class="" style="min-width:40%;">
+                <dl class="dl-horizontal">
                     <dt>
-                        Numer Telefonu
+                        @Html.DisplayNameFor(model => model.typ)
                     </dt>
-
                     <dd>
-                        <a href="tel:@Model.Uzytkownik.nr_tel" title="Naciśnij aby zadzwonić">@Model.Uzytkownik.nr_tel</a>
+                        @Html.DisplayFor(model => model.typ)
                     </dd>
-                }
-                @if (Model.pokaz_email)
-                {
                     <dt>
-                        Adres Email
+                        Kategoria
                     </dt>
-
                     <dd>
-                        <a href="mailto:@Model.Uzytkownik.email" title="Naciśnij aby wysłać maila">@Model.Uzytkownik.email</a>
+                        @Html.DisplayFor(model => model.Kategoria.nazwa)
                     </dd>
-                }
-            </dl>
+                    @if (Model.pokaz_tel)
+                    {
+                        <dt>
+                            Numer Telefonu
+                        </dt>
+
+                        <dd>
+                            <a href="tel:@Model.Uzytkownik.nr_tel" title="Naciśnij aby zadzwonić">@Model.Uzytkownik.nr_tel</a>
+                        </dd>
+                    }
+                    @if (Model.pokaz_email)
+                    {
+                        <dt>
+                            Adres Email
+                        </dt>
+
+                        <dd>
+                            <a href="mailto:@Model.Uzytkownik.email" title="Naciśnij aby wysłać maila">@Model.Uzytkownik.email</a>
+                        </dd>
+                    }
+                </dl>
+            </div>
+
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                <fieldset class="desc-fs">
+                    <legend>
+                        Opis
+                    </legend>
+                    <p>
+                        @Html.DisplayFor(model => model.opis)
+                    </p>
+                </fieldset>
+            </div>
         </div>
 
         <div class="d-flex flex-column align-items-center justify-content-center">
-            <fieldset class="desc-fs">
-                <legend>
-                    Opis
-                </legend>
-                <p>
-                    @Html.DisplayFor(model => model.opis)
-                </p>
-            </fieldset>
+            <h4>@Model.lokalizacja</h4>
+            <iframe id="google-map"
+                    loading="lazy"
+                    allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCCXqhU4mSHIUchFylDvyKMjB3mb9tPpf8&q= @Model.lokalizacja">
+            </iframe>
         </div>
-    </div>
+    }
+    else
+    {
+        <h2>Ogłoszenie nieaktualne</h2>
+    }
 
-    <div class="d-flex flex-column align-items-center justify-content-center">
-        <h4>@Model.lokalizacja</h4>
-        <iframe id="google-map"
-                loading="lazy"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCCXqhU4mSHIUchFylDvyKMjB3mb9tPpf8&q= @Model.lokalizacja">
-        </iframe>
-    </div>
+
+
+
 
 
 

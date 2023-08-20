@@ -70,6 +70,7 @@
     <Property Name="pokaz_email" Type="bit" Nullable="false" />
     <Property Name="zdjecie" Type="varbinary(max)" Nullable="false" />
     <Property Name="lokalizacja" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="auto_przedluzanie" Type="bit" />
   </EntityType>
   <EntityType Name="Ulubiona">
     <Key>
@@ -123,7 +124,7 @@
     <Property Name="uzytkownik_id" Type="int" Nullable="false" />
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="data" Type="datetime" Nullable="false" />
-    <Property Name="status" Type="nvarchar" MaxLength="20" />
+    <Property Name="status" Type="nvarchar" MaxLength="30" Nullable="false" />
   </EntityType>
   <EntityType Name="Zgloszenie">
     <Key>

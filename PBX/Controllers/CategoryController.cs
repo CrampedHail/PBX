@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,15 +12,34 @@ namespace PBX.Controllers
     {
         private PBXDBEntities _db = new PBXDBEntities();
         // GET: Category
-        public ActionResult Index()
+        public ActionResult Index(int? category_id, string category, int? parent_category_id)
         {
             Admin admin = SharedSession["admin"] as Admin;
-            if (admin != null)
+            if (admin == null) return RedirectToAction("Login", "Account");
+
+            ViewBag.kategorie = _db.Kategoria.ToList();
+
+            List<Kategoria> results = _db.Kategoria.ToList();
+
+            if (category_id != null || category_id <= 0)
             {
-                ViewBag.Admin = admin;
-                return View(_db.Kategoria.ToList());
+                results = results.Where(k => k.id == category_id).ToList();
+                ViewBag.category_id = category_id;
             }
-            else return RedirectToAction("Login", "Account");
+
+
+            if (category != null && !category.Equals("")) { 
+                results = results.Where(k => k.nazwa.ToLower().Contains(category.ToLower())).ToList();
+                ViewBag.category = category;
+            }
+
+            if (parent_category_id != null || parent_category_id <= 0) { 
+                results = results.Where(k => k.nadkategoria_id == parent_category_id).ToList();
+                ViewBag.parent_category_id = parent_category_id;
+            }
+
+            ViewBag.Admin = admin;
+            return View(results);
         }
 
         // GET: Category/Details/5
@@ -133,9 +153,8 @@ namespace PBX.Controllers
                 ViewBag.Admin = admin;
                 try
                 {
-                    // TODO: Add update logic here
                     if (_db.Kategoria.Where(k => k.nazwa.Equals(kat.nazwa)).Count() > 1) throw new IndexOutOfRangeException();
-                    int? nadkategoria_id = _db.Kategoria.
+                    int nadkategoria_id = _db.Kategoria.
                         Where(k => k.nazwa.Equals(kat.Nadkategoria.nazwa)).
                         Select(k => k.id).Count() > 0
                         ? _db.Kategoria.
@@ -145,7 +164,9 @@ namespace PBX.Controllers
                         : -1;
                     if (nadkategoria_id < 0) throw new FormatException();
                     Kategoria originalKat = _db.Kategoria.Find(id);
-                    if (TryUpdateModel(originalKat, new string[] { "nazwa", "nadkategoria_id" }))
+                    originalKat.nazwa = kat.nazwa;
+                    originalKat.nadkategoria_id = nadkategoria_id;
+                    if (TryUpdateModel(kat, new string[] { "nazwa", "nadkategoria_id" }))
                     {
                         _db.SaveChanges();
                         return RedirectToAction("Index");

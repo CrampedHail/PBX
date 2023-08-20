@@ -37,103 +37,94 @@
         {
             <div class="navbar navbar-inverse navbar-fixed-top sticky" id="navbar-div" style="border-color:lightgray;">
                 <nav class="navbar navbar-expand-lg navbar-light w-100" style="margin-bottom:0px;">
-                    <a class="navbar-item" href="@Url.Action("Index", "Home")">
-                        <img src="~/Images/shopping_bag.png" width="40" height="40" alt="">
-                    </a>
-                    <a class="" id="brand" href="@Url.Action("Index", "Home")">
-                        PBX
-                    </a>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto w-100 justify-items-between align-items-center">
-                            <li class="nav-item">
+                        <a class="navbar-item" href="@Url.Action("Index", "Home")">
+                            <img src="~/Images/shopping_bag.png" width="40" height="40" alt="" class="hideIfScreeenIsNarrow">
+                            <span id="brand">PBX</span>
+                        </a>
                                 @{
-                                    if (isLoggedIn)
-                                    {
-                                        <a class="nav-link text-light" href="@Url.Action("Create", "Advertisement")">
+                                    <a class="nav-link text-light" 
+                                        @if (isLoggedIn) { 
+                                            @:href="@Url.Action("Create", "Advertisement")" 
+                                        }
+                                        else { 
+                                            @:href="@Url.Action("Login", "Account") " 
+                                        }
+                                                     title="Dodaj Ogłoszenie">
                                             <img src="~/Images/add_white.png" width="30" height="30" />
-                                            Dodaj Ogłoszenie
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a class="nav-link text-light" href="@Url.Action("Login", "Account")">
-                                            <img src="~/Images/add_white.png" width="30" height="30" />
-                                            Dodaj Ogłoszenie
-                                        </a>
-                                    }
-                                }
-                            </li>
-                            <li class="nav-item">
+                                            <span class="hideIfScreeenIsNarrow">Dodaj Ogłoszenie</span>
+                                    </a>
+                                        }
                                 @{
-                                    if (isLoggedIn)
-                                    {
-                                        int unreadChats = _db.Chat.Where(ch => ch.Wiadomosci.Where(w => !w.przeczytano && w.nadawca_id != Id).Count() > 0
-                                            && (ch.oglaszajacy_id == Id || ch.zainteresowany_id == Id)).Count();
-                                        <a class="nav-link text-light" href="@Url.Action("Messages", "Home")">
-                                            <img src="~/Images/chat_white.png" width="30" height="30" />
-                                            @if (unreadChats > 0)
-                                            {
-                                                <span class="notificationIndicator">@unreadChats</span>
-                                            }
-                                            Wiadomości
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a class="nav-link text-light" href="@Url.Action("Login", "Account")">
-                                            <img src="~/Images/chat_white.png" width="30" height="30" />
-                                            Wiadomości
-                                        </a>
-                                    }
+                                    int unreadChats = _db.Chat.Where(ch => ch.Wiadomosci.Where(w => !w.przeczytano && w.nadawca_id != Id).Count() > 0
+                                        && (ch.oglaszajacy_id == Id || ch.zainteresowany_id == Id)).Count();
+                                    <a class="nav-link text-light" 
+                                        @if (isLoggedIn)
+                                        {
+                                            @:href="@Url.Action("Messages", "Home")"
+                                        }
+                                        else
+                                        {
+                                            @:href="@Url.Action("Login", "Account")"
+                                        }
+                                        >
+                                        <img src="~/Images/chat_white.png" width="30" height="30" />
+                                        @if (unreadChats > 0)
+                                        {
+                                            <span class="notificationIndicator">@unreadChats</span>
+                                        }
+                                    <span class="hideIfScreeenIsNarrow">Wiadomości</span>
+                                    </a>
+                                    
                                 }
-                            </li>
-                            <li class="nav-item">
                                 @{
-                                    if (isLoggedIn)
-                                    {
-                                        int favCount = _db.Ulubiona.Where(u => u.uzytkownik_id == Id).Count();
-                                        <a class="nav-link text-light" href="@Url.Action("MyFavorites", "Advertisement")">
-                                            <img src="~/Images/heart_full_white.png" width="30" height="30" />
-                                            @if (favCount > 0)
-                                            {
-                                                <span class="notificationIndicator">@favCount</span>
-                                            }
-                                            Ulubione
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a class="nav-link text-light" href="@Url.Action("Login", "Account")">
-                                            <img src="~/Images/heart_full_white.png" width="30" height="30" />
-                                            Ulubione
-                                        </a>
-                                    }
+                                    int favCount = _db.Ulubiona.Where(u => u.uzytkownik_id == Id).Count();
+                                    <a class="nav-link text-light" 
+                                        @if (isLoggedIn)
+                                        {
+                                            @:href="@Url.Action("MyFavorites", "Advertisement")"
+                                        }
+                                        else
+                                        {
+                                            @:href="@Url.Action("Login", "Account")"
+                                        }
+                                        >
+                                        <img src="~/Images/heart_full_white.png" width="30" height="30" />
+                                        @if (favCount > 0)
+                                        {
+                                            <span class="notificationIndicator">@favCount</span>
+                                        }
+                                        <span class="hideIfScreeenIsNarrow">Ulubione</span>
+                                    </a>
                                 }
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-light"
-                                   @{ int cartCount = _db.Koszyk.Where(k => k.uzytkownik_id == Id).Count(); if (isLoggedIn) { @: href="@Url.Action("GetMyCart", "Advertisement")"
-                                   } else { @: href="@Url.Action("Login", "Account")"
-                                   } }>
+                                   @{ 
+                                       int cartCount = _db.Koszyk.Where(k => k.uzytkownik_id == Id).Count(); 
+                                       if (isLoggedIn) { 
+                                           @: href="@Url.Action("GetMyCart", "Advertisement")"
+                                       } 
+                                       else 
+                                       { 
+                                           @: href="@Url.Action("Login", "Account")"
+                                       } 
+                                       }>
                                     <img src="~/Images/shopping_bag.png" width="30" height="30" />
                                     @if (cartCount > 0)
                                     {
                                         <span class="notificationIndicator">@cartCount</span>
                                     }
-                                    Koszyk
+                                    <span class="hideIfScreeenIsNarrow">Koszyk</span>
 
                                 </a>
-                            </li>
                             @{
                                 if (isLoggedIn)
                                 {
-                                    <li class="nav-item dropdown">
+                                    <div class="dropdown show">
                                         <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <img src="~/Images/account_white.png" width="30" height="30" />
-                                            Mój PBX
+                                            <span class="hideIfScreeenIsNarrow">Mój PBX</span>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            @Html.ActionLink("Twoje ogłoszenia", "MyAds", "Advertisement", new { user = Session["user"] }, new { @class = "dropdown-item" })
+                                            @Html.ActionLink("Twoje ogłoszenia", "MyAds", "Advertisement", new { }, new { @class = "dropdown-item" })
                                             @Html.ActionLink("Kupujesz", "Bought", "Advertisement", new { }, new { @class = "dropdown-item" })
                                             @Html.ActionLink("Sprzedajesz", "Sold", "Advertisement", new { }, new { @class = "dropdown-item" })
                                             <div class="themeContainer">
@@ -148,42 +139,34 @@
                                             @Html.ActionLink("Zmień hasło", "ChangePassword", "Account", "Account", new { @class = "dropdown-item" })
                                             @Html.ActionLink("Wyloguj", "Logout", "Account", "Account", new { @class = "dropdown-item" })
                                         </div>
-                                    </li>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <li class="nav-item">
                                         <a class="nav-link text-light" href="@Url.Action("Login", "Account")">
                                             <img src="~/Images/account_white.png" width="30" height="30" />
-                                            Zaloguj
+                                            <span class="hideIfScreeenIsNarrow">Zaloguj</span>
                                         </a>
-                                    </li>
                                 }
                             }
-                            @using (Html.BeginForm("Search", "Advertisement", FormMethod.Post, new { @class = "form-inline" }))
+                            @using (Html.BeginForm("Search", "Advertisement", FormMethod.Post, new { @class = "search-form" }))
                             {
-                                <li class="nav-item ml-3">
-                                    <div class="form-inline">
-                                        @{
-                                            if (ViewBag.searched != null)
-                                            {
-                                                <input class="form-control" name="query" id="query" type="search" placeholder="Wpisz tutaj czego szukasz..." aria-label="Search" style="min-width:250px" value=@ViewBag.searched>
-
-                                            }
-                                            else
-                                            {
-                                                <input class="form-control" name="query" id="query" type="search" placeholder="Wpisz tutaj czego szukasz..." aria-label="Search" style="min-width:250px">
-
-                                            }
-                                        }
-
-                                        <button type="submit" name="search" id="search">Szukaj</button>
-                                    </div>
-                                </li>
+                <div class="d-flex flex-nowrap">
+                    @{
+                        <input class="search-input form-control" name="query" id="query" type="search" placeholder="Wpisz tutaj czego szukasz..." aria-label="Search"
+                            @if (ViewBag.searched != null) 
+                            { 
+                                @: value=@ViewBag.searched
+                            }
+                        >
+                    }
+                <button type="submit" name="search" id="search">
+                    <span class="hideIfScreeenIsNarrow">Szukaj</span>
+                    <img class="showIfScreeenIsNarrow" src="~/Images/search_white.png" height="25" width="25"/>
+                </button>
+                </div>
                             }
 
-                        </ul>
-                    </div>
                 </nav>
             </div>
         }
@@ -209,7 +192,7 @@
         </p>
     </div>
     <footer class="text-center navbar-fixed-bottom background-secondary border-top" style="margin-top:10px;">
-        <p class="py-4 mb-0" style="color:var(--main-color);">&copy; pbx.brandt-software.dev -  Paweł Brandt </p>
+        <p class="py-4 mb-0" style="color:white!important;">&copy; pbx.brandt-software.dev<span class="hideIfScreeenIsNarrow"> -  Paweł Brandt </span></p>
     </footer>
 
     <script type="text/javascript">
@@ -226,6 +209,7 @@
         var forms = document.getElementsByTagName("form");
         for (let form of forms) {
             form.setAttribute("onsubmit", "toggleWaitingScreen()");
+            form.setAttribute("autocomplete", "off");
         }
 
         const cookieStorage = {

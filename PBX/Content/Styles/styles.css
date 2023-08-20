@@ -25,18 +25,7 @@
     src: url("./Font/Poppins/Poppins-LightItalic.ttf");
 }
 
-@media(prefers-color-scheme: dark) {
-    :root {
-        --main-color: white;
-        --background-color: #3D3D3F;
-        --your-message: #F0F0F0;
-        --fourth-color: #4D4D4F;
-        color-scheme: dark light;
-    }
-    div#filter.dropdown-menu{
-        background-color:var(--background-color);
-    }
-}
+
     h1, h2, h3, h4, h5, h6, label, th, td, dt, dd, legend, p, #text {
         color: var(--main-color) !important;
     }
@@ -87,6 +76,9 @@ body {
         select.form-control:not([size]):not([multiple]){
             min-height:34px!important;
         }
+        input[type="checkbox"] {
+            margin: 0px!important;
+        }
         input[type="checkbox"]:hover,
         select:hover{
             cursor:pointer;
@@ -121,12 +113,15 @@ body {
         color: var(--accent-color) !important;
     }
 
-    a:hover {
+     a:hover {
         color: var(--secondary-color);
     }
 
     footer {
         background-color: var(--secondary-color);
+    }
+    nav{
+        padding: 1rem 2rem !important;
     }
 
     #brand {
@@ -134,6 +129,14 @@ body {
         font-size: 20px;
         font-weight:500;
     }
+form.search-form {
+    /*position: absolute;*/
+    right: 2rem;
+    border-radius:30px;
+}
+input.search-input {
+    width: 250px;
+}
 
     .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
         background-color: var(--selected-color)!important;
@@ -143,17 +146,24 @@ body {
     span.field-validation-error{
         color: var(--accent-color)!important;
     }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
 div#otp > input {
-    border-radius:0px;
+    border-radius:0px!important;
 }
-div#otp > input#first {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-div#otp > input#sixth {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-}
+    div#otp > input#first {
+        border-top-left-radius: 10px !important;
+        border-bottom-left-radius: 10px !important;
+    }
+    div#otp > input#sixth {
+        border-top-right-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;
+    }
 
     #query {
         border: none;
@@ -161,6 +171,8 @@ div#otp > input#sixth {
         border-top-left-radius: 10px;
         border-bottom-right-radius: 0px;
         border-top-right-radius: 0px;
+        min-height:34px;
+        padding: .5rem 1rem;
     }
 
     #search {
@@ -192,7 +204,6 @@ div#otp > input#sixth {
     }
 
     textarea.form-control#wiadomosc {
-        min-width: 400px;
         min-height: 35px;
         max-height: 100px;
         resize: none;
@@ -200,13 +211,16 @@ div#otp > input#sixth {
 
 div.recieved-message {
     background-color: var(--accent-color);
-    color: var(--main-color);
+    color: white;
     width: fit-content;
     border-radius: 10px;
     margin-bottom: .5rem;
 }
     div.recieved-message > h6 {
         text-align: start;
+    }
+    div.recieved-message  * {
+        color: white!important;
     }
 
     .btn-primary, .btn-outline-primary{
@@ -444,13 +458,16 @@ div.searchItem:hover {
     transform: scale(1.03);
     box-shadow: 0px 0px 10px black;
 }
+div.messages{
+    gap: 0.75rem;
+}
 
 div.messages > div > a.chatListItem {
     padding: 1rem 1.5rem;
     border-radius: .5rem;
     text-decoration: none;
     transition: all ease-in-out 150ms;
-    background-color: var(--background-color);
+    background-color: var(--fourth-color);
 }
 
     div.messages > div > a.chatListItem:hover {
@@ -468,8 +485,9 @@ div.searchItem img.picture {
     margin-right: 1.5rem;
 }
 
-.unread-chat{
+.unread-chat {
     font-weight: bolder;
+    border: solid 1px var(--main-color);
 }
 span.notificationIndicator {
     display: flex;
@@ -531,6 +549,11 @@ div#cookies-alert {
         cursor: pointer;
     }
 
+div.modal-dialog h3,
+div.modal-dialog h4 {
+    color: black !important;
+}
+
 .themeContainer > div.themeInputContainer > p {
     margin-bottom:2px;
 }
@@ -545,6 +568,7 @@ div#cookies-alert {
     transition: opacity .2s;
     align-self: center;
     cursor: pointer;
+    transition: 0.4s all ease-out;
 }
 
     .slider::-webkit-slider-thumb {
@@ -556,6 +580,7 @@ div#cookies-alert {
         margin: 5px 0px;
         background: red;
         cursor: ew-resize;
+        transition: 0.4s all ease-out;
     }
 
     .slider::-moz-range-thumb {
@@ -566,3 +591,169 @@ div#cookies-alert {
         background: #04AA6D;
         cursor: pointer;
     }
+
+.showIfScreeenIsNarrow {
+    display: none;
+}
+
+div.index.searchList{
+    margin-top: .75rem;
+    flex-wrap:wrap;
+    place-items:center;
+}
+    div.index.searchList > a {
+        width: 350px;
+    }
+
+
+
+div.function-hint {
+    background-color: gray;
+    color: white;
+    border-radius: 50%;
+    width: 20px !important;
+    height: 20px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: 10px;
+    cursor: help;
+}
+
+    div.function-hint ~ span.function-hint-description {
+        background-color: gray;
+        color: white;
+        border-radius: 10px;
+        width: 150px;
+        padding: 5px 10px;
+        position: absolute;
+        display: none;
+        text-align: center;
+    }
+
+    div.function-hint:hover ~ span.function-hint-description {
+        display: block;
+    }
+
+
+@media(prefers-color-scheme: dark) {
+    :root {
+        --main-color: white;
+        --background-color: #3D3D3F;
+        --your-message: #F0F0F0;
+        --fourth-color: #4D4D4F;
+        color-scheme: dark light;
+    }
+
+    div#filter.dropdown-menu {
+        background-color: var(--background-color);
+    }
+}
+
+@media(max-width: 1085px) {
+    .navbar-expand-lg {
+        justify-content: flex-start !important;
+    }
+
+    nav {
+        padding: .5rem 1rem !important;
+        padding-right: 5rem!important;
+    }
+
+    .hideIfScreeenIsNarrow {
+        display: none;
+    }
+    .showIfScreeenIsNarrow {
+        display: block;
+    }
+    button#search{
+        padding: .25rem .5rem;
+    }
+    div.d-grid-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    div.d-grid-4 >:nth-child(n+7){
+        display:none;
+    }
+    div.index.searchList {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 700px) {
+    form.search-form {
+        position:absolute;
+        width: fit-content;
+        height: 34px;
+    }
+        form.search-form:hover input#query.search-input,
+        input#query.search-input:focus {
+            width: 220px !important;
+            transform: translateX(0px);
+            padding: .5rem 1rem;
+            transition: .25s all ease-in-out;
+        }
+            input#query.search-input:focus ~ button#search,
+            form.search-form:hover button#search {
+                border-top-left-radius: 0px !important;
+                border-bottom-left-radius: 0px !important;
+            }
+        input#query.search-input {
+            transition: .25s all ease-in-out;
+            width: 0px !important;
+            padding: .5rem 0rem;
+            transform: translateX(10px);
+        }
+    input.search-input:focus {
+        width: 280px !important;
+    }
+
+    input.search-input ~ button {
+        transition: .25s all ease-in-out;
+        border-top-left-radius: 10px !important;
+        border-bottom-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;
+        z-index: 2;
+    }
+
+    div.searchList {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    div.d-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    div.d-grid-4 > :nth-child(n+5) {
+        display: none;
+    }
+    div.ad-details .picture-big{
+        width: 10rem;
+        height:10rem;
+    }
+    div.ad-details div{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:start;
+    }
+}
+
+@media(max-width: 450px) {
+    a.nav-link{
+        padding: 5px;
+    }
+    div.d-grid-4 {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    div.d-grid-4 > a.home-category {
+        padding: 1rem 2rem;
+    }
+    div.index.searchList > a {
+        width: 80vw;
+    }
+    div.index.searchList > a > div > img {
+        width: 70px;
+    }
+}

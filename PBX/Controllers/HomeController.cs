@@ -17,6 +17,7 @@ namespace PBX.Controllers
             {
                 ViewBag.user = user;
             }
+            ViewBag.ads = _db.Ogloszenie.OrderByDescending(o => o.dodano).Take(2).ToList();
             return View(_db.Kategoria.Take(8));
         }
 

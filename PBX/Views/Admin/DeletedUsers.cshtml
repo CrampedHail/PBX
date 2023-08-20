@@ -6,6 +6,55 @@
 
 <h2>Usunięci użytkownicy</h2>
 
+
+<div class="d-flex justify-content-between">
+    @Html.ActionLink("Powrót", "Index", "Admin")
+
+    <div class="dropdown mb-3">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filtrowanie
+        </button>
+        <div id="filter" class="dropdown-menu px-4 py-3" aria-labelledby="dropdownMenuButton">
+            @using (Html.BeginForm("DeletedUsers", "Admin", "", FormMethod.Get, new { @class = "form-inline d-flex flex-column align-items-end" }))
+            {
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="user_id">ID: </label>
+                    <input class="form-control" type="text" id="user_id" value="@ViewBag.user_id" name="user_id" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="user_name">Imię: </label>
+                    <input class="form-control" type="text" id="user_name" value="@ViewBag.user_name" name="user_name" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="phone_number">Numer Telefonu: </label>
+                    <input class="form-control" type="text" id="phone_number" value="@ViewBag.phone_number" name="phone_number" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="email">Email: </label>
+                    <input class="form-control" type="text" id="email" value="@ViewBag.email" name="email" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="joined_from">Dołączono: </label>
+                    <input class="form-control" type="date" id="joined_from" value="@ViewBag.joined_from" name="joined_from" placeholder="Od" /><span>-</span>
+                    <input class="form-control" type="date" id="joined_to" value="@ViewBag.joined_to" name="joined_to" placeholder="Do" />
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="deleted_from">Usunięto: </label>
+                    <input class="form-control" type="date" id="deleted_from" value="@ViewBag.deleted_from" name="deleted_from" placeholder="Od" /><span>-</span>
+                    <input class="form-control" type="date" id="deleted_to" value="@ViewBag.deleted_to" name="deleted_to" placeholder="Do" />
+                </div>
+
+            <input class="btn btn-primary mt-2" type="submit" value="Zastosuj" />
+        }
+        </div>
+    </div>
+</div>
+@if (Model.Count() > 0) { 
 <table class="table">
     <tr>
         <th>
@@ -26,27 +75,33 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.imie)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nr_tel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dolaczono)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.usunieto)
-        </td>
-        <td>
-            @Html.ActionLink("Przywróć", "RestoreUser", new { id=item.id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.imie)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nr_tel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dolaczono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usunieto)
+            </td>
+            <td>
+                @Html.ActionLink("Przywróć", "RestoreUser", new { id = item.id })
+            </td>
+        </tr>
+    }
 
 </table>
+}
+else
+{
+    <h4>Nie znaleziono usuniętych użytkowników.</h4>
+}

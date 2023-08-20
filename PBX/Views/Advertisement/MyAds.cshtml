@@ -7,51 +7,101 @@
 <h2>Twoje Ogłoszenia</h2>
 
 
-@if (Model.Count() > 0)
+@if (Model.Where(o => o.aktywne).Count() > 0)
 {
     <table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.nazwa)
             </th>
-            <th>
+            <th class="hideIfScreeenIsNarrow">
                 @Html.DisplayNameFor(model => model.dodano)
             </th>
-            <th>
+            <th class="hideIfScreeenIsNarrow">
                 @Html.DisplayNameFor(model => model.typ)
             </th>
-            <th>
+            <th class="hideIfScreeenIsNarrow">
                 @Html.DisplayNameFor(model => model.cena)
             </th>
             <th></th>
         </tr>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nazwa)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dodano)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.typ)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.cena)
-                </td>
-                <td>
-                    @Html.ActionLink("Podgląd", "Details", new { id = item.id }) |
-                    @Html.ActionLink("Edytuj", "Edit", new { id = item.id }) |
-                    @Html.ActionLink("Usuń", "Delete", new { id = item.id })
-                </td>
-            </tr>
+            if (item.aktywne)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nazwa)
+                    </td>
+                    <td class="hideIfScreeenIsNarrow">
+                        @Html.DisplayFor(modelItem => item.dodano)
+                    </td>
+                    <td class="hideIfScreeenIsNarrow">
+                        @Html.DisplayFor(modelItem => item.typ)
+                    </td>
+                    <td class="hideIfScreeenIsNarrow">
+                        @Html.DisplayFor(modelItem => item.cena)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Podgląd", "Details", new { id = item.id }) |
+                        @Html.ActionLink("Edytuj", "Edit", new { id = item.id }) |
+                        @Html.ActionLink("Usuń", "Delete", new { id = item.id })
+                    </td>
+                </tr>
+            }
         }
 
     </table>
+
 
 }
 else
 {
     <h4>Nie masz jeszcze żadnych ogłoszeń.</h4>
+}
+@if (Model.Where(o => !o.aktywne).Count() > 0)
+{
+    <h2 class="mt-5">Nieaktywne Ogłoszenia</h2>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.nazwa)
+            </th>
+            <th class="hideIfScreeenIsNarrow">
+                @Html.DisplayNameFor(model => model.dodano)
+            </th>
+            <th class="hideIfScreeenIsNarrow">
+                @Html.DisplayNameFor(model => model.typ)
+            </th>
+            <th class="hideIfScreeenIsNarrow">
+                @Html.DisplayNameFor(model => model.cena)
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            if (!item.aktywne)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nazwa)
+                    </td>
+                    <td class="hideIfScreeenIsNarrow">
+                        @Html.DisplayFor(modelItem => item.dodano)
+                    </td>
+                    <td class="hideIfScreeenIsNarrow">
+                        @Html.DisplayFor(modelItem => item.typ)
+                    </td>
+                    <td class="hideIfScreeenIsNarrow">
+                        @Html.DisplayFor(modelItem => item.cena)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Aktywuj Ogłoszenie", "ActivateAd", new { id = item.id }) |
+                        @Html.ActionLink("Usuń", "Delete", new { id = item.id })
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
 }

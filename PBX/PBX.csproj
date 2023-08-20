@@ -354,6 +354,7 @@
     <Content Include="Content\Styles\Font\Poppins\Poppins-ThinItalic.ttf" />
     <Content Include="Content\ForbiddenWords\README.md" />
     <Content Include="Content\ForbiddenWords\wulgaryzmy.json" />
+    <Content Include="PrivacyPolicyPBX.pdf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\categoryModal.js" />
     <None Include="Scripts\jquery-3.6.0-vsdoc.js" />

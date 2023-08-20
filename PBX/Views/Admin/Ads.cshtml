@@ -5,52 +5,128 @@
 }
 
 <h2>Ogłoszenia</h2>
-@{
-    if (Model.Count() > 0)
+<div class="d-flex justify-content-between">
+    @Html.ActionLink("Powrót", "Index", "Admin")
+
+    <div class="dropdown mb-3">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filtrowanie i Sortowanie
+        </button>
+        <div id="filter" class="dropdown-menu px-4 py-3" aria-labelledby="dropdownMenuButton">
+            @using (Html.BeginForm("Ads", "Admin", "", FormMethod.Post, new { @class = "form-inline d-flex flex-column align-items-end" }))
+            {
+                <input type="text" name="query" id="query" value=@ViewBag.searched hidden />
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="sort">Sortowanie: </label>
+                    <select class="form-control" id="sort" name="sort-type">
+                        @foreach (string sort in new string[] { "od najnowszych", "od najstarszych", "od najtańszych", "od najdroższych", "nazwą alfabetycznie" })
+                        {
+                            if (ViewBag.sort != null && (ViewBag.sort as string).Contains(sort))
+                            {
+                                <option value="@sort" selected>@sort</option>
+                            }
+                            else
+                            {
+                                <option value="@sort">@sort</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="type">Typ Ogłoszenia: </label>
+                    <select class="form-control" id="type" name="ad-type">
+                        <option selected value="Dowolny">Dowolny</option>
+                        @foreach (string typ in ViewBag.typy as List<string>)
+                        {
+                            if (ViewBag.type != null && (ViewBag.type as string).Contains(typ))
+                            {
+                                <option value="@typ" selected>@typ</option>
+                            }
+                            else
+                            {
+                                <option value="@typ">@typ</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="category">Kategoria: </label>
+                    <input class="form-control" type="text" list="category-list" id="category" value="@ViewBag.category" name="category" />
+                    <datalist id="category-list" placeholder="Wybierz kategorię...">
+                        @foreach (PBX.Models.Kategoria kat in ViewBag.kategorie as List<PBX.Models.Kategoria>)
+                        {
+                            <option value="@kat.nazwa.Trim()"></option>
+                        }
+                    </datalist>
+                </div>
+
+                <div class="d-flex my-2">
+                    <label class="control-label mr-3" for="location">Lokalizacja: </label>
+                    <input class="form-control" type="text" id="location" value="@ViewBag.location" name="location" />
+                </div>
+
+                <div class="d-flex my-2 align-items-center">
+                    <label class="control-label mr-3" for="price-from">Cena</label>
+                    <input class="form-control" id="price-from" name="price-from" type="number" placeholder="Od" min="0" value=@ViewBag.price_from style="max-width: 100px" />
+                    <h3 class="m-0 px-2">-</h3>
+                    <input class="form-control" id="price-to" name="price-to" type="number" placeholder="Do" min="0" value=@ViewBag.price_to style="max-width: 100px" />
+                </div>
+
+                <input class="btn btn-primary mt-2" type="submit" value="Zastosuj" />
+            }
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dodano)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.typ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cena)
+        </th>
+        <th>
+        </th>
+    </tr>
+    @if (Model.Count() > 0)
     {
-        <table class="table">
+        foreach (var item in Model)
+        {
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.nazwa)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.dodano)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.typ)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.cena)
-                </th>
-                <th></th>
+                <td>
+                    @Html.ActionLink(item.nazwa, "AdDetails", new { id = item.id })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dodano)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.typ)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cena)
+                </td>
+                <td>
+                    @Html.ActionLink("Usuń ogłoszenie", "DeleteAd", new { id = item.id })
+                </td>
             </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.ActionLink(item.nazwa, "AdDetails", new { id = item.id })
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.dodano)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.typ)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.cena)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Usuń ogłoszenie", "DeleteAd", new { id = item.id })
-                    </td>
-                </tr>
-            }
-
-        </table>
-    }
-            else
-            {
-                <h4>Nie ma żadnych ogłoszeń</h4>
-            }
+        }
+    @:</table>
 }
+else
+{
+    @:</table>
+    <h4>Nie ma żadnych ogłoszeń</h4>
+}
+
+
+
 

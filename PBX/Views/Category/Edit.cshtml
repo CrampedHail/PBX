@@ -25,7 +25,7 @@
 
         <div class="form-group d-flex justify-content-center flex-column align-items-center">
             <label for="nadkategoria">Wybierz nadkategorię:</label>
-            @Html.EditorFor(model => model.Kategoria2.nazwa, new { htmlAttributes = new { @class = "form-control", @type = "text", @list = "category-list", @name = "category", @placeholder = "Wybierz kategorię..." } })
+            @Html.EditorFor(model => model.Nadkategoria.nazwa, new { htmlAttributes = new { @class = "form-control", @type = "text", @list = "category-list", @name = "category", @placeholder = "Wybierz kategorię..." } })
             <datalist id="category-list">
                 <option selected> - </option>
                 @foreach (Kategoria kat in ViewBag.categories as List<Kategoria>)
@@ -33,6 +33,7 @@
                     <option>@kat.nazwa</option>
                 }
             </datalist>
+            @Html.HiddenFor(model => model.nadkategoria_id)
             @Html.ValidationMessageFor(model => model.nadkategoria_id, "", new { @class = "text-danger" })
         </div>
 

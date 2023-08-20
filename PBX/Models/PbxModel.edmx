@@ -75,6 +75,7 @@
           <Property Name="pokaz_email" Type="bit" Nullable="false" />
           <Property Name="zdjecie" Type="varbinary(max)" Nullable="false" />
           <Property Name="lokalizacja" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="auto_przedluzanie" Type="bit" />
         </EntityType>
         <EntityType Name="Ulubiona">
           <Key>
@@ -128,7 +129,7 @@
           <Property Name="uzytkownik_id" Type="int" Nullable="false" />
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="data" Type="datetime" Nullable="false" />
-          <Property Name="status" Type="nvarchar" MaxLength="20" />
+          <Property Name="status" Type="nvarchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="Zgloszenie">
           <Key>
@@ -565,6 +566,7 @@
           <NavigationProperty Name="Zgloszenie" Relationship="Self.FK__Zgloszeni__Oglos__48CFD27E" FromRole="Ogloszenie" ToRole="Zgloszenie" />
           <NavigationProperty Name="Koszyk" Relationship="PBXDBModel.FK__Koszyk__ogloszen__3F115E1A" FromRole="Ogloszenie" ToRole="Koszyk" />
           <NavigationProperty Name="Zamowienie" Relationship="PBXDBModel.FK__Zamowieni__oglos__3C34F16F" FromRole="Ogloszenie" ToRole="Zamowienie" />
+          <Property Name="auto_przedluzanie" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Ulubiona">
           <Key>
@@ -1071,6 +1073,7 @@
           <EntitySetMapping Name="Ogloszenie">
             <EntityTypeMapping TypeName="PBXDBModel.Ogloszenie">
               <MappingFragment StoreEntitySet="Ogloszenie">
+                <ScalarProperty Name="auto_przedluzanie" ColumnName="auto_przedluzanie" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="wystawil_id" ColumnName="wystawil_id" />
                 <ScalarProperty Name="kategoria_id" ColumnName="kategoria_id" />

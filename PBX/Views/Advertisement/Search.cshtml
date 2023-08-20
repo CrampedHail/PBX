@@ -57,6 +57,12 @@
                     }
                 </datalist>
             </div>
+
+            <div class="d-flex my-2">
+                <label class="control-label mr-3" for="location">Lokalizacja: </label>
+                <input class="form-control" type="text" id="location" value="@ViewBag.location" name="location" />
+            </div>
+
             <div class="d-flex my-2 align-items-center">
                 <label class="control-label mr-3" for="price-from">Cena</label>
                 <input class="form-control" id="price-from" name="price-from" type="number" placeholder="Od" min="0" value=@ViewBag.price_from style="max-width: 100px" />
@@ -89,7 +95,7 @@
                                 <h4 style="width: fit-content; text-align: start;">@item.nazwa</h4>
                                 <div class="d-flex justify-content-between w-100">
                                     @if (item.cena == 0) {<p>Za darmo</p>}
-                                    else { <p>@item.cena zł</p>}
+                                    else { <p><span>@item.cena</span>zł</p>}
                                 <p>@item.dodano.ToShortDateString()</p>
                                 </div>
                             </div>

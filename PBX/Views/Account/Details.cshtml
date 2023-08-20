@@ -147,42 +147,33 @@ else
                     }
                 </td>
             </tr>
-            <tr>
-                <td class="table-cell-text-right">
-                    <strong>@Html.DisplayNameFor(model => model.nr_tel)</strong>
-                </td>
-                <td>
-                    @if ((ViewBag.user as Uzytkownik).id == Model.id)
-                    {
+            @if ((ViewBag.user as Uzytkownik).id == Model.id)
+            {
+                <tr>
+                    <td class="table-cell-text-right">
+                        <strong>@Html.DisplayNameFor(model => model.nr_tel)</strong>
+                    </td>
+                    <td>
                         @Html.DisplayFor(model => model.nr_tel)
-                    }
-                    else
-                    {
-                        <a href="tel:@Model.nr_tel" title="Naciśnij aby zadzwonić">@Model.nr_tel</a>
-                    }
-                </td>
-            </tr>
-            <tr>
-                <td class="table-cell-text-right">
-                    <strong>@Html.DisplayNameFor(model => model.email)</strong>
-                </td>
-                <td>
-                    @if ((ViewBag.user as Uzytkownik).id == Model.id)
-                    {
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="table-cell-text-right">
+                        <strong>@Html.DisplayNameFor(model => model.email)</strong>
+                    </td>
+                    <td>
                         @Html.DisplayFor(model => model.email)
-                    }
-                    else
-                    {
-                        <a href="mailto:@Model.email" title="Naciśnij aby wysłać maila">@Model.email</a>
-                    }
-                </td>
-            </tr>
+
+                    </td>
+                </tr>
+            }
             <tr>
                 <td class="table-cell-text-right">
                     <strong>@Html.DisplayNameFor(model => model.dolaczono)</strong>
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.dolaczono)
+                    @Model.dolaczono.ToShortDateString()
                 </td>
             </tr>
         </table>
